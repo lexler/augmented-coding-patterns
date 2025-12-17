@@ -5,7 +5,7 @@ authors: [juanmichelini]
 # Visualize the Target
 
 ## Problem
-Negation is cognitively difficult to process and often counterproductive. When you tell AI what you *don't* want, you're first making it think about the unwanted thing, then asking it to avoid it. This creates mental overhead and can actually increase the likelihood of getting what you're trying to avoid.
+When you tell an AI that you *don't* want a thing, you're first activating context related to a thing, then asking it to avoid that thing. This creates an overhead and can increase the likelihood of getting what you're trying to avoid.
 
 The same principle applies beyond code generation - in image generation, "Create a picture of a room with no elephants" is more likely to produce a room with elephants than simply saying "Create a room."
 
@@ -40,4 +40,4 @@ Instead of describing what you don't want, directly describe what you do want. T
 - ❌ "Generate a clean office space with no clutter, no personal items, and no distracting elements"
 - ✅ "Generate a minimalist office space with a clean desk, organized shelving, and professional lighting"
 
-The positive framing gives AI a clear target to aim for rather than a list of things to mentally juggle and avoid.
+The positive framing gives AI a clear target to aim for rather than a list of things to juggle and avoid.
