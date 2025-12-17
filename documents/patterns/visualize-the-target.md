@@ -10,7 +10,7 @@ When you tell an AI that you *don't* want a thing, you're first activating conte
 The same principle applies beyond code generation - in image generation, "Create a picture of a room with no elephants" is more likely to produce a room with elephants than simply saying "Create a room."
 
 ## Pattern
-Instead of describing what you don't want, directly describe what you do want. Transform negative instructions into positive ones by focusing on the desired outcome.
+Instead of describing what you don’t want, directly describe what you do want. Visualize the target we are aiming for. Transform negative instructions into positive ones by focusing on the desired outcome.
 
 **Transform negations:**
 - "Don't use global variables" → "Use local variables and parameter passing"
