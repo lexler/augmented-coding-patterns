@@ -50,6 +50,8 @@ graph LR
   patterns/active-partner -->|solves| anti-patterns/flying-blind
   patterns/feedback-loop -->|solves| anti-patterns/flying-blind
   patterns/constrained-tests -->|solves| anti-patterns/flying-blind
+  patterns/follow-obvious-fix -->|solves| obstacles/keeping-up
+  patterns/follow-obvious-fix -->|solves| obstacles/hallucinations
   patterns/habit-hooks -->|solves| obstacles/cannot-learn
   patterns/habit-hooks -->|solves| obstacles/context-rot
   patterns/hooks -->|solves| obstacles/selective-hearing
@@ -75,8 +77,11 @@ graph LR
   patterns/approved-logs -->|uses| patterns/constrained-tests
   patterns/habit-hooks -->|uses| patterns/hooks
   patterns/habit-hooks -->|uses| patterns/feedback-loop
+  patterns/follow-obvious-fix -->|uses| patterns/feedback-loop
   patterns/feedback-loop <-->|similar| patterns/playgrounds
   patterns/feedback-loop <-->|similar| patterns/chain-of-small-steps
+  patterns/follow-obvious-fix <-->|similar| patterns/active-partner
+  patterns/follow-obvious-fix <-->|similar| patterns/offload-deterministic
   patterns/chain-of-small-steps <-->|similar| patterns/offload-deterministic
   patterns/happy-to-delete <-->|similar| patterns/parallel-implementations
   patterns/happy-to-delete <-->|similar| patterns/playgrounds
