@@ -91,6 +91,12 @@ graph LR
   anti-patterns/unvalidated-leaps -->|causes| obstacles/black-box-ai
   anti-patterns/sunk-cost -->|causes| obstacles/degrades-under-complexity
 
+  anti-patterns/obsess-over-rules -->|causes| obstacles/limited-focus
+  anti-patterns/obsess-over-rules -->|causes| obstacles/context-rot
+  anti-patterns/obsess-over-rules -->|related| obstacles/selective-hearing
+  patterns/focused-agent -->|solves| anti-patterns/obsess-over-rules
+  patterns/refinement-loop -->|solves| anti-patterns/obsess-over-rules
+
   %% Anti-pattern → Anti-pattern relationships (related)
   anti-patterns/sunk-cost -->|related| anti-patterns/answer-injection
   anti-patterns/sunk-cost -->|related| anti-patterns/tell-me-a-lie
