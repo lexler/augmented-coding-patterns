@@ -82,6 +82,9 @@ graph LR
   patterns/happy-to-delete <-->|similar| patterns/playgrounds
   patterns/approved-fixtures <-->|similar| patterns/check-alignment
   patterns/approved-fixtures <-->|similar| patterns/approved-logs
+  patterns/yak-shave-delegation -->|uses| patterns/background-agent
+  patterns/yak-shave-delegation -->|uses| patterns/focused-agent
+  patterns/yak-shave-delegation -->|solves| anti-patterns/distracted-agent
 
   %% Anti-pattern → Obstacle relationships (causes)
   anti-patterns/distracted-agent -->|causes| obstacles/limited-focus
