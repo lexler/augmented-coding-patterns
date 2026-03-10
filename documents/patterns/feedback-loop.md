@@ -4,10 +4,12 @@ authors: [nitsan_avni]
 
 # Feedback Loop
 
-## Pattern
-Set up automated feedback, give AI permission to iterate autonomously until goal is reached.
+Closely related: ["Engineer the Harness"](https://mitchellh.com/writing/my-ai-adoption-journey#step-5-engineer-the-harness)
 
-1. Identify clear success signal (tests pass, UI matches design, coverage hits X%)
+## Pattern
+Set up automated feedback, give AI permission to iterate autonomously until a goal is reached.
+
+1. Identify a clear success signal (tests pass, UI matches design, coverage hits X%)
 2. Give AI access to that signal (tests, devtools, linter, logs)
 3. Grant explicit permission: "Keep iterating until tests pass"
 4. Step away - AI checks its own work and keeps refining
