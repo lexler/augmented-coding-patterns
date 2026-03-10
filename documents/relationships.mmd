@@ -75,6 +75,10 @@ graph LR
   patterns/approved-logs -->|uses| patterns/constrained-tests
   patterns/habit-hooks -->|uses| patterns/hooks
   patterns/habit-hooks -->|uses| patterns/feedback-loop
+  patterns/habit-hooks -->|uses| patterns/contextual-prompts
+  patterns/contextual-prompts -->|solves| obstacles/context-rot
+  patterns/contextual-prompts -->|solves| obstacles/selective-hearing
+  patterns/contextual-prompts <-->|similar| patterns/reminders
   patterns/feedback-loop <-->|similar| patterns/playgrounds
   patterns/feedback-loop <-->|similar| patterns/chain-of-small-steps
   patterns/chain-of-small-steps <-->|similar| patterns/offload-deterministic
