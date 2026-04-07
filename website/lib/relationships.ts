@@ -28,6 +28,7 @@ function parseRelationshipType(typeString: string): RelationshipType {
     'uses',
     'causes',
     'alternative',
+    'extends',
   ]
 
   if (validTypes.includes(typeString as RelationshipType)) {

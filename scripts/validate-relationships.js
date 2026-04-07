@@ -60,6 +60,7 @@ function parseRelationshipType(typeString) {
     'uses',
     'causes',
     'alternative',
+    'extends',
   ];
 
   if (validTypes.includes(typeString)) {

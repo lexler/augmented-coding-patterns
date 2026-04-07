@@ -168,6 +168,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai`
       'uses',
       'causes',
       'alternative',
+      'extends',
     ]
 
     validTypes.forEach(type => {

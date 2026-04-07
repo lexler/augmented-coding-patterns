@@ -288,6 +288,22 @@ describe('RelatedLinks Component', () => {
       expect(screen.getByRole('heading', { name: 'Caused by', level: 4 })).toBeInTheDocument()
     })
 
+    it('displays "Extends" for outgoing extends relationship', () => {
+      const patterns: RelatedPattern[] = [
+        { slug: 'text-native', type: 'extends', direction: 'outgoing' }
+      ]
+      render(<RelatedLinks relatedPatterns={patterns} />)
+      expect(screen.getByRole('heading', { name: 'Extends', level: 4 })).toBeInTheDocument()
+    })
+
+    it('displays "Extended by" for incoming extends relationship', () => {
+      const patterns: RelatedPattern[] = [
+        { slug: 'diagrams-as-code', type: 'extends', direction: 'incoming' }
+      ]
+      render(<RelatedLinks relatedPatterns={patterns} />)
+      expect(screen.getByRole('heading', { name: 'Extended by', level: 4 })).toBeInTheDocument()
+    })
+
     it('displays same label for symmetric "similar" regardless of direction', () => {
       const outgoing: RelatedPattern[] = [
         { slug: 'pattern-one', type: 'similar', direction: 'outgoing' }

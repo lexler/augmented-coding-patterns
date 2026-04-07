@@ -31,6 +31,7 @@ const RELATIONSHIP_COLORS = {
   causes: '#dc2626',
   alternative: '#84cc16',
   related: '#6b7280',
+  extends: '#ec4899',
 };
 
 const RELATIONSHIP_LABELS: Record<string, string> = {
@@ -41,6 +42,7 @@ const RELATIONSHIP_LABELS: Record<string, string> = {
   causes: 'Causes',
   alternative: 'Alternative',
   related: 'Related',
+  extends: 'Extends',
 };
 
 function getSlugFromFullSlug(fullSlug: string): string {
