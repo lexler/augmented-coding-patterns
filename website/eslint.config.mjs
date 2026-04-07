@@ -22,6 +22,7 @@ const eslintConfig = [
       "test-results/**",
       "coverage/**",
       "jest.config.js",
+      "playground/**",
     ],
   },
 ];

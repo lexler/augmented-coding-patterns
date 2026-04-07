@@ -42,7 +42,7 @@ jest.mock('@/app/components/RelationshipGraph', () => {
 jest.mock('next/dynamic', () => ({
   __esModule: true,
   default: (() => {
-    const DynamicComponent = (component: any) => component
+    const DynamicComponent = (component: unknown) => component
     DynamicComponent.preload = () => {}
     DynamicComponent.displayName = 'LoadableComponent'
     return DynamicComponent

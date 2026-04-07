@@ -89,7 +89,6 @@ describe('PatternCatalogPage', () => {
   })
 
   it('shows interactive filter controls and a stubbed catalog list within the sidebar', async () => {
-    const user = userEvent.setup()
     const page = await PatternCatalogPage()
 
     render(page)
