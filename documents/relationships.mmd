@@ -120,6 +120,8 @@ graph LR
   %% Obstacle → Obstacle relationships (related)
   obstacles/solution-fixation -->|related| obstacles/compliance-bias
   obstacles/selective-hearing -->|related| obstacles/context-rot
+  obstacles/negative-bleedthrough -->|related| obstacles/selective-hearing
+  patterns/point-the-target -->|solves| obstacles/negative-bleedthrough
 
   %% Obstacle → Anti-pattern relationships (related)
   obstacles/obedient-contractor -->|related| anti-patterns/silent-misalignment
