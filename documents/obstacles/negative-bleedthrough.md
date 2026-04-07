@@ -5,7 +5,7 @@ authors: [juanmichelini]
 # Negative Bleedthrough (Obstacle)
 
 ## Description
-When you tell an LLM what *not* to do, you're activating the very tokens you want it to avoid. Negation words like "don't", "not", "never" are weak signals compared to the content words around them. The model processes "don't mention the moon" by first attending heavily to "moon" and now the moon is in the room.
+When you tell an LLM what *not* to do, you're activating the very tokens you want it to avoid. Negation words like "don't", "not", "never" are weak signals compared to the content words around them. The model processes "don't mention the moon" by first attending heavily to "moon" : and now the moon is in the room.
 
 This is well-documented in NLP research. Studies on negation handling in transformer models (e.g., [Kassner & Schütze, 2020](https://aclanthology.org/2020.acl-main.698/) : *Negated and Misprimed Probes for Pretrained Language Models*) show that LLMs struggle to distinguish negated statements from affirmative ones. The model's internal representations for "the moon is a planet" and "the moon is not a planet" are surprisingly similar.
 
