@@ -1,3 +1,4 @@
+import config from '@/config/relationship-types.json'
 import { RelationshipType } from '@/lib/types'
 
 // Must be before any imports that use these modules
@@ -160,16 +161,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai`
   })
 
   describe('parseRelationships - Relationship Types', () => {
-    const validTypes: RelationshipType[] = [
-      'related',
-      'solves',
-      'similar',
-      'enables',
-      'uses',
-      'causes',
-      'alternative',
-      'extends',
-    ]
+    const validTypes = config.validTypes as readonly RelationshipType[]
 
     validTypes.forEach(type => {
       it(`should parse ${type} relationship type`, () => {

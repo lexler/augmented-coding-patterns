@@ -12,6 +12,9 @@ const DOCUMENTS_DIR = path.join(__dirname, '..', 'documents');
 // Path to relationships file
 const RELATIONSHIPS_FILE = path.join(DOCUMENTS_DIR, 'relationships.mmd');
 
+// Single source of truth for valid relationship types
+const validTypes = require(path.join(__dirname, '..', 'website', 'config', 'relationship-types.json')).validTypes;
+
 /**
  * Reads all markdown files from a category directory and returns slugs
  */
@@ -52,17 +55,6 @@ function buildValidSlugsSet() {
  * Parse relationship type from mermaid edge
  */
 function parseRelationshipType(typeString) {
-  const validTypes = [
-    'related',
-    'solves',
-    'similar',
-    'enables',
-    'uses',
-    'causes',
-    'alternative',
-    'extends',
-  ];
-
   if (validTypes.includes(typeString)) {
     return typeString;
   }
