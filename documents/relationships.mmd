@@ -89,6 +89,12 @@ graph LR
   patterns/yak-shave-delegation -->|uses| patterns/background-agent
   patterns/yak-shave-delegation -->|uses| patterns/focused-agent
   patterns/yak-shave-delegation -->|solves| anti-patterns/distracted-agent
+  patterns/semantic-anchors -->|uses| patterns/context-management
+  patterns/semantic-anchors <-->|similar| patterns/semantic-zoom
+  patterns/semantic-anchors -->|related| patterns/ground-rules
+  patterns/diagrams-as-code -->|extends| patterns/text-native
+  patterns/diagrams-as-code -->|uses| patterns/knowledge-document
+  patterns/diagrams-as-code -->|related| patterns/semantic-anchors
 
   %% Anti-pattern → Obstacle relationships (causes)
   anti-patterns/distracted-agent -->|causes| obstacles/limited-focus
