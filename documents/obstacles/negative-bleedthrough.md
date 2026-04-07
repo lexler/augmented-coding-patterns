@@ -1,5 +1,5 @@
 ---
-authors: [juanmichelini]
+authors: [juan_michelini]
 ---
 
 # Negative Bleedthrough (Obstacle)
