@@ -50,3 +50,6 @@ next-env.d.ts
 
 # internal documentation
 /internal_documentation/
+
+# throwaway exploratory code
+/playground/

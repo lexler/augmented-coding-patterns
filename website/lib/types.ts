@@ -43,6 +43,7 @@ export type RelationshipType =
   | 'uses'
   | 'causes'
   | 'alternative'
+  | 'extends'
 
 export interface Relationship {
   from: string

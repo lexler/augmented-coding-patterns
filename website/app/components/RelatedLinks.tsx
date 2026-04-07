@@ -33,7 +33,8 @@ function formatRelationshipType(type: RelationshipType, direction: 'outgoing' | 
       'solves': 'Solves',
       'enables': 'Enables',
       'uses': 'Uses',
-      'causes': 'Causes'
+      'causes': 'Causes',
+      'extends': 'Extends'
     }
     return outgoingMap[type] || type
   } else {
@@ -41,7 +42,8 @@ function formatRelationshipType(type: RelationshipType, direction: 'outgoing' | 
       'solves': 'Solved by',
       'enables': 'Enabled by',
       'uses': 'Used by',
-      'causes': 'Caused by'
+      'causes': 'Caused by',
+      'extends': 'Extended by'
     }
     return incomingMap[type] || type
   }

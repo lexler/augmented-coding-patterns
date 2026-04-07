@@ -1,0 +1,12 @@
+{
+  "validTypes": [
+    "related",
+    "solves",
+    "similar",
+    "enables",
+    "uses",
+    "causes",
+    "alternative",
+    "extends"
+  ]
+}

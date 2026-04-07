@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import config from '@/config/relationship-types.json'
 import {
   Relationship,
   RelationshipGraph,
@@ -19,17 +20,9 @@ function readRelationshipsFile(): string {
   return fs.readFileSync(relationshipsPath, 'utf8')
 }
 
-function parseRelationshipType(typeString: string): RelationshipType {
-  const validTypes: RelationshipType[] = [
-    'related',
-    'solves',
-    'similar',
-    'enables',
-    'uses',
-    'causes',
-    'alternative',
-  ]
+const validTypes = config.validTypes as readonly RelationshipType[]
 
+function parseRelationshipType(typeString: string): RelationshipType {
   if (validTypes.includes(typeString as RelationshipType)) {
     return typeString as RelationshipType
   }
