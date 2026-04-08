@@ -1,6 +1,7 @@
 ---
 authors: [ivett_ordog]
 alternative_titles: ["Approved Fixtures"]
+video: https://www.youtube.com/watch?v=GyI5qU9MNJU&t=2250s
 ---
 
 # Approved Scenarios

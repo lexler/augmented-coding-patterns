@@ -1,6 +1,7 @@
 ---
 authors: [ivett_ordog]
 alternative_titles: ["Show me, I will repeat-automate"]
+video: https://www.youtube.com/watch?v=9dyGJ2cg8p4&t=258s
 ---
 
 # Show the Agent, Let it Repeat/Automate

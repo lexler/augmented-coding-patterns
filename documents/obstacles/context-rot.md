@@ -1,6 +1,7 @@
 ---
 authors: [lada_kesseler, steve_kuo]
 synonyms: [Dementia]
+video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=352s
 ---
 
 # Context Rot (Obstacle)

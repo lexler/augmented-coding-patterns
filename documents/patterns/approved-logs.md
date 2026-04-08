@@ -1,5 +1,6 @@
 ---
 authors: [ivett_ordog]
+video: https://www.youtube.com/watch?v=GyI5qU9MNJU&t=2547s
 ---
 
 # Approved Logs
