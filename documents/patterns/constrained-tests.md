@@ -28,6 +28,6 @@ Implementation typically uses data providers where the external DSL drives a sin
 
 Two implementations of this pattern optimize for different goals:
 
-**Approved Fixtures** uses domain-specific formats optimized for easy validation. Even non-experts can review and verify correctness at a glance.
+**Approved Scenarios** uses domain-specific formats optimized for easy validation. Even non-experts can review and verify correctness at a glance.
 
 **Approved Logs** captures production logs and turns them into regression tests immediately. Optimizes for bug reproduction speed over readability.

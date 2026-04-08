@@ -23,7 +23,7 @@ Requires structured logging throughout the system. If not present, start adding 
 
 Minimize entry points - use separate test directories per entry point or design logs to make copy boundaries obvious.
 
-Unlike Approved Fixtures (optimized for validation ease), Approved Logs optimize for bug reproduction speed. They may feel cryptic without system familiarity but turn bug evidence into tests instantly.
+Unlike Approved Scenarios (optimized for validation ease), Approved Logs optimize for bug reproduction speed. They may feel cryptic without system familiarity but turn bug evidence into tests instantly.
 
 ## Example
 

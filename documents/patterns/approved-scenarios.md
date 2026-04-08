@@ -1,8 +1,9 @@
 ---
 authors: [ivett_ordog]
+alternative_titles: ["Approved Fixtures"]
 ---
 
-# Approved Fixtures
+# Approved Scenarios
 
 ## Problem
 Generating both tests and code with the AI and not checking is risky, but the AI is also prone to generating lots of tests quickly. Reviewing many AI-generated tests quickly becomes impractical, especially when assertions are complex.

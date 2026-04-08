@@ -40,7 +40,7 @@ graph LR
   patterns/reminders -->|solves| obstacles/context-rot
   patterns/reverse-direction -->|solves| anti-patterns/answer-injection
   patterns/take-all-paths -->|solves| obstacles/non-determinism
-  patterns/approved-fixtures -->|solves| obstacles/hallucinations
+  patterns/approved-scenarios -->|solves| obstacles/hallucinations
   patterns/approved-logs -->|solves| obstacles/hallucinations
   patterns/approved-logs -->|solves| obstacles/black-box-ai
   patterns/constrained-tests -->|solves| obstacles/non-determinism
@@ -70,8 +70,8 @@ graph LR
   patterns/ground-rules -->|uses| patterns/knowledge-document
   patterns/show-the-agent-let-it-repeat-automate -->|uses| patterns/extract-knowledge
   patterns/chunking -->|uses| patterns/focused-agent
-  patterns/approved-fixtures -->|uses| patterns/feedback-loop
-  patterns/approved-fixtures -->|uses| patterns/constrained-tests
+  patterns/approved-scenarios -->|uses| patterns/feedback-loop
+  patterns/approved-scenarios -->|uses| patterns/constrained-tests
   patterns/approved-logs -->|uses| patterns/constrained-tests
   patterns/habit-hooks -->|uses| patterns/hooks
   patterns/habit-hooks -->|uses| patterns/feedback-loop
@@ -84,8 +84,8 @@ graph LR
   patterns/chain-of-small-steps <-->|similar| patterns/offload-deterministic
   patterns/happy-to-delete <-->|similar| patterns/parallel-implementations
   patterns/happy-to-delete <-->|similar| patterns/playgrounds
-  patterns/approved-fixtures <-->|similar| patterns/check-alignment
-  patterns/approved-fixtures <-->|similar| patterns/approved-logs
+  patterns/approved-scenarios <-->|similar| patterns/check-alignment
+  patterns/approved-scenarios <-->|similar| patterns/approved-logs
   patterns/yak-shave-delegation -->|uses| patterns/background-agent
   patterns/yak-shave-delegation -->|uses| patterns/focused-agent
   patterns/yak-shave-delegation -->|solves| anti-patterns/distracted-agent
