@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getPatternBySlug, getPatternSlugs, titleToSlug } from "@/lib/markdown";
 import { getCategoryConfig, isValidCategory } from "@/app/lib/category-config";
+import { basePath } from "@/lib/config";
 import { PatternCategory } from "@/lib/types";
 import Authors from "@/app/components/Authors";
 import RelatedLinks from "@/app/components/RelatedLinks";
@@ -92,7 +93,8 @@ export default async function PatternPage({ params }: PatternPageProps) {
 
   // If visiting an alternative title slug, render redirect page
   if (isAlternativeTitle) {
-    const canonicalUrl = `/${category}/${canonicalSlug}/`;
+    const canonicalPath = `/${category}/${canonicalSlug}/`;
+    const canonicalUrl = `${basePath}${canonicalPath}`;
     return (
       <html>
         <head>
@@ -102,7 +104,7 @@ export default async function PatternPage({ params }: PatternPageProps) {
         </head>
         <body>
           <div className={styles.container}>
-            <p>Redirecting to <Link href={canonicalUrl}>{pattern.title}</Link>...</p>
+            <p>Redirecting to <Link href={canonicalPath}>{pattern.title}</Link>...</p>
           </div>
         </body>
       </html>
