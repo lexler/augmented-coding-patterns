@@ -20,6 +20,7 @@ export interface PatternMetadata {
   authors?: string[]
   alternativeTitles?: string[]
   synonyms?: string[]
+  video?: string
   relatedPatterns?: RelatedPattern[]
   relatedAntiPatterns?: RelatedPattern[]
   relatedObstacles?: RelatedPattern[]

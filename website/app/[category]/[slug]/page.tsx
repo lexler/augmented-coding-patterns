@@ -135,6 +135,17 @@ export default async function PatternPage({ params }: PatternPageProps) {
                 Synonyms: {pattern.synonyms.join(', ')}
               </p>
             )}
+            {pattern.video && (
+              <p className="text-sm mt-1">
+                <a
+                  href={pattern.video}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Watch video
+                </a>
+              </p>
+            )}
           </div>
         </div>
         <span className={`${styles.category} ${styles[config.styleClass]}`}>

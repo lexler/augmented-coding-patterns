@@ -453,6 +453,42 @@ AI defaults to silent compliance.`
       expect(pattern).toBeDefined()
       expect(pattern.alternativeTitles).toEqual(["Old Name"])
     })
+
+    it('should extract video from frontmatter', () => {
+      const mockMarkdown = `---
+video: https://www.youtube.com/watch?v=abc123&t=412
+---
+# Active Partner
+
+## Problem
+AI defaults to silent compliance.`
+
+      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
+      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
+
+      const pattern = getPatternBySlug('patterns', 'active-partner')
+
+      expect(pattern).toBeDefined()
+      expect(pattern.video).toBe('https://www.youtube.com/watch?v=abc123&t=412')
+    })
+
+    it('should handle pattern without video', () => {
+      const mockMarkdown = `---
+authors: [lexler]
+---
+# Active Partner
+
+## Problem
+AI defaults to silent compliance.`
+
+      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
+      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
+
+      const pattern = getPatternBySlug('patterns', 'active-partner')
+
+      expect(pattern).toBeDefined()
+      expect(pattern.video).toBeUndefined()
+    })
   })
 
   describe('getAllPatterns', () => {
