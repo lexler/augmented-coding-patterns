@@ -83,11 +83,15 @@ function buildCatalogGroups(): CatalogGroupData[] {
             slug: pattern.slug,
             title: pattern.title,
             emojiIndicator: pattern.emojiIndicator,
+            alternativeTitles: pattern.alternativeTitles,
+            synonyms: pattern.synonyms,
             authorIds: pattern.authors ?? [],
             authorNames: resolveAuthorNames(pattern.authors),
             authorGithubs: pattern.authors?.map(resolveAuthorGithub).filter((g): g is string => g !== null) ?? [],
             summary: extractSummary(pattern.content),
             content: pattern.content,
+            video: pattern.video,
+            videoTitle: pattern.videoTitle,
           }) satisfies CatalogPreviewItem
       );
 

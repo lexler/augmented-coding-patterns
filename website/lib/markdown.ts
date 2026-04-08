@@ -3,6 +3,7 @@ import path from 'path'
 import matter from 'gray-matter'
 import { PatternCategory, PatternContent, RelationshipType } from './types'
 import { getRelationshipsForBoth } from './relationships'
+import { getVideoTitle } from './video-titles'
 
 const PATTERNS_BASE_PATH = path.join(process.cwd(), '..', 'documents')
 
@@ -180,6 +181,7 @@ export function getPatternBySlug(
       ...(data.alternative_titles && { alternativeTitles: data.alternative_titles }),
       ...(data.synonyms && { synonyms: data.synonyms }),
       ...(data.video && { video: data.video }),
+      ...(data.video && getVideoTitle(data.video) && { videoTitle: getVideoTitle(data.video) }),
       ...(mergedPatterns.length > 0 && { relatedPatterns: mergedPatterns }),
       ...(mergedAntiPatterns.length > 0 && { relatedAntiPatterns: mergedAntiPatterns }),
       ...(mergedObstacles.length > 0 && { relatedObstacles: mergedObstacles }),

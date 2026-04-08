@@ -10,6 +10,7 @@ import { CatalogGroupData, CatalogPreviewItem } from "./types";
 import { COMPLETE_CATALOG_TEST_IDS } from "./test-ids";
 import { getCategoryConfig } from "@/app/lib/category-config";
 import SearchBar from "@/app/components/SearchBar";
+import VideoThumbnail from "@/app/components/VideoThumbnail";
 import { PatternContent } from "@/lib/types";
 
 interface CatalogViewProps {
@@ -414,18 +415,39 @@ export default function CatalogView({ groups, title }: CatalogViewProps) {
     return (
       <article className={styles.detailContent} aria-live="polite">
         <div className={styles.detailHeader}>
-          <div className={styles.detailTitleRow}>
-            {selected.item.emojiIndicator && (
-              <span className={styles.detailEmoji} aria-hidden="true">
-                {selected.item.emojiIndicator}
-              </span>
-            )}
-            <h2 className={styles.detailTitle}>{selected.item.title}</h2>
+          <div className={styles.detailHeaderMain}>
+            <div className={styles.detailTitleRow}>
+              {selected.item.emojiIndicator && (
+                <span className={styles.detailEmoji} aria-hidden="true">
+                  {selected.item.emojiIndicator}
+                </span>
+              )}
+              <div className={styles.detailTitleBlock}>
+                <h2 className={styles.detailTitle}>{selected.item.title}</h2>
+                {selected.item.alternativeTitles && selected.item.alternativeTitles.length > 0 && (
+                  <p className={styles.detailMeta}>
+                    Also known as: {selected.item.alternativeTitles.join(', ')}
+                  </p>
+                )}
+                {selected.item.synonyms && selected.item.synonyms.length > 0 && (
+                  <p className={styles.detailMeta}>
+                    Synonyms: {selected.item.synonyms.join(', ')}
+                  </p>
+                )}
+              </div>
+            </div>
+            <span className={`${styles.detailBadge} ${styles[selectedConfig.styleClass]}`}>
+              <span className={styles.detailBadgeIcon}>{selectedConfig.icon}</span>
+              {selectedConfig.label}
+            </span>
           </div>
-          <span className={`${styles.detailBadge} ${styles[selectedConfig.styleClass]}`}>
-            <span className={styles.detailBadgeIcon}>{selectedConfig.icon}</span>
-            {selectedConfig.label}
-          </span>
+          {selected.item.video && (
+            <VideoThumbnail
+              url={selected.item.video}
+              title={selected.item.title}
+              videoTitle={selected.item.videoTitle}
+            />
+          )}
         </div>
         <div className={styles.detailBody}>
           <ReactMarkdown remarkPlugins={[remarkGfm]}>

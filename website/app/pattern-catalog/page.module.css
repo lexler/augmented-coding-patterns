@@ -706,11 +706,24 @@
   padding-right: var(--space-sm);
 }
 
+.detailTitleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
 .detailTitle {
   font-size: var(--font-size-3xl);
   color: var(--color-text-primary);
   margin: 0;
   font-weight: 600;
+}
+
+.detailMeta {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
 }
 
 .detailBody {
@@ -892,11 +905,21 @@
 
 .detailHeader {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-xl);
   padding-bottom: var(--space-md);
   border-bottom: 1px solid var(--color-border);
   margin-bottom: var(--space-2xl);
+}
+
+.detailHeaderMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
 }
 
 .detailTitleRow {

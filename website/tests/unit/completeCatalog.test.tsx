@@ -173,7 +173,9 @@ describe('PatternCatalogPage', () => {
     ).toBeInTheDocument()
     expect(within(detailPane).getByText(/Description/i)).toBeInTheDocument()
     expect(within(detailPane).getByText(/Documented by/i)).toBeInTheDocument()
-    expect(within(detailPane).getByText(/Lada Kesseler/i)).toBeInTheDocument()
+    expect(
+      within(detailPane).getByRole('link', { name: /Lada Kesseler's avatar Lada Kesseler/i })
+    ).toBeInTheDocument()
     expect(within(detailPane).queryByText(/Open full entry/i)).not.toBeInTheDocument()
   })
 

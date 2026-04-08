@@ -472,7 +472,7 @@ describe('Pattern Detail Page', () => {
   })
 
   describe('Video Display', () => {
-    it('displays a Watch video link when video is present', async () => {
+    it('displays a video thumbnail link when video is present', async () => {
       const videoUrl = 'https://www.youtube.com/watch?v=abc123&t=412'
       const patternWithVideo = {
         ...mockPattern,
@@ -488,9 +488,16 @@ describe('Pattern Detail Page', () => {
       expect(link).toHaveAttribute('href', videoUrl)
       expect(link).toHaveAttribute('target', '_blank')
       expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+
+      const thumbnail = link.querySelector('img')
+      expect(thumbnail).toBeInTheDocument()
+      expect(thumbnail).toHaveAttribute(
+        'src',
+        'https://i.ytimg.com/vi/abc123/mqdefault.jpg'
+      )
     })
 
-    it('does not display Watch video link when video is absent', async () => {
+    it('does not display video thumbnail when video is absent', async () => {
       const params = Promise.resolve({ category: 'patterns', slug: 'test-pattern-detail' })
       render(await PatternPage({ params }))
 

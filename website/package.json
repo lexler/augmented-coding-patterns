@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "validate": "node ../scripts/validate-relationships.js",
+    "fetch:videos": "node ../scripts/fetch-video-titles.mjs",
     "build": "npm run validate && next build",
     "start": "next start",
     "lint": "eslint",

@@ -21,6 +21,7 @@ export interface PatternMetadata {
   alternativeTitles?: string[]
   synonyms?: string[]
   video?: string
+  videoTitle?: string
   relatedPatterns?: RelatedPattern[]
   relatedAntiPatterns?: RelatedPattern[]
   relatedObstacles?: RelatedPattern[]
