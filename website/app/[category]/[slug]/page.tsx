@@ -8,6 +8,7 @@ import { basePath } from "@/lib/config";
 import { PatternCategory } from "@/lib/types";
 import Authors from "@/app/components/Authors";
 import RelatedLinks from "@/app/components/RelatedLinks";
+import VideoThumbnail from "@/app/components/VideoThumbnail";
 import styles from "../../pattern-detail.module.css";
 
 interface PatternPageProps {
@@ -119,27 +120,38 @@ export default async function PatternPage({ params }: PatternPageProps) {
       </Link>
 
       <header className={styles.header}>
-        <div className={styles.titleWrapper}>
-          {pattern.emojiIndicator && (
-            <div className={styles.emoji}>{pattern.emojiIndicator}</div>
-          )}
-          <div>
-            <h1 className={styles.title}>{pattern.title}</h1>
-            {pattern.alternativeTitles && pattern.alternativeTitles.length > 0 && (
-              <p className="text-sm text-gray-500 mt-1">
-                Also known as: {pattern.alternativeTitles.join(', ')}
-              </p>
+        <div className={styles.headerMain}>
+          <div className={styles.titleWrapper}>
+            {pattern.emojiIndicator && (
+              <div className={styles.emoji}>{pattern.emojiIndicator}</div>
             )}
-            {pattern.synonyms && pattern.synonyms.length > 0 && (
-              <p className="text-sm text-gray-500 mt-1">
-                Synonyms: {pattern.synonyms.join(', ')}
-              </p>
-            )}
+            <div>
+              <h1 className={styles.title}>{pattern.title}</h1>
+              {pattern.alternativeTitles && pattern.alternativeTitles.length > 0 && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Also known as: {pattern.alternativeTitles.join(', ')}
+                </p>
+              )}
+              {pattern.synonyms && pattern.synonyms.length > 0 && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Synonyms: {pattern.synonyms.join(', ')}
+                </p>
+              )}
+            </div>
           </div>
+          <span className={`${styles.category} ${styles[config.styleClass]}`}>
+            {config.label}
+          </span>
         </div>
-        <span className={`${styles.category} ${styles[config.styleClass]}`}>
-          {config.label}
-        </span>
+        {pattern.video && (
+          <div className={styles.headerAside}>
+            <VideoThumbnail
+              url={pattern.video}
+              title={pattern.title}
+              videoTitle={pattern.videoTitle}
+            />
+          </div>
+        )}
       </header>
 
       <article className={styles.content}>

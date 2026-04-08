@@ -18,8 +18,20 @@ This guide explains how to contribute patterns, anti-patterns, or obstacles to t
 ```yaml
 ---
 authors: [author_id]
+video: https://www.youtube.com/watch?v=VIDEO_ID&t=300s  # optional
 ---
 ```
+
+The `video` field is optional. When present, the pattern page renders a YouTube
+thumbnail with the video's title underneath. After adding or changing a `video`
+URL, regenerate the cached video titles:
+
+```bash
+cd website && npm run fetch:videos
+```
+
+This updates `website/lib/video-titles.json` (commit it alongside the markdown
+change).
 
 **Relationships:** Define in `documents/relationships.mmd` using Mermaid graph syntax:
 ```mermaid

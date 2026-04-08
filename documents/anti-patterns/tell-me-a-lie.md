@@ -1,5 +1,6 @@
 ---
 authors: [llewellyn_falco]
+video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=6015s
 ---
 
 # Tell Me a Lie (Anti-pattern)

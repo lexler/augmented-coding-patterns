@@ -1,5 +1,6 @@
 ---
 authors: [lada_kesseler]
+video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=1368s
 ---
 
 # Excess Verbosity (Obstacle)

@@ -471,6 +471,40 @@ describe('Pattern Detail Page', () => {
     })
   })
 
+  describe('Video Display', () => {
+    it('displays a video thumbnail link when video is present', async () => {
+      const videoUrl = 'https://www.youtube.com/watch?v=abc123&t=412'
+      const patternWithVideo = {
+        ...mockPattern,
+        video: videoUrl
+      }
+      mockGetPatternBySlug.mockReturnValue(patternWithVideo)
+
+      const params = Promise.resolve({ category: 'patterns', slug: 'test-pattern-detail' })
+      render(await PatternPage({ params }))
+
+      const link = screen.getByRole('link', { name: /Watch video/i })
+      expect(link).toBeInTheDocument()
+      expect(link).toHaveAttribute('href', videoUrl)
+      expect(link).toHaveAttribute('target', '_blank')
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+
+      const thumbnail = link.querySelector('img')
+      expect(thumbnail).toBeInTheDocument()
+      expect(thumbnail).toHaveAttribute(
+        'src',
+        'https://i.ytimg.com/vi/abc123/mqdefault.jpg'
+      )
+    })
+
+    it('does not display video thumbnail when video is absent', async () => {
+      const params = Promise.resolve({ category: 'patterns', slug: 'test-pattern-detail' })
+      render(await PatternPage({ params }))
+
+      expect(screen.queryByRole('link', { name: /Watch video/i })).not.toBeInTheDocument()
+    })
+  })
+
   describe('Pattern without emoji', () => {
     it('renders correctly when pattern has no emoji', async () => {
       const patternWithoutEmoji = { ...mockPattern, emojiIndicator: undefined }

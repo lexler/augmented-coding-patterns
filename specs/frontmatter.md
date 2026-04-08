@@ -33,3 +33,13 @@ Optional. Array of alternate terms or names for the concept. Unlike `alternative
 Frontend support: display only. Parsed in `lib/markdown.ts` and displayed as "Synonyms: ..." on the detail page. No URL redirects or `generateStaticParams` changes.
 
 Added by Steve Kuo in commit `1d6176c`, moved to frontmatter in `9029de6`.
+
+## video
+
+```yaml
+video: https://www.youtube.com/watch?v=abc123&t=412
+```
+
+Optional. A single URL pointing to a video explaining the pattern. YouTube timestamps can be embedded directly in the URL (e.g. `&t=412` or `?t=6m52s`).
+
+Frontend support: parsed in `lib/markdown.ts` and rendered on the detail page as a "Watch video" link that opens in a new tab.
