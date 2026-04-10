@@ -1,0 +1,23 @@
+.gitignore
+  2e127b3fbee2e670 146-148
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "e68464692c0c33db245dcd0ddcbff8965bd4b791",
+  "prompts": {
+    "2e127b3fbee2e670": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3298d686-4368-4add-85f0-b208b2192b9f",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Lada Kesseler",
+      "messages": [],
+      "total_additions": 49636,
+      "total_deletions": 50,
+      "accepted_lines": 16790,
+      "overriden_lines": 0
+    }
+  }
+}
