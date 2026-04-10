@@ -143,5 +143,8 @@ temp/
 # Playground
 playground/
 
+# Graphify
+graphify-out/
+
 # Exceptions: Allow website source code
 !website/lib/playground/
