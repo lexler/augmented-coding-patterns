@@ -20,7 +20,7 @@ The answer itself is secondary. The point is that the agent's summary now sits i
 
 Use it when:
 - The topic is well-represented in training data (frameworks, methodologies, known libraries)
-- The task is too small to justify a written skill or reference doc
+- You don't have a skill or knowledge document at hand
 - You want a sanity check on the agent's baseline understanding before committing to an approach
 
 ## Example
