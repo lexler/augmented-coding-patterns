@@ -13,7 +13,7 @@ Structure your feedback using ROSE:
 1. **Risk** — Describe the long-term consequence or negative impact of the current approach
 2. **Observation** — What you see in the code/work that causes this risk
 3. **Solution** — The specific action you want the AI to take
-4. **Expect** — What success looks like (the benefits or improvements you expect)
+4. **Expected Outcome** — What success looks like (the benefits or improvements you expect)
 
 By providing this context, the AI understands *why* the change matters, not just *what* to do, and is more likely to apply the principle broadly rather than just fix the immediate symptom.
 
@@ -25,4 +25,4 @@ By providing this context, the AI understands *why* the change matters, not just
 
 **Solution:** Replace the mocks with either the real classes (when it has no side effects such as IO operations or database access) or with stateful fakes that simulate the behaviour of the real object.
 
-**Expect:** The tests should be shorter, easier to read, and void of irrelevant details that are currently due to mock setups.
+**Expected Outcome:** The tests should be shorter, easier to read, and void of irrelevant details that are currently due to mock setups.
