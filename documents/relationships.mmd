@@ -124,6 +124,12 @@ graph LR
   obstacles/selective-hearing -->|related| obstacles/context-rot
   obstacles/negative-bleedthrough -->|related| obstacles/selective-hearing
   patterns/point-the-target -->|solves| obstacles/negative-bleedthrough
+  patterns/test-dont-yell -->|solves| obstacles/selective-hearing
+  patterns/test-dont-yell -->|solves| anti-patterns/obsess-over-rules
+  patterns/test-dont-yell -->|solves| anti-patterns/perfect-recall-fallacy
+  patterns/test-dont-yell <-->|similar| patterns/habit-hooks
+  patterns/test-dont-yell <-->|similar| patterns/offload-deterministic
+  patterns/test-dont-yell -->|uses| patterns/hooks
 
   %% Obstacle → Anti-pattern relationships (related)
   obstacles/obedient-contractor -->|related| anti-patterns/silent-misalignment
