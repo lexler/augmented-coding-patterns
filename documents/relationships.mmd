@@ -4,6 +4,7 @@ graph LR
 
   %% Pattern → Anti-pattern/Obstacle relationships (solves)
   patterns/active-partner -->|solves| anti-patterns/silent-misalignment
+  patterns/rose-feedback -->|solves| anti-patterns/silent-misalignment
   patterns/active-partner -->|solves| anti-patterns/tell-me-a-lie
   patterns/active-partner -->|solves| obstacles/compliance-bias
   patterns/active-partner -->|solves| obstacles/obedient-contractor
@@ -96,6 +97,9 @@ graph LR
   patterns/diagrams-as-code -->|extends| patterns/text-native
   patterns/diagrams-as-code -->|uses| patterns/knowledge-document
   patterns/diagrams-as-code -->|related| patterns/semantic-anchors
+  patterns/ai-first-responder -->|uses| patterns/background-agent
+  patterns/ai-first-responder -->|uses| patterns/focused-agent
+  patterns/ai-first-responder -->|uses| patterns/orchestrator
 
   %% Anti-pattern → Obstacle relationships (causes)
   anti-patterns/distracted-agent -->|causes| obstacles/limited-focus
