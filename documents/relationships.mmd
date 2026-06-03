@@ -25,6 +25,9 @@ graph LR
   patterns/focused-agent -->|solves| anti-patterns/distracted-agent
   patterns/focused-agent -->|solves| obstacles/limited-focus
   patterns/focused-agent -->|solves| obstacles/context-rot
+  patterns/external-context -->|solves| obstacles/limited-focus
+  patterns/external-context -->|solves| obstacles/limited-context-window
+  patterns/external-context -->|solves| obstacles/context-rot
   patterns/ground-rules -->|solves| obstacles/cannot-learn
   patterns/happy-to-delete -->|solves| anti-patterns/sunk-cost
   patterns/knowledge-checkpoint -->|solves| obstacles/non-determinism
@@ -67,6 +70,7 @@ graph LR
   patterns/context-management -->|uses| patterns/focused-agent
   patterns/context-management -->|uses| patterns/semantic-zoom
   patterns/context-management -->|uses| patterns/noise-cancellation
+  patterns/context-management -->|uses| patterns/external-context
   patterns/extract-knowledge -->|uses| patterns/knowledge-document
   patterns/ground-rules -->|uses| patterns/knowledge-document
   patterns/show-the-agent-let-it-repeat-automate -->|uses| patterns/extract-knowledge
@@ -83,6 +87,7 @@ graph LR
   patterns/feedback-loop <-->|similar| patterns/playgrounds
   patterns/feedback-loop <-->|similar| patterns/chain-of-small-steps
   patterns/chain-of-small-steps <-->|similar| patterns/offload-deterministic
+  patterns/external-context -->|enables| patterns/focused-agent
   patterns/happy-to-delete <-->|similar| patterns/parallel-implementations
   patterns/happy-to-delete <-->|similar| patterns/playgrounds
   patterns/approved-scenarios <-->|similar| patterns/check-alignment
