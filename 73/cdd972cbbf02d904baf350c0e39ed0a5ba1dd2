@@ -1,0 +1,59 @@
+tools/process_map.py
+  s_86a622798833b3::t_47c179f6bd69a1 122-123
+  s_86a622798833b3::t_c36de986bb7997 166-167
+  s_86a622798833b3::t_5e993fb383d275 406-407,412-420
+  s_86a622798833b3::t_584745c90c77e3 44-47,49,53
+  s_86a622798833b3::t_695721d45bab1b 40-41
+  s_86a622798833b3::t_097947aad8c989 39
+  s_86a622798833b3::t_7fafbd835ef8e5 309-316
+  s_86a622798833b3::t_0eec48f5e44382 7-8
+  s_86a622798833b3::t_3e90df143fc79a 178
+  s_86a622798833b3::t_aee4c8cb1db4d5 31-38,42-43
+  s_86a622798833b3::t_96ed55272e7c04 57,61
+tools/tests/test_map_elements.py
+  s_86a622798833b3::t_878d3f07fccf4c 854-863
+  s_86a622798833b3::t_22f11060beb768 875-885
+  s_86a622798833b3::t_a98e5aa5917a05 8
+  s_86a622798833b3::t_372613fe6431c7 793-801
+  s_86a622798833b3::t_c4fa2c59e05264 898
+  s_86a622798833b3::t_13aa60c89a8ccb 811-819
+  s_86a622798833b3::t_ef4cf5fda7ec64 476-479,481-483
+  s_86a622798833b3::t_0acca74eef17da 838-853
+  s_86a622798833b3::t_867707c847ecbc 820-828
+  s_86a622798833b3::t_e5d63e0ddd8d93 829-837
+  s_86a622798833b3::t_ef8871cc8de16b 802-810
+  s_86a622798833b3::t_48c64df19f6c2c 864-874
+  s_86a622798833b3::t_131820ac7a2500 886-887,896-897,899-907
+  s_86a622798833b3::t_9d11e3005b437f 888-895
+website/public/maps/semantic_map.svg
+  s_86a622798833b3::t_a2a409fd56a4f6 4
+tools/tests/golden/semantic_map.svg
+  s_86a622798833b3::t_a5a1f6db760b0c 4
+website/public/maps/map-index-v2.json
+  s_86a622798833b3::t_bbb6832fa51ad2 1-162
+website/app/talk/page.tsx
+  s_86a622798833b3::t_3524ec59d5954a 7,14-26,32,34-35
+  s_86a622798833b3::t_f73f80848f8e28 61-67
+website/app/talk/PatternMap.tsx
+  s_86a622798833b3::t_1597255b3ff044 12,15,21,25
+website/public/maps/semantic_map_v2.svg
+  s_86a622798833b3::t_b8a41c8d860f7e 1-4
+website/tests/unit/components/StaticMap.test.tsx
+  s_86a622798833b3::t_cfab458996c39e 6,9,12-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "73cdd972cbbf02d904baf350c0e39ed0a5ba1dd2",
+  "prompts": {},
+  "sessions": {
+    "s_86a622798833b3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2826217e-de09-4919-aa4a-8e66a54132b9",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Lada Kesseler <archie.kesseler@gmail.com>"
+    }
+  }
+}
