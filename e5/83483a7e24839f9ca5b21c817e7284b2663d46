@@ -1,0 +1,26 @@
+website/public/maps/map-index-v3.json
+  s_86a622798833b3::t_2f92a2e77c8441 1-147
+website/app/talk/page.tsx
+  s_86a622798833b3::t_cc542f1ac70b23 74-80
+  s_86a622798833b3::t_a80785c06c33e1 36
+  s_86a622798833b3::t_e48f2dd42995a7 7
+specs/interactive-map.md
+  s_86a622798833b3::t_91d9548d413018 31
+  s_86a622798833b3::t_2c8d20f9dce145 41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "e583483a7e24839f9ca5b21c817e7284b2663d46",
+  "prompts": {},
+  "sessions": {
+    "s_86a622798833b3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2826217e-de09-4919-aa4a-8e66a54132b9",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Lada Kesseler <archie.kesseler@gmail.com>"
+    }
+  }
+}
