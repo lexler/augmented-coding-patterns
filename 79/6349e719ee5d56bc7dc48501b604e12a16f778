@@ -1,0 +1,40 @@
+website/app/talk/StaticMap.tsx
+  s_86a622798833b3::t_23f0533851ed37 1-26
+website/tests/unit/components/MapTabs.test.tsx
+  s_86a622798833b3::t_f7304f60c27da9 37-49
+  s_86a622798833b3::t_96baca20f02974 1-5,9-36,50
+  s_86a622798833b3::t_65e6673d578dc8 6-8
+website/app/talk/page.tsx
+  s_86a622798833b3::t_114b80f784565f 2
+  s_86a622798833b3::t_c170bc80392d09 3
+  s_86a622798833b3::t_8cfade0070d0fa 39-43,45-51,64
+  s_86a622798833b3::t_02984ba7896f91 56,62
+  s_86a622798833b3::t_99f82696b3a9a6 55,61
+  s_86a622798833b3::t_6aba82c75c3325 44,52-54,57-60,63
+website/tests/unit/components/StaticMap.test.tsx
+  s_86a622798833b3::t_fcae58809e5d95 1-15
+website/app/talk/MapTabs.module.css
+  s_86a622798833b3::t_b4d3837fd236d8 5-9
+  s_86a622798833b3::t_b5e6d58775ad90 1-4,10-45
+website/app/talk/StaticMap.module.css
+  s_86a622798833b3::t_1b3340699abe53 1-24
+website/app/talk/MapTabs.tsx
+  s_86a622798833b3::t_ba75295be6f92f 9,19,23-25
+  s_86a622798833b3::t_0933f4d37043ed 1-8,10-18,20-22,26-55
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "796349e719ee5d56bc7dc48501b604e12a16f778",
+  "prompts": {},
+  "sessions": {
+    "s_86a622798833b3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2826217e-de09-4919-aa4a-8e66a54132b9",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Lada Kesseler <archie.kesseler@gmail.com>"
+    }
+  }
+}
