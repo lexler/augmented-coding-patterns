@@ -1,0 +1,45 @@
+.tabs {
+  width: 100%;
+}
+
+.titleBar {
+  padding: 2rem 2rem 1rem;
+  text-align: center;
+}
+
+.tabBar {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  border-bottom: 1px solid var(--border-color, #ddd);
+  padding: 0 2rem;
+}
+
+.tab,
+.tabActive {
+  appearance: none;
+  background: none;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--text-muted, #888);
+  margin-bottom: -1px;
+}
+
+.tab:hover {
+  color: var(--text-color, inherit);
+}
+
+.tabActive {
+  color: var(--text-color, inherit);
+  border-color: var(--border-color, #ddd);
+  border-bottom-color: var(--background, #fff);
+  font-weight: 600;
+}
+
+.panel {
+  padding-top: 1rem;
+}
