@@ -24,6 +24,13 @@ describe('MapTabs', () => {
     expect(screen.getByRole('tab', { name: 'v1' })).toHaveAttribute('aria-selected', 'true')
   })
 
+  it('opens the given defaultTabId instead of the first tab', () => {
+    render(<MapTabs tabs={tabs} defaultTabId="v3" />)
+
+    expect(screen.getByText('third map')).toBeVisible()
+    expect(screen.getByRole('tab', { name: 'v3' })).toHaveAttribute('aria-selected', 'true')
+  })
+
   it('switches content when another tab is clicked', async () => {
     const user = userEvent.setup()
     render(<MapTabs tabs={tabs} />)

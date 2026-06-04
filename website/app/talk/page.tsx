@@ -43,6 +43,7 @@ export default function TalkPage() {
   return (
     <div>
       <MapTabs
+        defaultTabId="v3"
         tabs={[
           {
             id: 'v1',

@@ -12,10 +12,11 @@ export interface MapTab {
 
 interface MapTabsProps {
   tabs: MapTab[];
+  defaultTabId?: string;
 }
 
-export default function MapTabs({ tabs }: MapTabsProps) {
-  const [activeId, setActiveId] = useState(tabs[0]?.id);
+export default function MapTabs({ tabs, defaultTabId }: MapTabsProps) {
+  const [activeId, setActiveId] = useState(defaultTabId ?? tabs[0]?.id);
   const activeTab = tabs.find(tab => tab.id === activeId) ?? tabs[0];
 
   return (
