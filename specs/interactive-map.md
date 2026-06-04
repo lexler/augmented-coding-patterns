@@ -4,9 +4,7 @@ The project includes a visual map designed for a talk presentation. It provides 
 
 ## Talk Path
 
-There are two versions of the talk: the original (27 items) and a longer masterclass (32 items). The map currently reflects the 27-item version and hasn't been updated to 32 yet.
-
-Both are organized into three sections:
+The talk has evolved across versions, shown as map tabs (see Map Feature). The breakdown below is v1 (27 items), organized into three sections:
 
 Section 1 — Context Management: How to set up and maintain context for AI
 - Foundations (cannot-learn, context-rot, context-management, knowledge-document, ground-rules, extract-knowledge)
@@ -25,6 +23,19 @@ The sequence is defined in `/talk_path.md`. Not all patterns in the collection a
 
 ## Map Feature
 
-The `/talk/` page on the website renders the talk path as an interactive canvas-based map. Each pattern is positioned according to coordinates in `website/public/maps/map-index.json`. Clicking a pattern opens its content in a modal.
+`/talk/` shows the talk maps as tabs. Each node's position comes from the SVG; `map-index*.json` maps a node's number to a pattern slug. Clicking an interactive node opens that pattern in a modal. A YouTube walkthrough is linked below the map.
 
-The map is linked to a YouTube guided walkthrough of the talk.
+Files live in `website/public/maps/`:
+- `semantic_map.svg` + `map-index.json` — v1 (interactive)
+- `semantic_map_v2.svg` + `map-index-v2.json` — v2 (interactive)
+- `diagram_v3*.png` — v3 (static image; its SVG export lost the standard fills, so it can't be made interactive yet)
+
+## Adding a map
+
+1. Export the diagram from Excalidraw as SVG. Keep the standard fills — the classifier reads them: obstacle `#ffc9c9`, pattern `#b2f2bb`, anti-pattern `#ffec99`, pit-stop `#a5d8ff`. Put each number inside its node; each name touching its node.
+2. Generate the interactive SVG:
+   `python3 tools/process_map.py <input.svg> website/public/maps/semantic_map_vN.svg`
+3. Add `website/public/maps/map-index-vN.json` — `{ "<number>": { "name", "category", "slug" } }`. Each `slug` must match a `documents/<category>/<slug>.md`. Obstacles carry no number — they link by name, so the name must equal the document's title.
+4. Add a tab in `app/talk/page.tsx`: `buildDataByNumber(mapIndexVN, allPatterns)` and render `<PatternMap patternDataByNumber={...} patternDataByLabel={...} mapFile="semantic_map_vN.svg" />`.
+
+Matching pairs each label/number to the shape it touches (bounding-box distance), so placement is forgiving. If a node comes out mislabeled, move its label nearer its own shape and re-run step 2. A static, non-clickable fallback exists via `StaticMap` (see the v3 tab) for exports that won't classify.
