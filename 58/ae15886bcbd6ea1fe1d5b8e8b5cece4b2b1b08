@@ -1,0 +1,24 @@
+website/app/talk/page.tsx
+  s_86a622798833b3::t_8b605254f75e7a 77-78
+website/app/talk/MapTabs.tsx
+  s_86a622798833b3::t_5a722cfac28221 61
+  s_86a622798833b3::t_629ba57670e0f7 12
+website/tests/unit/components/MapTabs.test.tsx
+  s_86a622798833b3::t_66571d61fa0c2e 69-78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "58ae15886bcbd6ea1fe1d5b8e8b5cece4b2b1b08",
+  "prompts": {},
+  "sessions": {
+    "s_86a622798833b3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2826217e-de09-4919-aa4a-8e66a54132b9",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Lada Kesseler <archie.kesseler@gmail.com>"
+    }
+  }
+}
