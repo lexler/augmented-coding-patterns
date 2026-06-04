@@ -74,6 +74,8 @@ export default function TalkPage() {
             id: 'v3',
             label: 'v3',
             title: 'Patterns for Coding with AI',
+            walkthroughUrl: 'https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=5301s',
+            walkthroughLabel: 'watch an older version',
             content: (
               <PatternMap
                 patternDataByNumber={patternDataByNumberV3}

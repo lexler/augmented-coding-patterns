@@ -66,6 +66,16 @@ describe('MapTabs', () => {
     expect(screen.getByRole('link', { name: /guided walkthrough/i })).toHaveAttribute('href', 'https://youtu.be/aaa')
   })
 
+  it('uses a custom walkthrough label when provided', () => {
+    const withLabel = [
+      { id: 'a', label: 'a', title: 'A', walkthroughUrl: 'https://youtu.be/aaa', walkthroughLabel: 'watch an older version', content: <div>a</div> },
+    ]
+
+    render(<MapTabs tabs={withLabel} />)
+
+    expect(screen.getByRole('link', { name: 'watch an older version' })).toHaveAttribute('href', 'https://youtu.be/aaa')
+  })
+
   it('shows no walkthrough link when the active tab has none', async () => {
     const user = userEvent.setup()
     const withVideo = [
