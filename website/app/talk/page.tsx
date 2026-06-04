@@ -1,10 +1,10 @@
 import PatternMap from "./PatternMap";
 import MapTabs from "./MapTabs";
-import StaticMap from "./StaticMap";
 import { getAllPatterns } from "@/lib/markdown";
 import { PatternContent } from "@/lib/types";
 import mapIndex from "@/public/maps/map-index.json";
 import mapIndexV2 from "@/public/maps/map-index-v2.json";
+import mapIndexV3 from "@/public/maps/map-index-v3.json";
 
 type PatternData = PatternContent & {
   name: string;
@@ -33,6 +33,7 @@ export default function TalkPage() {
 
   const patternDataByNumber = buildDataByNumber(mapIndex, allPatterns);
   const patternDataByNumberV2 = buildDataByNumber(mapIndexV2, allPatterns);
+  const patternDataByNumberV3 = buildDataByNumber(mapIndexV3, allPatterns);
   const patternDataByLabel: Record<string, PatternContent> = {};
 
   allPatterns.forEach(pattern => {
@@ -70,7 +71,13 @@ export default function TalkPage() {
             id: 'v3',
             label: 'v3',
             title: 'Patterns for Coding with AI',
-            content: <StaticMap version="v3" alt="Patterns for Coding with AI map" />,
+            content: (
+              <PatternMap
+                patternDataByNumber={patternDataByNumberV3}
+                patternDataByLabel={patternDataByLabel}
+                mapFile="semantic_map_v3.svg"
+              />
+            ),
           },
         ]}
       />

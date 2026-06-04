@@ -28,7 +28,7 @@ The sequence is defined in `/talk_path.md`. Not all patterns in the collection a
 Files live in `website/public/maps/`:
 - `semantic_map.svg` + `map-index.json` — v1 (interactive)
 - `semantic_map_v2.svg` + `map-index-v2.json` — v2 (interactive)
-- `diagram_v3*.png` — v3 (static image; its SVG export lost the standard fills, so it can't be made interactive yet)
+- `semantic_map_v3.svg` + `map-index-v3.json` — v3 (interactive)
 
 ## Adding a map
 
@@ -38,4 +38,4 @@ Files live in `website/public/maps/`:
 3. Add `website/public/maps/map-index-vN.json` — `{ "<number>": { "name", "category", "slug" } }`. Each `slug` must match a `documents/<category>/<slug>.md`. Obstacles carry no number — they link by name, so the name must equal the document's title.
 4. Add a tab in `app/talk/page.tsx`: `buildDataByNumber(mapIndexVN, allPatterns)` and render `<PatternMap patternDataByNumber={...} patternDataByLabel={...} mapFile="semantic_map_vN.svg" />`.
 
-Matching pairs each label/number to the shape it touches (bounding-box distance), so placement is forgiving. If a node comes out mislabeled, move its label nearer its own shape and re-run step 2. A static, non-clickable fallback exists via `StaticMap` (see the v3 tab) for exports that won't classify.
+Export with the light theme so fills match the palette above (a dark-theme export uses different hex and won't classify). Matching pairs each label/number to the shape it touches (bounding-box distance), so placement is forgiving. If a node comes out mislabeled, move its label nearer its own shape and re-run step 2.
