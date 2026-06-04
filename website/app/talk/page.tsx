@@ -4,31 +4,36 @@ import StaticMap from "./StaticMap";
 import { getAllPatterns } from "@/lib/markdown";
 import { PatternContent } from "@/lib/types";
 import mapIndex from "@/public/maps/map-index.json";
+import mapIndexV2 from "@/public/maps/map-index-v2.json";
 
 type PatternData = PatternContent & {
   name: string;
   category: string;
 };
 
+type MapIndex = Record<string, { name: string; category: string; slug: string }>;
+
+function buildDataByNumber(index: MapIndex, allPatterns: PatternData[]): Record<string, PatternData> {
+  const byNumber: Record<string, PatternData> = {};
+  Object.entries(index).forEach(([number, info]) => {
+    const pattern = allPatterns.find(p => p.slug === info.slug);
+    if (pattern) {
+      byNumber[number] = { ...info, ...pattern };
+    }
+  });
+  return byNumber;
+}
+
 export default function TalkPage() {
   const allPatterns = [
     ...getAllPatterns("patterns"),
     ...getAllPatterns("anti-patterns"),
     ...getAllPatterns("obstacles")
-  ];
+  ] as PatternData[];
 
-  const patternDataByNumber: Record<string, PatternData> = {};
+  const patternDataByNumber = buildDataByNumber(mapIndex, allPatterns);
+  const patternDataByNumberV2 = buildDataByNumber(mapIndexV2, allPatterns);
   const patternDataByLabel: Record<string, PatternContent> = {};
-
-  Object.entries(mapIndex).forEach(([number, info]) => {
-    const pattern = allPatterns.find(p => p.slug === info.slug);
-    if (pattern) {
-      patternDataByNumber[number] = {
-        ...info,
-        ...pattern
-      };
-    }
-  });
 
   allPatterns.forEach(pattern => {
     patternDataByLabel[pattern.title] = pattern;
@@ -53,7 +58,13 @@ export default function TalkPage() {
             id: 'v2',
             label: 'v2',
             title: 'Emerging Patterns for Coding with Generative AI',
-            content: <StaticMap version="v2" alt="Emerging Patterns for Coding with Generative AI map" />,
+            content: (
+              <PatternMap
+                patternDataByNumber={patternDataByNumberV2}
+                patternDataByLabel={patternDataByLabel}
+                mapFile="semantic_map_v2.svg"
+              />
+            ),
           },
           {
             id: 'v3',

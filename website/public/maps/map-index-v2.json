@@ -1,0 +1,162 @@
+{
+  "1": {
+    "name": "Context Management",
+    "category": "patterns",
+    "slug": "context-management"
+  },
+  "2": {
+    "name": "Knowledge Document",
+    "category": "patterns",
+    "slug": "knowledge-document"
+  },
+  "3": {
+    "name": "Ground Rules",
+    "category": "patterns",
+    "slug": "ground-rules"
+  },
+  "4": {
+    "name": "Extract Knowledge",
+    "category": "patterns",
+    "slug": "extract-knowledge"
+  },
+  "5": {
+    "name": "Distracted Agent",
+    "category": "anti-patterns",
+    "slug": "distracted-agent"
+  },
+  "6": {
+    "name": "Focused Agent",
+    "category": "patterns",
+    "slug": "focused-agent"
+  },
+  "7": {
+    "name": "Reference Docs",
+    "category": "patterns",
+    "slug": "reference-docs"
+  },
+  "8": {
+    "name": "Knowledge Composition",
+    "category": "patterns",
+    "slug": "knowledge-composition"
+  },
+  "9": {
+    "name": "Semantic Zoom",
+    "category": "patterns",
+    "slug": "semantic-zoom"
+  },
+  "10": {
+    "name": "Noise Cancellation",
+    "category": "patterns",
+    "slug": "noise-cancellation"
+  },
+  "11": {
+    "name": "Knowledge Checkpoint",
+    "category": "patterns",
+    "slug": "knowledge-checkpoint"
+  },
+  "12": {
+    "name": "Parallel Implementations",
+    "category": "patterns",
+    "slug": "parallel-implementations"
+  },
+  "13": {
+    "name": "Offload Deterministic",
+    "category": "patterns",
+    "slug": "offload-deterministic"
+  },
+  "14": {
+    "name": "Perfect Recall Fallacy",
+    "category": "anti-patterns",
+    "slug": "perfect-recall-fallacy"
+  },
+  "15": {
+    "name": "Playgrounds",
+    "category": "patterns",
+    "slug": "playgrounds"
+  },
+  "16": {
+    "name": "Unvalidated Leaps",
+    "category": "anti-patterns",
+    "slug": "unvalidated-leaps"
+  },
+  "17": {
+    "name": "Chain of Small Steps",
+    "category": "patterns",
+    "slug": "chain-of-small-steps"
+  },
+  "18": {
+    "name": "Hooks",
+    "category": "patterns",
+    "slug": "hooks"
+  },
+  "19": {
+    "name": "Reminders",
+    "category": "patterns",
+    "slug": "reminders"
+  },
+  "20": {
+    "name": "AI Slop",
+    "category": "anti-patterns",
+    "slug": "ai-slop"
+  },
+  "21": {
+    "name": "Feedback Flip",
+    "category": "patterns",
+    "slug": "feedback-flip"
+  },
+  "22": {
+    "name": "Refinement Loop",
+    "category": "patterns",
+    "slug": "refinement-loop"
+  },
+  "23": {
+    "name": "Silent Misalignment",
+    "category": "anti-patterns",
+    "slug": "silent-misalignment"
+  },
+  "24": {
+    "name": "Active Partner",
+    "category": "patterns",
+    "slug": "active-partner"
+  },
+  "25": {
+    "name": "Check Alignment",
+    "category": "patterns",
+    "slug": "check-alignment"
+  },
+  "26": {
+    "name": "Context Markers",
+    "category": "patterns",
+    "slug": "context-markers"
+  },
+  "27": {
+    "name": "Answer Injection",
+    "category": "anti-patterns",
+    "slug": "answer-injection"
+  },
+  "28": {
+    "name": "Tell Me a Lie",
+    "category": "anti-patterns",
+    "slug": "tell-me-a-lie"
+  },
+  "29": {
+    "name": "Cast Wide",
+    "category": "patterns",
+    "slug": "cast-wide"
+  },
+  "30": {
+    "name": "Reverse Direction",
+    "category": "patterns",
+    "slug": "reverse-direction"
+  },
+  "31": {
+    "name": "Polyglot AI",
+    "category": "patterns",
+    "slug": "polyglot-ai"
+  },
+  "32": {
+    "name": "Text Native",
+    "category": "patterns",
+    "slug": "text-native"
+  }
+}

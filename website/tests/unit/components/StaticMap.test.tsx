@@ -3,13 +3,13 @@ import StaticMap from '@/app/talk/StaticMap'
 
 describe('StaticMap', () => {
   it('renders light and dark variants of the versioned diagram', () => {
-    render(<StaticMap version="v2" alt="v2 map" />)
+    render(<StaticMap version="v3" alt="v3 map" />)
 
     const srcs = screen
-      .getAllByAltText('v2 map')
+      .getAllByAltText('v3 map')
       .map(img => img.getAttribute('src'))
 
-    expect(srcs).toContain('/maps/diagram_v2.png')
-    expect(srcs).toContain('/maps/diagram_v2_black.png')
+    expect(srcs).toContain('/maps/diagram_v3.png')
+    expect(srcs).toContain('/maps/diagram_v3_black.png')
   })
 })

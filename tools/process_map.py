@@ -4,8 +4,8 @@ import math
 from pathlib import Path
 
 EXCLUDED_SHAPE_PROXIMITY_THRESHOLD = 80
-TEXT_TO_SHAPE_MAX_DISTANCE = 150
-NUMBER_TO_SHAPE_MAX_DISTANCE = 60
+TEXT_TO_SHAPE_MAX_DISTANCE = 15
+NUMBER_TO_SHAPE_MAX_DISTANCE = 15
 
 WHITE = '#ffffff'
 PIT_STOP_TEXT = 'Pit Stop'
@@ -28,18 +28,37 @@ class Position:
         return f"Position({self.x}, {self.y})"
 
 
+class BoundingBox:
+    def __init__(self, min_x, min_y, max_x, max_y):
+        self.min_x = min_x
+        self.min_y = min_y
+        self.max_x = max_x
+        self.max_y = max_y
+
+    def distance_to(self, other):
+        dx = max(other.min_x - self.max_x, self.min_x - other.max_x, 0)
+        dy = max(other.min_y - self.max_y, self.min_y - other.max_y, 0)
+        return math.hypot(dx, dy)
+
+
+def point_bounds(position):
+    return BoundingBox(position.x, position.y, position.x, position.y)
+
+
 class SvgShape:
-    def __init__(self, element, position, color):
+    def __init__(self, element, position, color, bounds=None):
         self.element = element
         self.position = position
         self.color = color
+        self.bounds = bounds if bounds is not None else point_bounds(position)
 
 
 class SvgText:
-    def __init__(self, element, position, content):
+    def __init__(self, element, position, content, bounds=None):
         self.element = element
         self.position = position
         self.content = content
+        self.bounds = bounds if bounds is not None else point_bounds(position)
 
 
 class MapElement:
@@ -100,7 +119,8 @@ def identify_shapes_from_svg(root):
 
                 if fill_color:
                     position = Position(x, y)
-                    shape = SvgShape(element, position, fill_color)
+                    bounds = parse_bounds(transform, position)
+                    shape = SvgShape(element, position, fill_color, bounds)
                     shapes.append(shape)
 
     return shapes
@@ -143,7 +163,8 @@ def identify_labels_from_svg(root):
                     actual_x = x + text_x
                     actual_y = y + text_y
                     position = Position(actual_x, actual_y)
-                    label = SvgText(element, position, combined_content)
+                    bounds = parse_bounds(transform, Position(x, y))
+                    label = SvgText(element, position, combined_content, bounds)
                     labels.append(label)
 
     return labels
@@ -154,7 +175,7 @@ def match_nearest_label(shape, labels, max_distance):
     min_distance = float('inf')
 
     for label in labels:
-        distance = shape.position.distance_to(label.position)
+        distance = shape.bounds.distance_to(label.bounds)
         if distance < max_distance and distance < min_distance:
             min_distance = distance
             closest = label
@@ -285,6 +306,14 @@ def parse_translate(transform):
         return float(match.group(1)), float(match.group(2))
     return None
 
+def parse_bounds(transform, position):
+    match = re.search(r'rotate\([\d.-]+\s+([\d.-]+)\s+([\d.-]+)\)', transform)
+    if not match:
+        return point_bounds(position)
+    half_width, half_height = float(match.group(1)), float(match.group(2))
+    return BoundingBox(position.x, position.y,
+                       position.x + 2 * half_width, position.y + 2 * half_height)
+
 def calculate_distance(x1, y1, x2, y2):
     return Position(x1, y1).distance_to(Position(x2, y2))
 
@@ -374,12 +403,18 @@ def save_semantic_map(svg_path, output_path):
     print(f"Created {interactive_count} interactive nodes and {legend_count} legend items")
 
 if __name__ == "__main__":
+    import argparse
+
     script_dir = Path(__file__).parent
     repo_root = script_dir.parent
-
-    input_svg = repo_root / "website" / "app" / "talk" / "map.svg"
     output_dir = repo_root / "website" / "public" / "maps"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    semantic_svg = output_dir / "semantic_map.svg"
 
-    save_semantic_map(str(input_svg), str(semantic_svg))
+    parser = argparse.ArgumentParser(description="Turn an Excalidraw map SVG into an interactive semantic map.")
+    parser.add_argument("input", nargs="?", default=str(repo_root / "website" / "app" / "talk" / "map.svg"),
+                        help="Input Excalidraw SVG (default: the v1 talk map)")
+    parser.add_argument("output", nargs="?", default=str(output_dir / "semantic_map.svg"),
+                        help="Output semantic SVG (default: public/maps/semantic_map.svg)")
+    args = parser.parse_args()
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    save_semantic_map(args.input, args.output)

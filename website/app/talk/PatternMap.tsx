@@ -9,19 +9,20 @@ import { basePath } from "@/lib/config";
 interface PatternMapProps {
   patternDataByNumber: Record<string, PatternContent>;
   patternDataByLabel: Record<string, PatternContent>;
+  mapFile?: string;
 }
 
-export default function PatternMap({ patternDataByNumber, patternDataByLabel }: PatternMapProps) {
+export default function PatternMap({ patternDataByNumber, patternDataByLabel, mapFile = "semantic_map.svg" }: PatternMapProps) {
   const [svgContent, setSvgContent] = useState<string>("");
   const [selectedPattern, setSelectedPattern] = useState<PatternContent | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch(`${basePath}/maps/semantic_map.svg`)
+    fetch(`${basePath}/maps/${mapFile}`)
       .then(res => res.text())
       .then(svg => setSvgContent(svg))
       .catch(err => console.error("Failed to load map:", err));
-  }, []);
+  }, [mapFile]);
 
   useEffect(() => {
     const container = containerRef.current;

@@ -5,7 +5,7 @@ import pytest
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root / "tools"))
 
-from process_map import Position, SvgShape, SvgText, MapElement, MapElements, identify_shapes_from_svg, identify_labels_from_svg, match_nearest_label, build_map_elements, calculate_distance, separate_legend_items, map_element_to_svg_group, identify_map_elements, load_svg_tree, save_svg_tree, restructure_svg
+from process_map import Position, BoundingBox, SvgShape, SvgText, MapElement, MapElements, identify_shapes_from_svg, identify_labels_from_svg, match_nearest_label, build_map_elements, calculate_distance, separate_legend_items, map_element_to_svg_group, identify_map_elements, load_svg_tree, save_svg_tree, restructure_svg
 from svg_fixtures import create_shape_group, create_text_group, create_multi_line_text_group
 import xml.etree.ElementTree as ET
 
@@ -473,14 +473,14 @@ def test_set_data_number_attribute_from_number_label():
     assert group.get('data-number') == '13'
 
 
-def test_build_map_elements_matches_tight_pairs_first():
-    shape_playgrounds = SvgShape("s_playgrounds", Position(905, 460), '#b2f2bb')
-    shape_unvalidated = SvgShape("s_unvalidated", Position(1003, 439), '#ffec99')
-    shape_degrades = SvgShape("s_degrades", Position(1031, 513), '#ffc9c9')
+def test_build_map_elements_assigns_each_clustered_node_its_own_label():
+    shape_playgrounds = SvgShape("s_playgrounds", Position(900, 450), '#b2f2bb', BoundingBox(900, 450, 950, 500))
+    shape_unvalidated = SvgShape("s_unvalidated", Position(1000, 450), '#ffec99', BoundingBox(1000, 450, 1050, 500))
+    shape_degrades = SvgShape("s_degrades", Position(1100, 450), '#ffc9c9', BoundingBox(1100, 450, 1170, 520))
 
-    label_playgrounds = SvgText("l_playgrounds", Position(923, 516), 'Playgrounds')
-    label_unvalidated = SvgText("l_unvalidated", Position(1031, 431), 'Unvalidated Leaps')
-    label_degrades = SvgText("l_degrades", Position(1054, 613), 'Degrades Under Complexity')
+    label_playgrounds = SvgText("l_playgrounds", Position(900, 505), 'Playgrounds', BoundingBox(900, 505, 950, 520))
+    label_unvalidated = SvgText("l_unvalidated", Position(1000, 505), 'Unvalidated Leaps', BoundingBox(1000, 505, 1050, 520))
+    label_degrades = SvgText("l_degrades", Position(1100, 525), 'Degrades Under Complexity', BoundingBox(1100, 525, 1170, 540))
 
     shapes = [shape_degrades, shape_unvalidated, shape_playgrounds]
     labels = [label_playgrounds, label_unvalidated, label_degrades]
@@ -790,3 +790,118 @@ class TestBugMagnetSession20251114:
         assert content == 'First Second'
         assert x == 30
         assert y == 40
+
+
+def test_bounding_box_distance_is_zero_when_boxes_overlap():
+    a = BoundingBox(0, 0, 10, 10)
+    b = BoundingBox(5, 5, 15, 15)
+
+    distance = a.distance_to(b)
+
+    assert distance == 0.0
+
+
+def test_bounding_box_distance_equals_horizontal_gap():
+    a = BoundingBox(0, 0, 10, 10)
+    b = BoundingBox(13, 0, 20, 10)
+
+    distance = a.distance_to(b)
+
+    assert distance == 3.0
+
+
+def test_bounding_box_distance_equals_vertical_gap():
+    a = BoundingBox(0, 0, 10, 10)
+    b = BoundingBox(0, 14, 10, 20)
+
+    distance = a.distance_to(b)
+
+    assert distance == 4.0
+
+
+def test_bounding_box_distance_is_diagonal_hypotenuse():
+    a = BoundingBox(0, 0, 10, 10)
+    b = BoundingBox(13, 14, 20, 20)
+
+    distance = a.distance_to(b)
+
+    assert distance == 5.0
+
+
+def test_bounding_box_from_a_point_distances_like_a_point():
+    point = BoundingBox(0, 0, 0, 0)
+    other = BoundingBox(3, 4, 3, 4)
+
+    distance = point.distance_to(other)
+
+    assert distance == 5.0
+
+
+def test_svg_shape_exposes_bounding_box():
+    bounds = BoundingBox(0, 0, 50, 50)
+
+    shape = SvgShape("elem", Position(0, 0), "#b2f2bb", bounds)
+
+    assert shape.bounds is bounds
+
+
+def test_svg_text_exposes_bounding_box():
+    bounds = BoundingBox(0, 0, 90, 30)
+
+    text = SvgText("elem", Position(0, 0), "Context Management", bounds)
+
+    assert text.bounds is bounds
+
+
+def test_match_nearest_label_uses_box_edge_not_anchor_distance():
+    shape = SvgShape("shape", Position(0, 0), '#b2f2bb', BoundingBox(0, 0, 10, 10))
+    near_edge_far_anchor = SvgText("a", Position(106, 5), "A", BoundingBox(12, 0, 200, 10))
+    far_edge_near_anchor = SvgText("b", Position(5, 35), "B", BoundingBox(0, 30, 10, 40))
+
+    matched = match_nearest_label(shape, [near_edge_far_anchor, far_edge_near_anchor], max_distance=150)
+
+    assert matched.content == "A"
+
+
+def test_identify_shapes_derives_bounds_from_transform():
+    svg_ns = "http://www.w3.org/2000/svg"
+    root = ET.Element(f'{{{svg_ns}}}svg')
+    root.append(create_shape_group(100, 200, '#b2f2bb'))
+
+    shapes = identify_shapes_from_svg(root)
+
+    bounds = shapes[0].bounds
+    assert (bounds.min_x, bounds.min_y, bounds.max_x, bounds.max_y) == (100, 200, 153.4, 252.4)
+
+
+def test_identify_labels_derives_bounds_from_translate_origin():
+    svg_ns = "http://www.w3.org/2000/svg"
+    root = ET.Element(f'{{{svg_ns}}}svg')
+    root.append(create_text_group(100, 200, 'Context Management'))
+
+    labels = identify_labels_from_svg(root)
+
+    bounds = labels[0].bounds
+    assert (bounds.min_x, bounds.min_y, bounds.max_x, bounds.max_y) == (100, 200, 197.6, 250.2)
+
+
+def test_parse_bounds_falls_back_to_point_when_transform_has_no_rotate():
+    from process_map import parse_bounds
+
+    bounds = parse_bounds("translate(10 20)", Position(10, 20))
+
+    assert (bounds.min_x, bounds.min_y, bounds.max_x, bounds.max_y) == (10, 20, 10, 20)
+
+
+def test_build_map_elements_does_not_let_a_large_shape_steal_a_neighbors_number():
+    number = SvgText("n6", Position(105, 105), "6", BoundingBox(100, 100, 110, 110))
+    small_name = SvgText("fn", Position(100, 120), "Focused Agent", BoundingBox(95, 120, 115, 130))
+    large_name = SvgText("ln", Position(150, 90), "Limited Focus", BoundingBox(140, 80, 200, 140))
+    small = SvgShape("s_small", Position(95, 95), '#b2f2bb', BoundingBox(95, 95, 115, 115))
+    large = SvgShape("s_large", Position(140, 80), '#ffc9c9', BoundingBox(140, 80, 200, 140))
+
+    elements = build_map_elements([large, small], [small_name, large_name, number])
+
+    by_shape = {el.shape.element: el for el in elements}
+    assert by_shape["s_small"].number is not None and by_shape["s_small"].number.content == "6"
+    assert by_shape["s_large"].number is None
