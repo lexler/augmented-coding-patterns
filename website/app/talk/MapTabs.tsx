@@ -8,6 +8,7 @@ export interface MapTab {
   label: string;
   title: string;
   content: ReactNode;
+  walkthroughUrl?: string;
 }
 
 interface MapTabsProps {
@@ -51,6 +52,19 @@ export default function MapTabs({ tabs, defaultTabId }: MapTabsProps) {
           {tab.content}
         </div>
       ))}
+      <div className={styles.walkthrough}>
+        {activeTab.walkthroughUrl ? (
+          <p>
+            Explore the interactive map above, or{' '}
+            <a href={activeTab.walkthroughUrl} target="_blank" rel="noopener noreferrer">
+              watch the guided walkthrough
+            </a>
+            {' '}on YouTube.
+          </p>
+        ) : (
+          <p>Explore the interactive map above. A guided walkthrough is coming soon.</p>
+        )}
+      </div>
     </div>
   );
 }

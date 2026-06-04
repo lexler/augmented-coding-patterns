@@ -54,4 +54,28 @@ describe('MapTabs', () => {
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Third Talk')
   })
+
+  it('links to the active tab walkthrough when it has one', () => {
+    const withVideo = [
+      { id: 'a', label: 'a', title: 'A', walkthroughUrl: 'https://youtu.be/aaa', content: <div>a</div> },
+      { id: 'b', label: 'b', title: 'B', content: <div>b</div> },
+    ]
+
+    render(<MapTabs tabs={withVideo} />)
+
+    expect(screen.getByRole('link', { name: /guided walkthrough/i })).toHaveAttribute('href', 'https://youtu.be/aaa')
+  })
+
+  it('shows no walkthrough link when the active tab has none', async () => {
+    const user = userEvent.setup()
+    const withVideo = [
+      { id: 'a', label: 'a', title: 'A', walkthroughUrl: 'https://youtu.be/aaa', content: <div>a</div> },
+      { id: 'b', label: 'b', title: 'B', content: <div>b</div> },
+    ]
+
+    render(<MapTabs tabs={withVideo} />)
+    await user.click(screen.getByRole('tab', { name: 'b' }))
+
+    expect(screen.queryByRole('link', { name: /guided walkthrough/i })).toBeNull()
+  })
 })

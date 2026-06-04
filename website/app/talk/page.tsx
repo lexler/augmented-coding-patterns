@@ -49,6 +49,7 @@ export default function TalkPage() {
             id: 'v1',
             label: 'v1',
             title: 'Augmented Coding: Mapping the Uncharted Territory',
+            walkthroughUrl: 'https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=5301s',
             content: (
               <PatternMap
                 patternDataByNumber={patternDataByNumber}
@@ -60,6 +61,7 @@ export default function TalkPage() {
             id: 'v2',
             label: 'v2',
             title: 'Emerging Patterns for Coding with Generative AI',
+            walkthroughUrl: 'https://www.youtube.com/watch?v=M-zOSEJFNos',
             content: (
               <PatternMap
                 patternDataByNumber={patternDataByNumberV2}
@@ -82,19 +84,6 @@ export default function TalkPage() {
           },
         ]}
       />
-      <div style={{ padding: '1rem 2rem 2rem', textAlign: 'center' }}>
-        <p>
-          Explore the interactive map above, or{' '}
-          <a
-            href="https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=5301s"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            watch the guided walkthrough
-          </a>
-          {' '}on YouTube.
-        </p>
-      </div>
     </div>
   );
 }

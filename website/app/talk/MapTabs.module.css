@@ -43,3 +43,8 @@
 .panel {
   padding-top: 1rem;
 }
+
+.walkthrough {
+  padding: 1rem 2rem 2rem;
+  text-align: center;
+}
