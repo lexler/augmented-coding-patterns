@@ -83,6 +83,11 @@ graph LR
   patterns/habit-hooks -->|uses| patterns/contextual-prompts
   patterns/contextual-prompts -->|solves| obstacles/context-rot
   patterns/contextual-prompts -->|solves| obstacles/selective-hearing
+  patterns/decision-guards -->|solves| obstacles/obedient-contractor
+  patterns/decision-guards -->|solves| obstacles/context-rot
+  patterns/decision-guards -->|uses| patterns/knowledge-document
+  patterns/decision-guards -->|related| patterns/reminders
+  patterns/decision-guards -->|related| patterns/semantic-anchors
   patterns/contextual-prompts <-->|similar| patterns/reminders
   patterns/feedback-loop <-->|similar| patterns/playgrounds
   patterns/feedback-loop <-->|similar| patterns/chain-of-small-steps
