@@ -1,19 +1,5 @@
 ---
 authors: [svetkis]
-related_patterns:
-  - semantic-anchors
-  - context-markers
-  - context-management
-  - knowledge-composition
-  - knowledge-document
-  - extract-knowledge
-  - reminders
-  - decision-guards
-related_obstacles:
-  - context-rot
-  - cannot-learn
-  - limited-context-window
-  - black-box-ai
 ---
 
 # Memory Grooming
