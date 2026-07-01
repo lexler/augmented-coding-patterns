@@ -39,6 +39,7 @@
     "eslint-config-next": "15.5.7",
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.106.0"
   }
 }
