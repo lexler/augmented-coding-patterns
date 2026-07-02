@@ -1,3 +1,1 @@
-export const basePath = process.env.NODE_ENV === 'production'
-  ? '/augmented-coding-patterns'
-  : '';
+export const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
