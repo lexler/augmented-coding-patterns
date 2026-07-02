@@ -1,0 +1,23 @@
+website/tests/unit/config.test.ts
+  s_f469899718315d::t_ac0d4de9636498 1-31
+website/next.config.ts
+  s_f469899718315d::t_0012da9a35ffa3 8,12-15
+website/lib/config.ts
+  s_f469899718315d::t_464489f27eccfc 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.8",
+  "base_commit_sha": "95aca1905e1c8188b0d0a71f12a4a82b6e1e02d4",
+  "prompts": {},
+  "sessions": {
+    "s_f469899718315d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "02f9e2ed-343c-46c5-9ae8-bb81bc2aeee3",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Lada Kesseler <archie.kesseler@gmail.com>"
+    }
+  }
+}
