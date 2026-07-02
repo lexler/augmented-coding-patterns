@@ -1,0 +1,24 @@
+website/next.config.ts
+  s_f469899718315d::t_0012da9a35ffa3 8,12-15
+website/tests/unit/config.test.ts
+  s_f469899718315d::t_ac0d4de9636498 1-8,10,13-16,18,20-21,23,25-26,28,30-31
+  s_f469899718315d::t_b27ff9bcb143e5 9,11-12,17,19,22,24,27,29
+website/lib/config.ts
+  s_f469899718315d::t_464489f27eccfc 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.8",
+  "base_commit_sha": "f8db3e3b0d95184ef15a283a5fe12ac98fb72079",
+  "prompts": {},
+  "sessions": {
+    "s_f469899718315d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "02f9e2ed-343c-46c5-9ae8-bb81bc2aeee3",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": null
+    }
+  }
+}
