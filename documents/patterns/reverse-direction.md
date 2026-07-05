@@ -33,4 +33,4 @@ Reacting is easier than generating — "it's easier to complain than to explain"
 - AI: "What should I rename it to?"
 - You reverse: "Can you think of some good names?"
 - AI shows options with reasoning.
-- Seeing them gives you more ideas — or shows you quickly what you don't like.
+- Seeing them gives you more ideas, shows you quickly what you don't like — or lets you combine the best bits from several.
