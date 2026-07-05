@@ -1,0 +1,21 @@
+documents/patterns/reverse-direction.md
+  s_22921282e4146f::t_a1799b905f9bd4 10,12-13,17,19,21-23,25-27,36
+  s_22921282e4146f::t_ac14e69166e68c 9
+  s_22921282e4146f::t_f9fd5658f7b7c0 16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "80d480c885548226285ecf49a7474dfb99276191",
+  "prompts": {},
+  "sessions": {
+    "s_22921282e4146f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1a3095c8-98f2-49ab-9f6a-d3e37f3407bb",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Lada Kesseler <archie.kesseler@gmail.com>"
+    }
+  }
+}
