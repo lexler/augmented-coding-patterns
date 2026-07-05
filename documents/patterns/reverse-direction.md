@@ -6,24 +6,25 @@ video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=6066s
 # Reverse Direction
 
 ## Problem
-Monologue has inertia.
-Once you’re telling AI what to do, you keep telling.
-Once AI is asking you questions, it keeps asking.
+Chat feels like talking to a person, so you behave as you would with one: AI asks, you answer; it sits there taking orders, so you hand it another order.
+Each side mirrors the other, and the conversation locks you into whichever role you started in.
 
-That inertia makes you miss chances where switching to dialogue would surface better options.
+But AI isn't leading — it's trained to follow you.
+Follow the follower, and nobody is driving: the conversation drifts somewhere neither of you chose, instead of where you need to go.
 
 ## Pattern
-Break the inertia — flip the direction at key moments:
+Don't let AI steer you. 
+You hold the steering wheel at every turn — you don't owe the conversation its expected next move.
 
-* AI asks you to decide → *“What do you think would work better?”*
-* You’re stuck telling → *“What questions do you have?”*
-* You’re deciding alone → *“Show me a few approaches”*
+Flip the direction at key moments:
 
-The reversal turns monologue into dialogue. Surfaces options you wouldn't have considered and makes preferences clearer by comparison.
+* AI asks you to decide → *"What do you think would work better?"*
+* You're stuck telling → *"What questions do you have?"*
+* You're deciding alone → *"Show me a few approaches"*
 
-When you catch yourself about to answer AI's question, pause. Ask what it thinks or could suggest instead.
-
-Instead of an order taker, you get a collaborator. You're using AI's strengths (breadth, fast generation) and yours (quick scanning, clear preferences and more ideas once you *see* some options).
+The reversal is also an instrument of vision.
+You stand at a crossroads seeing just two or three roads ahead; AI can show you the ones you can't see.
+Reacting is easier than generating — "it's easier to complain than to explain" (Gojko Adžić) — and seeing what you don't want sharpens what you do.
 
 ## Example
 
@@ -32,4 +33,4 @@ Instead of an order taker, you get a collaborator. You're using AI's strengths (
 - AI: "What should I rename it to?"
 - You reverse: "Can you think of some good names?"
 - AI shows options with reasoning.
-- You see different options and that might give you more ideas or show to you quickly what you don't like
+- Seeing them gives you more ideas — or shows you quickly what you don't like.
