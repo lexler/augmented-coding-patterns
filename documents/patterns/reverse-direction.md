@@ -28,9 +28,8 @@ Seeing something specific in front of you is easier than describing what you wan
 
 ## Example
 
-**File renaming:**
-- You: "Rename this file"
-- AI: "What should I rename it to?"
-- You reverse: "Can you think of some good names?"
-- AI shows options with reasoning.
-- Seeing them gives you more ideas, shows you quickly what you don't like, or lets you combine the best bits from several.
+**Hunting a bug:**
+- Something broke sometime this week. You're about to tell AI to add logging to trace it.
+- You stop and reverse direction: *"What different ways could we find this?"*
+- AI offers: reproduce it in a failing test, diff configs between environments, check which dependencies changed this week, git bisect...
+- Bisect hadn't crossed your mind. You run it with AI and find the bad commit in minutes instead of hours.
