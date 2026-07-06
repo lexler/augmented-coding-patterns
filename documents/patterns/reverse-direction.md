@@ -19,11 +19,12 @@ You hold the steering wheel at every turn; you don't owe the conversation its ex
 Catch yourself just before you respond:
 
 * AI asks you a question — before answering, consider asking for its input instead: *"Suggest some options"* or *"What would be good here?"*
-* You're about to tell it how to do something — you've been working alone, and there may be alternatives you haven't considered: *"What different approaches could we take?"*
+* You're about to tell it how to do something — you've been working alone, and there are alternatives you haven't considered: *"What different approaches could we take?"*
 
 The reversal is often also an instrument of vision.
-You stand at a crossroads seeing just one or two paths ahead; AI can show you the ones you can't see, the ones you don't know you don't know.
-It's easier to see something and know you don't like it than to specify the exact thing you want right away ("it's easier to complain than to explain," Gojko Adžić), and seeing several options gives you more ideas of your own.
+You make a lot of decisions when coding, each one a small crossroads with many ways out.
+You're usually seeing just one or two paths ahead; AI can show you the ones you can't see, the ones you don't know you don't know.
+Seeing something specific in front of you is easier than describing what you want from nothing ("it's easier to complain than to explain," Gojko Adžić) — it sharpens what you actually want and may give you other ideas.
 
 ## Example
 
