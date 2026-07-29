@@ -12,7 +12,7 @@ Let the agent deliver the large chunk — then add a splitting pass before human
 
 1. The agent finishes the large piece of work on a branch
 2. **Splitting pass**: the agent reorganizes the result into a stack of small, coherent, independently reviewable PRs — preparatory refactorings first, then behavior changes, then cleanups
-3. The same pass doubles as a cleanup pass: while reorganizing, the agent refactors and deletes cruft that turned out unnecessary
+3. The same pass doubles as a pruning pass: while reorganizing, the agent refactors and deletes cruft that turned out unnecessary
 4. Humans review the stack in order, each PR small enough to actually read
 
 You get agent-speed delivery and human-speed review without forcing either side to work at the other's pace.
