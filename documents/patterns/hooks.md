@@ -33,6 +33,8 @@ Hooks run shell scripts at these events that can allow you to:
 - Provide just-in-time guidance when specific conditions are detected
 - Inject reminders before the agent forgets your preferences
 
+Hooks are the delivery mechanism — what you deliver through them is a separate choice. User Reminders (see Reminders) re-inject your most important rules; Habit Hooks pairs hooks with quality detectors to coach specific fixes. When the guidance belongs in a script you own, you may not need hooks at all — see Contextual Prompts.
+
 ## Example
 
 Create a hook that runs when the agent uses a writing tool (**Write|Edit|MultiEdit** in Claude Code) and a script that detects code comments.  

@@ -17,6 +17,8 @@ Optionally habit hooks can be blocking (for example the pre-commit hook can prev
 
 This approach reduces context bloat while improving compliance by providing precise, relevant guidance exactly when violations occur, rather than front-loading massive instructions that AI forgets or misapplies.
 
+Habit Hooks is Contextual Prompts applied to tools you can't modify: a deterministic detector provides the trigger, Hooks provide the delivery, and the prompt provides actionable coaching.
+
 ## Example
 
 ### Common Quality Checks and Their Prompts
