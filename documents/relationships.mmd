@@ -81,6 +81,10 @@ graph LR
   patterns/habit-hooks -->|uses| patterns/hooks
   patterns/habit-hooks -->|uses| patterns/feedback-loop
   patterns/habit-hooks -->|uses| patterns/contextual-prompts
+  patterns/phased-delivery -->|extends| patterns/background-agent
+  patterns/phased-delivery -->|uses| patterns/feedback-flip
+  patterns/phased-delivery -->|uses| patterns/focused-agent
+  patterns/phased-delivery -->|uses| patterns/knowledge-checkpoint
   patterns/contextual-prompts -->|solves| obstacles/context-rot
   patterns/contextual-prompts -->|solves| obstacles/selective-hearing
   patterns/decision-guards -->|solves| obstacles/obedient-contractor
