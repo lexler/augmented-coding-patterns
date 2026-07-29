@@ -146,5 +146,8 @@ playground/
 # Graphify
 graphify-out/
 
+# Claude Code agent channel
+.claude-channel/
+
 # Exceptions: Allow website source code
 !website/lib/playground/
