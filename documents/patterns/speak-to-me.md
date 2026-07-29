@@ -12,11 +12,7 @@ Ask the agent to speak short progress updates out loud as it works, using a text
 
 Voice becomes an ambient status channel: you follow the work without looking at it, and it claims your attention only when something actually needs it.
 
-Where Mind Dump uses voice as the input channel, Speak to Me uses it as the output channel.
-
 ## Example
-Add to the prompt or ground rules: "While working, announce your progress with the `say` command — one short sentence per milestone or blocker."
+Add to the prompt or ground rules: "While working on long tasks, use the `say` command to get my attention. Use it when you hit a blocker, change direction or reach a major milestone. Keep the announcements short, fewer than 10 words."
 
 You review another PR or cook dinner. In the background you hear: "Tests are green, starting the refactor." … "The migration is failing, I need your input." You come back exactly when you're needed — not before, not too late.
-
-A narrower variant appears in the Ground Rules example: "use ./speak.sh to talk to me out loud when you warn me about issues" — voice reserved for warnings only.
