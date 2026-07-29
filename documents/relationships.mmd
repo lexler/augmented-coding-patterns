@@ -10,6 +10,9 @@ graph LR
   patterns/active-partner -->|solves| obstacles/obedient-contractor
   patterns/canary-in-the-code-mine -->|solves| obstacles/degrades-under-complexity
   patterns/canary-in-the-code-mine -->|solves| obstacles/context-rot
+  patterns/surface-change-attractors -->|solves| obstacles/degrades-under-complexity
+  patterns/surface-change-attractors <-->|similar| patterns/canary-in-the-code-mine
+  patterns/surface-change-attractors -->|uses| patterns/offload-deterministic
   patterns/chain-of-small-steps -->|solves| obstacles/degrades-under-complexity
   patterns/chain-of-small-steps -->|solves| obstacles/limited-focus
   patterns/check-alignment -->|solves| anti-patterns/silent-misalignment
