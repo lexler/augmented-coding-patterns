@@ -52,3 +52,4 @@ Background agents produce isolated changes. Orchestrator integrates them. Togeth
 - `gh` CLI for monitoring PR/branch status
 - Git for merging and conflict resolution
 - Test runners for verification
+- Claude Code's Workflows feature: script the orchestration deterministically (fan-out, pipelines, background runs) instead of prompting the coordination
