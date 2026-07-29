@@ -19,5 +19,3 @@ You get agent-speed delivery and human-speed review without forcing either side 
 
 ## Example
 An agent delivers a 3,000-line feature branch. The splitting pass produces five stacked PRs: two preparatory refactorings, the core feature, the API wiring, and test/documentation updates. Two abandoned experiments get deleted during the split. Each PR reviews in minutes.
-
-Teams adopting AI coding report this working well precisely because agents tend to deliver too much at once for humans to review — the splitting pass restores reviewability without slowing the agent down.
