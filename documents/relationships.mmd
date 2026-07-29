@@ -100,6 +100,9 @@ graph LR
   patterns/yak-shave-delegation -->|uses| patterns/background-agent
   patterns/yak-shave-delegation -->|uses| patterns/focused-agent
   patterns/yak-shave-delegation -->|solves| anti-patterns/distracted-agent
+  patterns/overnight-batch -->|uses| patterns/background-agent
+  patterns/overnight-batch -->|uses| patterns/orchestrator
+  patterns/overnight-batch -->|uses| patterns/feedback-loop
   patterns/you-do-it <-->|similar| patterns/reverse-direction
   patterns/semantic-anchors -->|uses| patterns/context-management
   patterns/semantic-anchors <-->|similar| patterns/semantic-zoom
