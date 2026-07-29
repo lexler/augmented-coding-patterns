@@ -22,6 +22,10 @@ graph LR
   patterns/context-management -->|solves| obstacles/limited-context-window
   patterns/context-markers -->|solves| obstacles/black-box-ai
   patterns/extract-knowledge -->|solves| obstacles/cannot-learn
+  patterns/learning-loop -->|solves| obstacles/cannot-learn
+  patterns/learning-loop -->|uses| patterns/extract-knowledge
+  patterns/learning-loop -->|uses| patterns/habit-hooks
+  patterns/learning-loop <-->|similar| patterns/show-the-agent-let-it-repeat-automate
   patterns/focused-agent -->|solves| anti-patterns/distracted-agent
   patterns/focused-agent -->|solves| obstacles/limited-focus
   patterns/focused-agent -->|solves| obstacles/context-rot
