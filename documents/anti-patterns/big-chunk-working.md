@@ -2,7 +2,7 @@
 authors: [aino_vonge_corry]
 ---
 
-# Big Chunk Working (Anti-pattern)
+# Big Chunk Working
 
 ## Problem
 AI makes it easy to generate very large changes quickly.
