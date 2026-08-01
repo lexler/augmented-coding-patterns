@@ -14,6 +14,8 @@ graph LR
   patterns/chain-of-small-steps -->|solves| obstacles/limited-focus
   patterns/chain-of-small-steps -->|solves| anti-patterns/big-chunk-working
   patterns/check-alignment -->|solves| anti-patterns/silent-misalignment
+  patterns/memory-grooming -->|solves| anti-patterns/perfect-recall-fallacy
+  patterns/memory-grooming -->|solves| anti-patterns/silent-misalignment
   patterns/check-alignment -->|solves| obstacles/black-box-ai
   patterns/chunking -->|solves| obstacles/limited-focus
   patterns/chunking -->|solves| obstacles/limited-context-window
@@ -89,9 +91,21 @@ graph LR
   patterns/contextual-prompts -->|solves| obstacles/selective-hearing
   patterns/decision-guards -->|solves| obstacles/obedient-contractor
   patterns/decision-guards -->|solves| obstacles/context-rot
+  patterns/memory-grooming -->|solves| obstacles/context-rot
+  patterns/memory-grooming -->|solves| obstacles/cannot-learn
+  patterns/memory-grooming -->|solves| obstacles/limited-context-window
+  patterns/memory-grooming -->|related| obstacles/black-box-ai
   patterns/decision-guards -->|uses| patterns/knowledge-document
   patterns/decision-guards -->|related| patterns/reminders
   patterns/decision-guards -->|related| patterns/semantic-anchors
+  patterns/memory-grooming -->|uses| patterns/semantic-anchors
+  patterns/memory-grooming -->|uses| patterns/context-markers
+  patterns/memory-grooming -->|related| patterns/context-management
+  patterns/memory-grooming -->|uses| patterns/knowledge-composition
+  patterns/memory-grooming -->|uses| patterns/knowledge-document
+  patterns/memory-grooming -->|uses| patterns/extract-knowledge
+  patterns/memory-grooming -->|related| patterns/reminders
+  patterns/memory-grooming -->|uses| patterns/decision-guards
   patterns/contextual-prompts <-->|similar| patterns/reminders
   patterns/feedback-loop <-->|similar| patterns/playgrounds
   patterns/feedback-loop <-->|similar| patterns/chain-of-small-steps
