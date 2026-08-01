@@ -149,5 +149,8 @@ graphify-out/
 # Claude Code agent channel
 .claude-channel/
 
+# Local scratch files
+scratches/
+
 # Exceptions: Allow website source code
 !website/lib/playground/
