@@ -2,7 +2,7 @@
 authors: [ivett_ordog]
 ---
 
-# Keeping up (Obstacle)
+# Keeping up
 
 ## Description
 AI coding agents generate code and take actions faster than humans can review and understand it. The code is often verbose, and attempting to thoroughly understand every change becomes a bottleneck. The AI isn't optimized for bringing humans along - it focuses on speed and quantity of generation over comprehensibility.

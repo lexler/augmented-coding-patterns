@@ -3,7 +3,7 @@ authors: [lada_kesseler]
 video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=5142s
 ---
 
-# Silent Misalignment (Anti-pattern)
+# Silent Misalignment
 
 ## Problem
 When user instructions don't make sense within the AI's model, the AI still tries to comply instead of

@@ -2,7 +2,7 @@
 authors: [ivett_ordog]
 ---
 
-# Flying Blind (Anti-pattern)
+# Flying Blind
 
 ## Problem
 Engineers can't keep up with reviewing AI-generated code, so they give up and fall back to excessive vibe coding.

@@ -3,7 +3,7 @@ authors: [llewellyn_falco]
 video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=6015s
 ---
 
-# Tell Me a Lie (Anti-pattern)
+# Tell Me a Lie
 
 ## Problem
 The user’s prompt forces AI to provide an answer that doesn’t exist or can’t be correct.

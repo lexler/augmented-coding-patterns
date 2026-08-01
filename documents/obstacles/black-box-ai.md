@@ -3,7 +3,7 @@ authors: [lada_kesseler]
 video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=5055s
 ---
 
-# Black Box AI (Obstacle)
+# Black Box AI
 
 ## Description
 AI's reasoning is hidden. With code, you can open it up and see what's there - no mystery. With AI, you only see inputs and outputs, not what's inside.

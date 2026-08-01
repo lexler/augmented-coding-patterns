@@ -116,7 +116,7 @@ Explicitly grant permission and encourage AI to:
     })
 
     it('should correctly parse an anti-pattern', () => {
-      const mockMarkdown = `# Answer Injection (Anti-pattern)
+      const mockMarkdown = `# Answer Injection
 
 ## Problem
 Putting solutions in your questions, limiting AI to your preconceived approach.`
@@ -134,7 +134,7 @@ Putting solutions in your questions, limiting AI to your preconceived approach.`
     })
 
     it('should correctly parse an obstacle', () => {
-      const mockMarkdown = `# Black Box AI (Obstacle)
+      const mockMarkdown = `# Black Box AI
 
 ## Description
 AI reasoning is hidden. You only see inputs and outputs.`
@@ -384,7 +384,7 @@ synonyms:
   - Dementia
   - Memory Loss
 ---
-# Context Rot (Obstacle)
+# Context Rot
 
 ## Description
 Context degrades as the conversation grows.`
@@ -421,7 +421,7 @@ AI defaults to silent compliance.`
 synonyms:
   - Dementia
 ---
-# Context Rot (Obstacle)
+# Context Rot
 
 ## Description
 Context degrades as the conversation grows.`
@@ -865,7 +865,7 @@ AI defaults to silent compliance.`
     })
 
     it('should remove parentheses and brackets', () => {
-      expect(titleToSlug('Pattern (Anti-pattern)')).toBe('pattern-anti-pattern')
+      expect(titleToSlug('Chain of Small Steps [draft]')).toBe('chain-of-small-steps-draft')
     })
   })
 })

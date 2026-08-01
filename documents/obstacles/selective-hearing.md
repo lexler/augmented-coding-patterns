@@ -2,7 +2,7 @@
 authors: [lada_kesseler]
 ---
 
-# Selective Hearing (Obstacle)
+# Selective Hearing
 
 ## Description
 Even after narrowing scope and pruning ground rules to essentials, AI still ignores certain instructions.

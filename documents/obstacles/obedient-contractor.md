@@ -2,7 +2,7 @@
 authors: [ivett_ordog]
 ---
 
-# Obedient Contractor (Obstacle)
+# Obedient Contractor
 
 ## Description
 AI behaves like an obedient contractor hired for a single day—focused on completing the immediate task and leaving as quickly as possible. This manifests in two key ways:

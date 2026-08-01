@@ -28,15 +28,13 @@ authors: [author_id]
 
 ### Title Convention
 
-The first H1 line is the document's title. Category suffixes are included in the file but stripped for display:
+The first H1 line is the document's title, used verbatim. No category suffix — the directory determines the category, and the site renders it as a label next to the title:
 
 ```markdown
-# Context Rot (Obstacle)        → displayed as "Context Rot"
-# AI Slop (Anti-pattern)        → displayed as "AI Slop"
+# Context Rot                   → displayed as "Context Rot"
+# AI Slop                       → displayed as "AI Slop"
 # Active Partner                → displayed as "Active Partner"
 ```
-
-Patterns don't need a suffix. Anti-patterns and obstacles include theirs for clarity when reading the raw markdown.
 
 An optional emoji can lead the title: `# 🔗 Chain of Small Steps` — the emoji is extracted and displayed separately in the UI.
 

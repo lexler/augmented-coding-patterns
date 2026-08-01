@@ -2,7 +2,7 @@
 authors: [juan_michelini]
 ---
 
-# Negative Bleedthrough (Obstacle)
+# Negative Bleedthrough
 
 ## Description
 When you tell an LLM what *not* to do, you're activating the very tokens you want it to avoid. Negation words like "don't", "not", "never" are weak signals compared to the content words around them. The model processes "don't mention the moon" by first attending heavily to "moon" : and now the moon is in the room.

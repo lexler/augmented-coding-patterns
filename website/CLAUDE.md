@@ -120,11 +120,12 @@ lib/
 
 ### Markdown Title and Emoji Extraction
 
-The `lib/markdown.ts` module has sophisticated title parsing:
+The `lib/markdown.ts` module parses the title as follows:
 1. Finds first line starting with `#`
-2. Removes category suffix like `(Anti-pattern)` or `(Obstacle)`
-3. Extracts leading emoji using Unicode regex
-4. Returns clean title and optional emoji separately
+2. Extracts leading emoji using Unicode regex
+3. Returns clean title and optional emoji separately
+
+Titles carry no category suffix — the category comes from the directory and is rendered as a label.
 
 ### ESLint Configuration
 

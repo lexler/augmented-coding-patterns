@@ -3,7 +3,7 @@ authors: [lada_kesseler]
 video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=2485s
 ---
 
-# Non-Determinism (Obstacle)
+# Non-Determinism
 
 ## Description
 AI outputs are non-deterministic. The same input may yield different results across runs.  

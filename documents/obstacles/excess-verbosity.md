@@ -3,7 +3,7 @@ authors: [lada_kesseler]
 video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=1368s
 ---
 
-# Excess Verbosity (Obstacle)
+# Excess Verbosity
 
 ## Description
 AI is a token machine - verbose by default, often overwhelming you with unnecessary detail, filler, and redundancy.

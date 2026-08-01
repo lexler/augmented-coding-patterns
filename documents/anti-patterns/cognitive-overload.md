@@ -2,7 +2,7 @@
 authors: [aino_vonge_corry]
 ---
 
-# Cognitive Overload (Anti-pattern)
+# Cognitive Overload
 
 ## Problem
 AI lowers the friction of starting new work, and most people prefer starting tasks over finishing them. Working on many things at once can even look impressive.

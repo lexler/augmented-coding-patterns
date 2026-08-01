@@ -53,7 +53,7 @@ Pattern:
 
 Anti-pattern:
 ```markdown
-# Anti-pattern Name (Anti-pattern)
+# Anti-pattern Name
 ## Problem
 ## What Goes Wrong
 ## Example
@@ -62,7 +62,7 @@ Anti-pattern:
 
 Obstacle:
 ```markdown
-# Obstacle Name (Obstacle)
+# Obstacle Name
 ## Description
 ## Impact
 ```

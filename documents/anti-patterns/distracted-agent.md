@@ -3,7 +3,7 @@ authors: [lada_kesseler]
 video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=836s
 ---
 
-# Distracted Agent (Anti-pattern)
+# Distracted Agent
 
 ## Problem
 Using one agent for everything - coding, documentation, committing, web research, all in the same context.

@@ -3,7 +3,7 @@ authors: [lada_kesseler]
 video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=5108s
 ---
 
-# Compliance Bias (Obstacle)
+# Compliance Bias
 
 ## Description
 AI is deliberately trained to be helpful and compliant above all else. It will say "Sure thing, boss" even when your request makes no sense in its universe.

@@ -2,7 +2,7 @@
 authors: [nitsan_avni]
 ---
 
-# Solution Fixation (Obstacle)
+# Solution Fixation
 
 ## Description
 AI latches onto the first plausible solution and loses critical thinking.

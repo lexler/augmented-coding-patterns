@@ -2,7 +2,7 @@
 authors: [lada_kesseler]
 ---
 
-# AI Slop (Anti-pattern)
+# AI Slop
 
 ## Problem
 Using AI output without adding human judgment or value. The formula: prompt AI → lightly edit → present as yours.

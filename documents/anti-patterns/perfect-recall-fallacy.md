@@ -3,7 +3,7 @@ authors: [lada_kesseler]
 video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=3135s
 ---
 
-# Perfect Recall Fallacy (Anti-pattern)
+# Perfect Recall Fallacy
 
 ## Problem
 Expecting AI to perfectly remember all details from its training data.

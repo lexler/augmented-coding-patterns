@@ -2,7 +2,7 @@
 authors: [gregor_riegler]
 ---
 
-# Obsess Over Rules (Anti-pattern)
+# Obsess Over Rules
 
 ## Problem
 Trying to generate the perfect output by adding more and more rules to the context.

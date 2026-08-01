@@ -3,7 +3,7 @@ authors: [lada_kesseler]
 video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=3345s
 ---
 
-# Unvalidated Leaps (Anti-pattern)
+# Unvalidated Leaps
 
 ## Problem
 AI gets stuck because it's building on unverified assumptions about the code.

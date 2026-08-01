@@ -3,7 +3,7 @@ authors: [lada_kesseler]
 video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=5752s
 ---
 
-# Answer Injection (Anti-pattern)
+# Answer Injection
 
 ## Problem
 The way you ask a question can dramatically limit the solution space without you realizing it.

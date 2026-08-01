@@ -11,11 +11,6 @@ function getCategoryPath(category: PatternCategory): string {
   return path.join(PATTERNS_BASE_PATH, category)
 }
 
-function removeCategorySuffix(title: string): string {
-  const categoryPattern = /\s*\((Anti-pattern|Obstacle)\)\s*$/i
-  return title.replace(categoryPattern, '').trim()
-}
-
 function extractEmojiFromTitle(title: string): { title: string; emoji?: string } {
   const emojiRegex = /^(\p{Emoji_Presentation}|\p{Extended_Pictographic})\s+/u
   const match = title.match(emojiRegex)
@@ -32,8 +27,7 @@ function extractEmojiFromTitle(title: string): { title: string; emoji?: string }
 
 function extractTitleAndEmoji(firstLine: string): { title: string; emoji?: string } {
   const withoutHash = firstLine.replace(/^#\s*/, '').trim()
-  const withoutCategory = removeCategorySuffix(withoutHash)
-  return extractEmojiFromTitle(withoutCategory)
+  return extractEmojiFromTitle(withoutHash)
 }
 
 function isMarkdownFile(filename: string): boolean {

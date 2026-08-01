@@ -3,7 +3,7 @@ authors: [lada_kesseler]
 video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=968s
 ---
 
-# Limited Focus (Obstacle)
+# Limited Focus
 
 ## Description
 LLMs have limited attention. Everything you load into context competes for that attention.

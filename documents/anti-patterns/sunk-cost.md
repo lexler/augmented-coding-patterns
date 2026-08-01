@@ -2,7 +2,7 @@
 authors: [ivett_ordog]
 ---
 
-# Sunk Cost (Anti-pattern)
+# Sunk Cost
 
 ## Problem
 You're multiple iterations into asking an AI to accomplish a task, but it keeps failing to deliver what you need. Despite repeated attempts, the AI either can't understand the requirement or produces increasingly problematic solutions.

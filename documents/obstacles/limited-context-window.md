@@ -3,7 +3,7 @@ authors: [lada_kesseler]
 video: https://www.youtube.com/watch?v=_LSK2bVf0Lc&t=775s
 ---
 
-# Limited Context Window (Obstacle)
+# Limited Context Window
 
 ## Description
 Context has a fixed size limit. Once the limit is reached, older content has to be dropped or summarized by coding assistant to make room for new input.
