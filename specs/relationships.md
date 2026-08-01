@@ -36,6 +36,8 @@ The home page includes a force-directed graph visualization showing the entire r
 
 A build-time validation step (`npm run validate`) checks that every slug referenced in the graph points to an existing document. Broken references fail the build.
 
+`relationships.mmd` is the only source of relationships. Frontmatter fields such as `related_patterns` are not read by the site, and a unit test fails if a document declares one.
+
 ## Coverage
 
 Not all relationships between patterns are documented yet. The graph is growing as the collection matures. Core connections exist, but many valid relationships between existing documents remain to be added.

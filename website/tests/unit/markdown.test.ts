@@ -14,7 +14,7 @@ const mockedRelationships = relationships as jest.Mocked<typeof relationships>
 describe('Markdown utilities', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    // Default: no centralized relationships (backward compatibility mode)
+    // Default: no centralized relationships
     mockedRelationships.getRelationshipsForBoth.mockReturnValue([])
   })
 
@@ -183,75 +183,6 @@ AI defaults to silent compliance.`
       expect(pattern.authors).toEqual(['lexler'])
     })
 
-    it('should extract related_patterns from frontmatter and map to relatedPatterns', () => {
-      const mockMarkdown = `---
-related_patterns:
-  - chain-of-small-steps
-  - check-alignment
----
-# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
-      const pattern = getPatternBySlug('patterns', 'active-partner')
-
-      expect(pattern).toBeDefined()
-      expect(pattern.relatedPatterns).toEqual([
-        { slug: 'chain-of-small-steps', type: 'related', direction: 'outgoing' },
-        { slug: 'check-alignment', type: 'related', direction: 'outgoing' }
-      ])
-    })
-
-    it('should extract related_anti_patterns from frontmatter and map to relatedAntiPatterns', () => {
-      const mockMarkdown = `---
-related_anti_patterns:
-  - answer-injection
-  - distracted-agent
----
-# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
-      const pattern = getPatternBySlug('patterns', 'active-partner')
-
-      expect(pattern).toBeDefined()
-      expect(pattern.relatedAntiPatterns).toEqual([
-        { slug: 'answer-injection', type: 'related', direction: 'outgoing' },
-        { slug: 'distracted-agent', type: 'related', direction: 'outgoing' }
-      ])
-    })
-
-    it('should extract related_obstacles from frontmatter and map to relatedObstacles', () => {
-      const mockMarkdown = `---
-related_obstacles:
-  - black-box-ai
-  - context-rot
----
-# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
-      const pattern = getPatternBySlug('patterns', 'active-partner')
-
-      expect(pattern).toBeDefined()
-      expect(pattern.relatedObstacles).toEqual([
-        { slug: 'black-box-ai', type: 'related', direction: 'outgoing' },
-        { slug: 'context-rot', type: 'related', direction: 'outgoing' }
-      ])
-    })
-
     it('should work with files without frontmatter', () => {
       const mockMarkdown = `# Active Partner
 
@@ -268,76 +199,6 @@ AI defaults to silent compliance.`
       expect(pattern.relatedPatterns).toBeUndefined()
       expect(pattern.relatedAntiPatterns).toBeUndefined()
       expect(pattern.relatedObstacles).toBeUndefined()
-    })
-
-    it('should work with files with only some relationship fields', () => {
-      const mockMarkdown = `---
-related_patterns:
-  - chain-of-small-steps
----
-# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
-      const pattern = getPatternBySlug('patterns', 'active-partner')
-
-      expect(pattern).toBeDefined()
-      expect(pattern.relatedPatterns).toEqual([{ slug: 'chain-of-small-steps', type: 'related', direction: 'outgoing' }])
-      expect(pattern.relatedAntiPatterns).toBeUndefined()
-      expect(pattern.relatedObstacles).toBeUndefined()
-    })
-
-    it('should handle all three relationship types together', () => {
-      const mockMarkdown = `---
-related_patterns:
-  - chain-of-small-steps
-related_anti_patterns:
-  - answer-injection
-related_obstacles:
-  - black-box-ai
----
-# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
-      const pattern = getPatternBySlug('patterns', 'active-partner')
-
-      expect(pattern).toBeDefined()
-      expect(pattern.relatedPatterns).toEqual([{ slug: 'chain-of-small-steps', type: 'related', direction: 'outgoing' }])
-      expect(pattern.relatedAntiPatterns).toEqual([{ slug: 'answer-injection', type: 'related', direction: 'outgoing' }])
-      expect(pattern.relatedObstacles).toEqual([{ slug: 'black-box-ai', type: 'related', direction: 'outgoing' }])
-    })
-
-    it('should handle authors combined with relationship fields', () => {
-      const mockMarkdown = `---
-authors: [lexler, johndoe]
-related_patterns:
-  - chain-of-small-steps
-related_anti_patterns:
-  - answer-injection
----
-# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
-      const pattern = getPatternBySlug('patterns', 'active-partner')
-
-      expect(pattern).toBeDefined()
-      expect(pattern.authors).toEqual(['lexler', 'johndoe'])
-      expect(pattern.relatedPatterns).toEqual([{ slug: 'chain-of-small-steps', type: 'related', direction: 'outgoing' }])
-      expect(pattern.relatedAntiPatterns).toEqual([{ slug: 'answer-injection', type: 'related', direction: 'outgoing' }])
     })
 
     it('should extract alternative_titles from frontmatter', () => {
@@ -546,7 +407,7 @@ AI defaults to silent compliance.`
   })
 
   describe('Centralized Relationships Integration', () => {
-    it('should merge centralized relationships with empty frontmatter', () => {
+    it('should map centralized relationships onto the document', () => {
       const mockMarkdown = `# Active Partner
 
 ## Problem
@@ -572,12 +433,8 @@ AI defaults to silent compliance.`
       ])
     })
 
-    it('should merge centralized relationships with frontmatter relationships', () => {
-      const mockMarkdown = `---
-related_patterns:
-  - show-me
----
-# Active Partner
+    it('should list a bidirectional relationship once', () => {
+      const mockMarkdown = `# Active Partner
 
 ## Problem
 AI defaults to silent compliance.`
@@ -585,43 +442,17 @@ AI defaults to silent compliance.`
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      // Mock centralized relationships
+      // A bidirectional edge is stored once per direction
       mockedRelationships.getRelationshipsForBoth.mockReturnValue([
-        { from: 'patterns/active-partner', to: 'patterns/chain-of-small-steps', type: 'related', bidirectional: false },
+        { from: 'patterns/active-partner', to: 'patterns/semantic-zoom', type: 'similar', bidirectional: true },
+        { from: 'patterns/semantic-zoom', to: 'patterns/active-partner', type: 'similar', bidirectional: true },
       ])
 
       const pattern = getPatternBySlug('patterns', 'active-partner')
 
       expect(pattern).toBeDefined()
-      expect(pattern.relatedPatterns).toHaveLength(2)
-      expect(pattern.relatedPatterns).toContainEqual({ slug: 'chain-of-small-steps', type: 'related', direction: 'outgoing' })
-      expect(pattern.relatedPatterns).toContainEqual({ slug: 'show-me', type: 'related', direction: 'outgoing' })
-    })
-
-    it('should deduplicate relationships by slug, preferring centralized type', () => {
-      const mockMarkdown = `---
-related_patterns:
-  - chain-of-small-steps
----
-# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
-      // Mock centralized relationships with different type
-      mockedRelationships.getRelationshipsForBoth.mockReturnValue([
-        { from: 'patterns/active-partner', to: 'patterns/chain-of-small-steps', type: 'uses', bidirectional: false },
-      ])
-
-      const pattern = getPatternBySlug('patterns', 'active-partner')
-
-      expect(pattern).toBeDefined()
-      expect(pattern.relatedPatterns).toHaveLength(1)
       expect(pattern.relatedPatterns).toEqual([
-        { slug: 'chain-of-small-steps', type: 'uses', direction: 'outgoing' }
+        { slug: 'semantic-zoom', type: 'similar', direction: 'outgoing' }
       ])
     })
 
@@ -680,7 +511,7 @@ AI defaults to silent compliance.`
       expect(pattern.relatedObstacles![0]).toMatchObject({ slug: 'black-box-ai', type: 'solves', direction: 'outgoing' })
     })
 
-    it('should handle centralized relationships when no frontmatter exists', () => {
+    it('should leave categories without relationships undefined', () => {
       const mockMarkdown = `# Active Partner
 
 ## Problem
@@ -700,69 +531,6 @@ AI defaults to silent compliance.`
       expect(pattern.relatedPatterns).toEqual([{ slug: 'chain-of-small-steps', type: 'related', direction: 'outgoing' }])
       expect(pattern.relatedAntiPatterns).toBeUndefined()
       expect(pattern.relatedObstacles).toBeUndefined()
-    })
-
-    it('should handle frontmatter relationships when no centralized relationships exist', () => {
-      const mockMarkdown = `---
-related_patterns:
-  - chain-of-small-steps
-related_anti_patterns:
-  - answer-injection
----
-# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
-      // No centralized relationships
-      mockedRelationships.getRelationshipsForBoth.mockReturnValue([])
-
-      const pattern = getPatternBySlug('patterns', 'active-partner')
-
-      expect(pattern).toBeDefined()
-      expect(pattern.relatedPatterns).toEqual([{ slug: 'chain-of-small-steps', type: 'related', direction: 'outgoing' }])
-      expect(pattern.relatedAntiPatterns).toEqual([{ slug: 'answer-injection', type: 'related', direction: 'outgoing' }])
-    })
-
-    it('should handle complex merging scenario with multiple duplicates', () => {
-      const mockMarkdown = `---
-related_patterns:
-  - chain-of-small-steps
-  - show-me
-  - check-alignment
----
-# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
-      // Centralized has some duplicates with different types and some unique
-      mockedRelationships.getRelationshipsForBoth.mockReturnValue([
-        { from: 'patterns/active-partner', to: 'patterns/chain-of-small-steps', type: 'uses', bidirectional: false },
-        { from: 'patterns/active-partner', to: 'patterns/show-me', type: 'similar', bidirectional: false },
-        { from: 'patterns/active-partner', to: 'patterns/happy-to-delete', type: 'related', bidirectional: false },
-      ])
-
-      const pattern = getPatternBySlug('patterns', 'active-partner')
-
-      expect(pattern).toBeDefined()
-      expect(pattern.relatedPatterns).toHaveLength(4)
-
-      // Centralized types should override frontmatter
-      expect(pattern.relatedPatterns).toContainEqual({ slug: 'chain-of-small-steps', type: 'uses', direction: 'outgoing' })
-      expect(pattern.relatedPatterns).toContainEqual({ slug: 'show-me', type: 'similar', direction: 'outgoing' })
-
-      // Frontmatter-only should keep default 'related' type
-      expect(pattern.relatedPatterns).toContainEqual({ slug: 'check-alignment', type: 'related', direction: 'outgoing' })
-
-      // Centralized-only should be included
-      expect(pattern.relatedPatterns).toContainEqual({ slug: 'happy-to-delete', type: 'related', direction: 'outgoing' })
     })
 
     it('should strip category prefix from centralized relationship slugs', () => {

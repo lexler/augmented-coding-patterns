@@ -81,7 +81,7 @@ author_id:
 
 **Don't restate relationships in the document body.** Every edge in `relationships.mmd` is already rendered in the "Related" sidebar of the document's page, labelled by direction ("Solved by", "Causes", "Caused by"). A `## Related Patterns` section repeats what the reader can already see, and goes stale as soon as the graph changes.
 
-**Don't declare relationships in frontmatter.** `related_patterns`, `related_anti_patterns` and `related_obstacles` cannot carry a relationship type, and the interactive map never sees them. A misspelled slug there silently becomes a dead link — `npm run validate` only checks `relationships.mmd`. Put every relationship in that file.
+**Don't declare relationships in frontmatter.** `related_patterns`, `related_anti_patterns` and `related_obstacles` are not read by the site — they carry no relationship type and the interactive map never sees them. `npm test` fails if one appears. Every relationship goes in `relationships.mmd`.
 
 ---
 

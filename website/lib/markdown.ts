@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-import { PatternCategory, PatternContent, RelationshipType } from './types'
+import { PatternCategory, PatternContent, RelatedPattern } from './types'
 import { getRelationshipsForBoth } from './relationships'
 import { getVideoTitle } from './video-titles'
 
@@ -107,64 +107,28 @@ export function getPatternBySlug(
     const currentFullSlug = `${category}/${slug}`
 
     // Extract relationships and determine which end is the "other" pattern
-    const relPatterns = allRels
-      .map(r => {
+    const relatedIn = (categoryPrefix: string): RelatedPattern[] => {
+      const items = allRels.flatMap(r => {
         // If this pattern is the source, take the target; if target, take the source
         const isOutgoing = r.from === currentFullSlug
         const otherSlug = isOutgoing ? r.to : r.from
-        if (!otherSlug.startsWith('patterns/')) return null
-        return {
-          slug: otherSlug.replace('patterns/', ''),
+        if (!otherSlug.startsWith(categoryPrefix)) return []
+        return [{
+          slug: otherSlug.slice(categoryPrefix.length),
           type: r.type,
           direction: isOutgoing ? 'outgoing' as const : 'incoming' as const
-        }
+        }]
       })
-      .filter((r): r is { slug: string; type: RelationshipType; direction: 'outgoing' | 'incoming' } => r !== null)
 
-    const relAntiPatterns = allRels
-      .map(r => {
-        const isOutgoing = r.from === currentFullSlug
-        const otherSlug = isOutgoing ? r.to : r.from
-        if (!otherSlug.startsWith('anti-patterns/')) return null
-        return {
-          slug: otherSlug.replace('anti-patterns/', ''),
-          type: r.type,
-          direction: isOutgoing ? 'outgoing' as const : 'incoming' as const
-        }
-      })
-      .filter((r): r is { slug: string; type: RelationshipType; direction: 'outgoing' | 'incoming' } => r !== null)
-
-    const relObstacles = allRels
-      .map(r => {
-        const isOutgoing = r.from === currentFullSlug
-        const otherSlug = isOutgoing ? r.to : r.from
-        if (!otherSlug.startsWith('obstacles/')) return null
-        return {
-          slug: otherSlug.replace('obstacles/', ''),
-          type: r.type,
-          direction: isOutgoing ? 'outgoing' as const : 'incoming' as const
-        }
-      })
-      .filter((r): r is { slug: string; type: RelationshipType; direction: 'outgoing' | 'incoming' } => r !== null)
-
-    // Merge centralized relationships with frontmatter (remove duplicates by slug)
-    // For frontmatter relationships without type info, default to 'related' and 'outgoing'
-    const frontmatterPatterns = (data.related_patterns || []).map((slug: string) => ({ slug, type: 'related' as const, direction: 'outgoing' as const }))
-    const frontmatterAntiPatterns = (data.related_anti_patterns || []).map((slug: string) => ({ slug, type: 'related' as const, direction: 'outgoing' as const }))
-    const frontmatterObstacles = (data.related_obstacles || []).map((slug: string) => ({ slug, type: 'related' as const, direction: 'outgoing' as const }))
-
-    // Merge and deduplicate by slug, preferring centralized type over frontmatter
-    type RelatedItem = {slug: string, type: RelationshipType, direction: 'outgoing' | 'incoming'}
-    const mergeRelatedPatterns = (centralized: RelatedItem[], frontmatter: RelatedItem[]) => {
-      const slugMap = new Map<string, RelatedItem>()
-      frontmatter.forEach(item => slugMap.set(item.slug, item))
-      centralized.forEach(item => slugMap.set(item.slug, item)) // Centralized overwrites
-      return Array.from(slugMap.values())
+      // A bidirectional edge is stored once per direction, so keep the first entry per document
+      return items.filter((item, index) =>
+        items.findIndex(other => other.slug === item.slug) === index
+      )
     }
 
-    const mergedPatterns = mergeRelatedPatterns(relPatterns, frontmatterPatterns)
-    const mergedAntiPatterns = mergeRelatedPatterns(relAntiPatterns, frontmatterAntiPatterns)
-    const mergedObstacles = mergeRelatedPatterns(relObstacles, frontmatterObstacles)
+    const relPatterns = relatedIn('patterns/')
+    const relAntiPatterns = relatedIn('anti-patterns/')
+    const relObstacles = relatedIn('obstacles/')
 
     return {
       title,
@@ -176,9 +140,9 @@ export function getPatternBySlug(
       ...(data.synonyms && { synonyms: data.synonyms }),
       ...(data.video && { video: data.video }),
       ...(data.video && getVideoTitle(data.video) && { videoTitle: getVideoTitle(data.video) }),
-      ...(mergedPatterns.length > 0 && { relatedPatterns: mergedPatterns }),
-      ...(mergedAntiPatterns.length > 0 && { relatedAntiPatterns: mergedAntiPatterns }),
-      ...(mergedObstacles.length > 0 && { relatedObstacles: mergedObstacles }),
+      ...(relPatterns.length > 0 && { relatedPatterns: relPatterns }),
+      ...(relAntiPatterns.length > 0 && { relatedAntiPatterns: relAntiPatterns }),
+      ...(relObstacles.length > 0 && { relatedObstacles: relObstacles }),
       content: contentWithoutTitle,
       rawContent: fileContents
     }
