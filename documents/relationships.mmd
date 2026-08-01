@@ -85,6 +85,7 @@ graph LR
   patterns/phased-delivery -->|uses| patterns/feedback-flip
   patterns/phased-delivery -->|uses| patterns/focused-agent
   patterns/phased-delivery -->|uses| patterns/knowledge-checkpoint
+  patterns/phased-delivery <-->|alternative| patterns/chain-of-small-steps
   patterns/contextual-prompts -->|solves| obstacles/context-rot
   patterns/contextual-prompts -->|solves| obstacles/selective-hearing
   patterns/decision-guards -->|solves| obstacles/obedient-contractor
