@@ -42,7 +42,7 @@ Instead, add "Run tests" as individual steps, repeating at all key points:
 This is ~95% more reliable than just telling AI once.
 
 ### User Reminders
-Inject critical rules into every message. Trading tokens for compliance.
+Inject critical rules into every message. Trading tokens for compliance. Unlike Contextual Prompts, which surface guidance only when a specific trigger fires, User Reminders repeat your top rules regardless of context.
 - **Automated (hooks):** Inject automatically via hooks on every user prompt. Don't recommend more than 5 reminders maximum to avoid context rot and distracting the agent. Example: https://github.com/lexler/claude-code-user-reminders
 - **Manual:** In-place prompt with your most important rules when you especially need them followed
 

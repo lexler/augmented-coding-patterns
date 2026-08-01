@@ -55,6 +55,8 @@ graph LR
   patterns/active-partner -->|solves| anti-patterns/flying-blind
   patterns/feedback-loop -->|solves| anti-patterns/flying-blind
   patterns/constrained-tests -->|solves| anti-patterns/flying-blind
+  patterns/slice-for-review -->|solves| obstacles/keeping-up
+  patterns/slice-for-review -->|solves| anti-patterns/flying-blind
   patterns/feedback-loop -->|solves| anti-patterns/big-chunk-working
   patterns/habit-hooks -->|solves| obstacles/cannot-learn
   patterns/habit-hooks -->|solves| obstacles/context-rot
@@ -112,6 +114,7 @@ graph LR
   patterns/ai-first-responder -->|uses| patterns/background-agent
   patterns/ai-first-responder -->|uses| patterns/focused-agent
   patterns/ai-first-responder -->|uses| patterns/orchestrator
+  patterns/speak-to-me -->|related| patterns/background-agent
 
   %% Anti-pattern → Obstacle relationships (causes)
   anti-patterns/distracted-agent -->|causes| obstacles/limited-focus
@@ -132,6 +135,8 @@ graph LR
   anti-patterns/sunk-cost -->|related| anti-patterns/tell-me-a-lie
   anti-patterns/cognitive-overload -->|causes| anti-patterns/flying-blind
   anti-patterns/big-chunk-working -->|causes| anti-patterns/flying-blind
+  anti-patterns/ai-isolation -->|causes| anti-patterns/ai-slop
+  patterns/shared-canvas -->|solves| anti-patterns/ai-isolation
 
   %% Anti-pattern → Obstacle relationships (related/causes)
   anti-patterns/sunk-cost -->|related| obstacles/limited-context-window
