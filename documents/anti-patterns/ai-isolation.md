@@ -2,7 +2,7 @@
 authors: [aino_vonge_corry]
 ---
 
-# AI Isolation (Anti-pattern)
+# AI Isolation
 
 ## Problem
 AI can support long solo work loops. That's fine on a solo project, but on a team, where learning from each other matters, it becomes a problem.
