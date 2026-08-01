@@ -72,8 +72,6 @@ Obstacle:
 - A concrete artifact: the actual prompt, rule, hook, config, file layout, or tool output
 - Specific situations where the pattern works well — named tools, named files, named cases
 
-**The failure mode to avoid: restating the pattern.** An example that paraphrases the Pattern section with a topic attached ("AI writes the feature. A second AI reviews the diff and finds issues.") adds nothing — it reads as filler and teaches nobody. A story that stops short of the specifics fails the same way: "we wrote a throwaway script and found the bug fast" needs the script, or at least what the bug turned out to be.
-
 **Author Format** (`website/config/authors.yaml`):
 ```yaml
 author_id:
@@ -87,6 +85,8 @@ author_id:
 ## Common Mistakes
 
 **Don't restate relationships in the document body.** Every edge in `relationships.mmd` is already rendered in the "Related" sidebar of the document's page, labelled by direction ("Solved by", "Causes", "Caused by"). A `## Related Patterns` section repeats what the reader can already see, and goes stale as soon as the graph changes.
+
+**Don't restate the pattern in the example.** An example that paraphrases the Pattern section with a topic attached ("AI writes the feature. A second AI reviews the diff and finds issues.") adds nothing — it reads as filler and teaches nobody. A story that stops short of the specifics fails the same way: "we wrote a throwaway script and found the bug fast" needs the script, or at least what the bug turned out to be.
 
 **Don't declare relationships in frontmatter.** `related_patterns`, `related_anti_patterns` and `related_obstacles` are not read by the site — they carry no relationship type and the interactive map never sees them. `npm test` fails if one appears. Every relationship goes in `relationships.mmd`.
 
