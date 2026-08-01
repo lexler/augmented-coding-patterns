@@ -1,11 +1,5 @@
 ---
 authors: [gregor_riegler]
-related_patterns:
-  - semantic-anchors
-  - extract-knowledge
-related_obstacles:
-  - limited-context-window
-  - hallucinations
 ---
 
 # Poor Person's Skill

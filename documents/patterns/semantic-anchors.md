@@ -1,11 +1,5 @@
 ---
 authors: [rdmueller]
-related_patterns:
-  - context-management
-  - semantic-zoom
-  - ground-rules
-related_obstacles:
-  - hallucinations
 ---
 
 # Semantic Anchors

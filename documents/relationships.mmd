@@ -64,6 +64,11 @@ graph LR
   patterns/habit-hooks -->|solves| obstacles/context-rot
   patterns/hooks -->|solves| obstacles/selective-hearing
   patterns/reminders -->|solves| obstacles/selective-hearing
+  patterns/jit-docs -->|solves| obstacles/cannot-learn
+  patterns/jit-docs -->|solves| obstacles/hallucinations
+  patterns/poor-persons-skill -->|solves| obstacles/limited-context-window
+  patterns/poor-persons-skill -->|solves| obstacles/hallucinations
+  patterns/semantic-anchors -->|solves| obstacles/hallucinations
 
   %% Pattern → Pattern relationships (enables, uses, similar, alternative)
   patterns/reference-docs -->|enables| patterns/knowledge-composition
@@ -129,6 +134,21 @@ graph LR
   patterns/ai-first-responder -->|uses| patterns/focused-agent
   patterns/ai-first-responder -->|uses| patterns/orchestrator
   patterns/speak-to-me -->|related| patterns/background-agent
+  patterns/orchestrator -->|related| patterns/focused-agent
+  patterns/orchestrator -->|related| patterns/feedback-loop
+  patterns/orchestrator -->|related| patterns/background-agent
+  patterns/background-agent -->|related| patterns/focused-agent
+  patterns/coerce-to-interface -->|related| patterns/constrained-tests
+  patterns/coerce-to-interface -->|related| patterns/hooks
+  patterns/coerce-to-interface -->|related| patterns/ground-rules
+  patterns/coerce-to-interface -->|related| patterns/orchestrator
+  patterns/jit-docs -->|related| patterns/reference-docs
+  patterns/jit-docs -->|related| patterns/knowledge-document
+  patterns/mind-dump -->|related| patterns/polyglot-ai
+  patterns/mind-dump -->|related| patterns/reverse-direction
+  patterns/mind-dump -->|related| patterns/check-alignment
+  patterns/poor-persons-skill -->|related| patterns/semantic-anchors
+  patterns/poor-persons-skill -->|related| patterns/extract-knowledge
 
   %% Anti-pattern → Obstacle relationships (causes)
   anti-patterns/distracted-agent -->|causes| obstacles/limited-focus

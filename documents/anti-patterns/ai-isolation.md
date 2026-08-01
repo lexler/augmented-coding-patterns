@@ -19,6 +19,3 @@ This has always been an issue, but AI makes it easier to work alone, so we'll se
 
 ## Solution
 Bring AI output back to the team. Read code together. Discuss prompts, assumptions, and trade-offs.
-
-## Related Patterns
-Causes AI Slop.

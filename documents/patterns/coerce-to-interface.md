@@ -1,10 +1,5 @@
 ---
 authors: [nitsan_avni]
-related_patterns:
-  - constrained-tests
-  - hooks
-  - ground-rules
-  - orchestrator
 ---
 
 # Coerce to Interface

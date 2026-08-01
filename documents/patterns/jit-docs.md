@@ -1,11 +1,5 @@
 ---
 authors: [nitsan_avni]
-related_patterns:
-  - references
-  - knowledge-document
-related_obstacles:
-  - cannot-learn
-  - hallucinations
 ---
 
 # JIT Docs

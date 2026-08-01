@@ -1,9 +1,5 @@
 ---
 authors: [rdmueller]
-related_patterns:
-  - text-native
-  - semantic-anchors
-  - knowledge-document
 ---
 
 # Diagrams as Code

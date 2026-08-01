@@ -1,8 +1,5 @@
 ---
 authors: [nitsan_avni]
-related_patterns:
-  - focused-agent
-  - orchestrator
 ---
 
 # Background Agent

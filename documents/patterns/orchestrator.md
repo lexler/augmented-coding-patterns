@@ -1,9 +1,5 @@
 ---
 authors: [nitsan_avni]
-related_patterns:
-  - focused-agent
-  - feedback-loop
-  - background-agent
 ---
 
 # Orchestrator
