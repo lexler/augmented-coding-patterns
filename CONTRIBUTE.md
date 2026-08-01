@@ -67,6 +67,13 @@ Obstacle:
 ## Impact
 ```
 
+**Examples:** An example must add information the Pattern section doesn't already contain. Any of these work:
+- A real story, with the details that made it real: what was being built, what was tried, what came out of it
+- A concrete artifact: the actual prompt, rule, hook, config, file layout, or tool output
+- Specific situations where the pattern works well — named tools, named files, named cases
+
+**The failure mode to avoid: restating the pattern.** An example that paraphrases the Pattern section with a topic attached ("AI writes the feature. A second AI reviews the diff and finds issues.") adds nothing — it reads as filler and teaches nobody. A story that stops short of the specifics fails the same way: "we wrote a throwaway script and found the bug fast" needs the script, or at least what the bug turned out to be.
+
 **Author Format** (`website/config/authors.yaml`):
 ```yaml
 author_id:
@@ -102,6 +109,8 @@ Ask **one question at a time**. Be proactive - suggest possible answers based on
 - **Obstacles**: Description → Impact
 
 Example: "What problem does this solve? Based on your summary, it sounds like it might be about [guess 1] or [guess 2]. Is that right?"
+
+**Never invent the example.** Guessing at the problem or the solution helps the author react; guessing at the example produces filler that restates the pattern. Instead, pull the real one out of them: "When did you last use this? What were you building? What did you actually type?" Then keep digging for the specifics — the actual prompt, the actual error, what it turned out to be. If they have no real case yet, leave the Example section empty and tell them why; an empty section is better than a made-up one.
 
 **Keep it concise**: Use short, direct sentences. Avoid verbose explanations.
 
