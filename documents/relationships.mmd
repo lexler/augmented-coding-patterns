@@ -12,6 +12,7 @@ graph LR
   patterns/canary-in-the-code-mine -->|solves| obstacles/context-rot
   patterns/chain-of-small-steps -->|solves| obstacles/degrades-under-complexity
   patterns/chain-of-small-steps -->|solves| obstacles/limited-focus
+  patterns/chain-of-small-steps -->|solves| anti-patterns/big-chunk-working
   patterns/check-alignment -->|solves| anti-patterns/silent-misalignment
   patterns/check-alignment -->|solves| obstacles/black-box-ai
   patterns/chunking -->|solves| obstacles/limited-focus
@@ -56,6 +57,7 @@ graph LR
   patterns/constrained-tests -->|solves| anti-patterns/flying-blind
   patterns/slice-for-review -->|solves| obstacles/keeping-up
   patterns/slice-for-review -->|solves| anti-patterns/flying-blind
+  patterns/feedback-loop -->|solves| anti-patterns/big-chunk-working
   patterns/habit-hooks -->|solves| obstacles/cannot-learn
   patterns/habit-hooks -->|solves| obstacles/context-rot
   patterns/hooks -->|solves| obstacles/selective-hearing
@@ -132,6 +134,7 @@ graph LR
   anti-patterns/sunk-cost -->|related| anti-patterns/answer-injection
   anti-patterns/sunk-cost -->|related| anti-patterns/tell-me-a-lie
   anti-patterns/cognitive-overload -->|causes| anti-patterns/flying-blind
+  anti-patterns/big-chunk-working -->|causes| anti-patterns/flying-blind
   anti-patterns/ai-isolation -->|causes| anti-patterns/ai-slop
   patterns/shared-canvas -->|solves| anti-patterns/ai-isolation
 
@@ -149,3 +152,4 @@ graph LR
   obstacles/compliance-bias -->|causes| anti-patterns/silent-misalignment
   obstacles/black-box-ai -->|causes| anti-patterns/silent-misalignment
   obstacles/keeping-up -->|causes| anti-patterns/flying-blind
+  obstacles/keeping-up -->|causes| anti-patterns/big-chunk-working
