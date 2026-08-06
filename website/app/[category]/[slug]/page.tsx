@@ -9,6 +9,7 @@ import { PatternCategory } from "@/lib/types";
 import Authors from "@/app/components/Authors";
 import RelatedLinks from "@/app/components/RelatedLinks";
 import VideoThumbnail from "@/app/components/VideoThumbnail";
+import { markdownComponents } from "@/app/components/markdownComponents";
 import styles from "../../pattern-detail.module.css";
 
 interface PatternPageProps {
@@ -155,7 +156,7 @@ export default async function PatternPage({ params }: PatternPageProps) {
       </header>
 
       <article className={styles.content}>
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
           {pattern.content}
         </ReactMarkdown>
       </article>

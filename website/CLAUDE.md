@@ -47,6 +47,8 @@ npx playwright test path/to/test.spec.ts
 
 **Important**: The first H1 in markdown files is extracted as the page title and removed from the rendered content to maintain semantic HTML (only one H1 per page).
 
+**Images in documents** (agent decision): document images live in `public/images/` and are referenced from markdown as `/images/{file}`. Every `ReactMarkdown` call passes `markdownComponents` from `app/components/markdownComponents.tsx`, which renders images through `next/image` with the deployment `basePath` prepended — a bare `<img>` would 404 on GitHub Pages. Add the override to any new `ReactMarkdown` call site.
+
 ### Category Configuration System
 
 **Centralized in** `app/lib/category-config.ts`:

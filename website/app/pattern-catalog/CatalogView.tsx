@@ -11,6 +11,7 @@ import { COMPLETE_CATALOG_TEST_IDS } from "./test-ids";
 import { getCategoryConfig } from "@/app/lib/category-config";
 import SearchBar from "@/app/components/SearchBar";
 import VideoThumbnail from "@/app/components/VideoThumbnail";
+import { markdownComponents } from "@/app/components/markdownComponents";
 import { PatternContent } from "@/lib/types";
 
 interface CatalogViewProps {
@@ -450,7 +451,7 @@ export default function CatalogView({ groups, title }: CatalogViewProps) {
           )}
         </div>
         <div className={styles.detailBody}>
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
             {selected.item.content}
           </ReactMarkdown>
         </div>

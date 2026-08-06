@@ -33,6 +33,8 @@ cd website && npm run fetch:videos
 This updates `website/lib/video-titles.json` (commit it alongside the markdown
 change).
 
+**Images:** Put the file in `website/public/images/` and reference it as `![alt text](/images/{file})`. The site prepends the deployment base path when rendering.
+
 **Relationships:** Define in `documents/relationships.mmd` using Mermaid graph syntax:
 ```mermaid
 patterns/your-pattern -->|solves| obstacles/some-obstacle

@@ -1,5 +1,6 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { markdownComponents } from "@/app/components/markdownComponents";
 import styles from "./PatternModal.module.css";
 import detailStyles from "../pattern-detail.module.css";
 
@@ -47,7 +48,7 @@ export default function PatternModal({ pattern, onClose }: PatternModalProps) {
           </span>
         </header>
         <article className={detailStyles.content}>
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
             {pattern.content}
           </ReactMarkdown>
         </article>
