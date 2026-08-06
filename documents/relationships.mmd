@@ -78,6 +78,9 @@ graph LR
   patterns/context-management -->|uses| patterns/knowledge-document
   patterns/context-management -->|uses| patterns/extract-knowledge
   patterns/context-management -->|uses| patterns/knowledge-checkpoint
+  patterns/smart-plan-cheap-execution -->|uses| patterns/knowledge-checkpoint
+  patterns/advisor-strategy -->|solves| anti-patterns/sunk-cost
+  patterns/smart-plan-cheap-execution <-->|similar| patterns/advisor-strategy
   patterns/context-management -->|uses| patterns/focused-agent
   patterns/context-management -->|uses| patterns/semantic-zoom
   patterns/context-management -->|uses| patterns/noise-cancellation
