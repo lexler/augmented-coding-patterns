@@ -5,13 +5,13 @@ authors: [ivett_ordog]
 # Phased Delivery
 
 ## Problem
-A big task in a single session leads to a distracted agent. This in turn leads to incomplete work, bugs, and a lack of feedback. One fix to this is the Chain of small steps pattern, but it requires an active human in the loop. In situations when the goal is clear this is not the most effective way to deliver.  
+A big task in a single session leads to a distracted agent. This in turn leads to incomplete work, bugs, and a lack of feedback. Chain of Small Steps fixes that by verifying each step before the next one starts, but when you are the one verifying, the agent only moves as fast as you can look at it.
 
 ## Pattern
 
 Key constraint: for this pattern to work the goal has to be unambiguously verifiable. Works best when the desired end state is provided rather than the roadmap to get there. 
 
-A special case of Background Agent: structure the run into phases, each with its own focus and its own gate:
+An implementation of Chain of Small Steps that hands the verification to an agent instead of a human, and a special case of Background Agent: structure the run into phases, each with its own focus and its own gate:
 
 1. **Plan** — produce the plan and acceptance criteria; checkpoint it
 2. **Implement** — one phase of the plan at a time
