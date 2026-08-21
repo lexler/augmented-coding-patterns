@@ -30,6 +30,18 @@ function extractTitleAndEmoji(firstLine: string): { title: string; emoji?: strin
   return extractEmojiFromTitle(withoutHash)
 }
 
+function readTitle(category: PatternCategory, slug: string): string {
+  const fullPath = path.join(getCategoryPath(category), `${slug}.md`)
+
+  try {
+    const { content } = matter(fs.readFileSync(fullPath, 'utf-8'))
+    const firstHeading = content.split('\n').find(line => line.trim().startsWith('#'))
+    return firstHeading ? extractTitleAndEmoji(firstHeading).title : slugToTitleCase(slug)
+  } catch {
+    return slugToTitleCase(slug)
+  }
+}
+
 function isMarkdownFile(filename: string): boolean {
   return filename.endsWith('.md')
 }
@@ -107,14 +119,17 @@ export function getPatternBySlug(
     const currentFullSlug = `${category}/${slug}`
 
     // Extract relationships and determine which end is the "other" pattern
-    const relatedIn = (categoryPrefix: string): RelatedPattern[] => {
+    const relatedIn = (relatedCategory: PatternCategory): RelatedPattern[] => {
+      const categoryPrefix = `${relatedCategory}/`
       const items = allRels.flatMap(r => {
         // If this pattern is the source, take the target; if target, take the source
         const isOutgoing = r.from === currentFullSlug
         const otherSlug = isOutgoing ? r.to : r.from
         if (!otherSlug.startsWith(categoryPrefix)) return []
+        const relatedSlug = otherSlug.slice(categoryPrefix.length)
         return [{
-          slug: otherSlug.slice(categoryPrefix.length),
+          slug: relatedSlug,
+          title: readTitle(relatedCategory, relatedSlug),
           type: r.type,
           direction: isOutgoing ? 'outgoing' as const : 'incoming' as const
         }]
@@ -126,9 +141,9 @@ export function getPatternBySlug(
       )
     }
 
-    const relPatterns = relatedIn('patterns/')
-    const relAntiPatterns = relatedIn('anti-patterns/')
-    const relObstacles = relatedIn('obstacles/')
+    const relPatterns = relatedIn('patterns')
+    const relAntiPatterns = relatedIn('anti-patterns')
+    const relObstacles = relatedIn('obstacles')
 
     return {
       title,

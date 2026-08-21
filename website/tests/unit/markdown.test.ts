@@ -406,17 +406,25 @@ AI defaults to silent compliance.`
     })
   })
 
+  const givenDocuments = (titlesBySlug: Record<string, string>) => {
+    mockedPath.join.mockImplementation((...segments: string[]) => segments.join('/'))
+    mockedFs.readFileSync.mockImplementation((filePath) => {
+      const slug = String(filePath).split('/').pop()!.replace(/\.md$/, '')
+      const title = titlesBySlug[slug]
+      if (title === undefined) {
+        throw new Error(`ENOENT: no such file, open '${filePath}'`)
+      }
+      return `# ${title}\n\n## Problem\nAI defaults to silent compliance.`
+    })
+  }
+
   describe('Centralized Relationships Integration', () => {
     it('should map centralized relationships onto the document', () => {
-      const mockMarkdown = `# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
-      // Mock centralized relationships
+      givenDocuments({
+        'active-partner': 'Active Partner',
+        'chain-of-small-steps': 'Chain of Small Steps',
+        'black-box-ai': 'Black Box AI',
+      })
       mockedRelationships.getRelationshipsForBoth.mockReturnValue([
         { from: 'patterns/active-partner', to: 'patterns/chain-of-small-steps', type: 'related', bidirectional: false },
         { from: 'patterns/active-partner', to: 'obstacles/black-box-ai', type: 'solves', bidirectional: false },
@@ -426,22 +434,15 @@ AI defaults to silent compliance.`
 
       expect(pattern).toBeDefined()
       expect(pattern.relatedPatterns).toEqual([
-        { slug: 'chain-of-small-steps', type: 'related', direction: 'outgoing' }
+        { slug: 'chain-of-small-steps', title: 'Chain of Small Steps', type: 'related', direction: 'outgoing' }
       ])
       expect(pattern.relatedObstacles).toEqual([
-        { slug: 'black-box-ai', type: 'solves', direction: 'outgoing' }
+        { slug: 'black-box-ai', title: 'Black Box AI', type: 'solves', direction: 'outgoing' }
       ])
     })
 
     it('should list a bidirectional relationship once', () => {
-      const mockMarkdown = `# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
+      givenDocuments({ 'active-partner': 'Active Partner', 'semantic-zoom': 'Semantic Zoom' })
       // A bidirectional edge is stored once per direction
       mockedRelationships.getRelationshipsForBoth.mockReturnValue([
         { from: 'patterns/active-partner', to: 'patterns/semantic-zoom', type: 'similar', bidirectional: true },
@@ -452,19 +453,17 @@ AI defaults to silent compliance.`
 
       expect(pattern).toBeDefined()
       expect(pattern.relatedPatterns).toEqual([
-        { slug: 'semantic-zoom', type: 'similar', direction: 'outgoing' }
+        { slug: 'semantic-zoom', title: 'Semantic Zoom', type: 'similar', direction: 'outgoing' }
       ])
     })
 
     it('should preserve type information from centralized relationships', () => {
-      const mockMarkdown = `# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
+      givenDocuments({
+        'active-partner': 'Active Partner',
+        'chain-of-small-steps': 'Chain of Small Steps',
+        'show-me': 'Show Me',
+        'black-box-ai': 'Black Box AI',
+      })
       // Mock centralized relationships with various types
       mockedRelationships.getRelationshipsForBoth.mockReturnValue([
         { from: 'patterns/active-partner', to: 'patterns/chain-of-small-steps', type: 'uses', bidirectional: false },
@@ -476,23 +475,21 @@ AI defaults to silent compliance.`
 
       expect(pattern).toBeDefined()
       expect(pattern.relatedPatterns).toEqual([
-        { slug: 'chain-of-small-steps', type: 'uses', direction: 'outgoing' },
-        { slug: 'show-me', type: 'similar', direction: 'outgoing' }
+        { slug: 'chain-of-small-steps', title: 'Chain of Small Steps', type: 'uses', direction: 'outgoing' },
+        { slug: 'show-me', title: 'Show Me', type: 'similar', direction: 'outgoing' }
       ])
       expect(pattern.relatedObstacles).toEqual([
-        { slug: 'black-box-ai', type: 'solves', direction: 'outgoing' }
+        { slug: 'black-box-ai', title: 'Black Box AI', type: 'solves', direction: 'outgoing' }
       ])
     })
 
     it('should correctly categorize relationships by target category', () => {
-      const mockMarkdown = `# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
+      givenDocuments({
+        'active-partner': 'Active Partner',
+        'chain-of-small-steps': 'Chain of Small Steps',
+        'answer-injection': 'Answer Injection',
+        'black-box-ai': 'Black Box AI',
+      })
       // Mock relationships to all three categories
       mockedRelationships.getRelationshipsForBoth.mockReturnValue([
         { from: 'patterns/active-partner', to: 'patterns/chain-of-small-steps', type: 'related', bidirectional: false },
@@ -512,14 +509,7 @@ AI defaults to silent compliance.`
     })
 
     it('should leave categories without relationships undefined', () => {
-      const mockMarkdown = `# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
+      givenDocuments({ 'active-partner': 'Active Partner', 'chain-of-small-steps': 'Chain of Small Steps' })
       // Mock centralized relationships
       mockedRelationships.getRelationshipsForBoth.mockReturnValue([
         { from: 'patterns/active-partner', to: 'patterns/chain-of-small-steps', type: 'related', bidirectional: false },
@@ -528,20 +518,18 @@ AI defaults to silent compliance.`
       const pattern = getPatternBySlug('patterns', 'active-partner')
 
       expect(pattern).toBeDefined()
-      expect(pattern.relatedPatterns).toEqual([{ slug: 'chain-of-small-steps', type: 'related', direction: 'outgoing' }])
+      expect(pattern.relatedPatterns).toEqual([{ slug: 'chain-of-small-steps', title: 'Chain of Small Steps', type: 'related', direction: 'outgoing' }])
       expect(pattern.relatedAntiPatterns).toBeUndefined()
       expect(pattern.relatedObstacles).toBeUndefined()
     })
 
     it('should strip category prefix from centralized relationship slugs', () => {
-      const mockMarkdown = `# Active Partner
-
-## Problem
-AI defaults to silent compliance.`
-
-      mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
-      mockedFs.readFileSync.mockReturnValue(mockMarkdown)
-
+      givenDocuments({
+        'active-partner': 'Active Partner',
+        'chain-of-small-steps': 'Chain of Small Steps',
+        'answer-injection': 'Answer Injection',
+        'black-box-ai': 'Black Box AI',
+      })
       // Mock centralized relationships with full slugs including category
       mockedRelationships.getRelationshipsForBoth.mockReturnValue([
         { from: 'patterns/active-partner', to: 'patterns/chain-of-small-steps', type: 'related', bidirectional: false },
@@ -562,6 +550,19 @@ AI defaults to silent compliance.`
       expect(pattern.relatedPatterns![0].slug).not.toContain('/')
       expect(pattern.relatedAntiPatterns![0].slug).not.toContain('/')
       expect(pattern.relatedObstacles![0].slug).not.toContain('/')
+    })
+
+    it('should fall back to the slug when a related document cannot be read', () => {
+      givenDocuments({ 'active-partner': 'Active Partner' })
+      mockedRelationships.getRelationshipsForBoth.mockReturnValue([
+        { from: 'patterns/active-partner', to: 'patterns/deleted-pattern', type: 'related', bidirectional: false },
+      ])
+
+      const pattern = getPatternBySlug('patterns', 'active-partner')
+
+      expect(pattern.relatedPatterns).toEqual([
+        { slug: 'deleted-pattern', title: 'Deleted Pattern', type: 'related', direction: 'outgoing' }
+      ])
     })
   })
 

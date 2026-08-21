@@ -3,8 +3,11 @@ import RelatedLinks from '@/app/components/RelatedLinks'
 import { RelatedPattern } from '@/lib/types'
 
 // Helper function to convert string slugs to RelatedPattern objects
+const titleFor = (slug: string): string =>
+  slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+
 const toRelatedPatterns = (slugs: string[]): RelatedPattern[] =>
-  slugs.map(slug => ({ slug, type: 'related' as const, direction: 'outgoing' as const }))
+  slugs.map(slug => ({ slug, title: titleFor(slug), type: 'related' as const, direction: 'outgoing' as const }))
 
 jest.mock('@/app/lib/category-config', () => ({
   getCategoryConfig: jest.fn((category: string) => {
@@ -128,25 +131,13 @@ describe('RelatedLinks Component', () => {
     expect(obstacleLink).toHaveAttribute('href', '/obstacles/test-obstacle')
   })
 
-  describe('Slug-to-title conversion', () => {
-    it('converts single word slug correctly', () => {
-      render(<RelatedLinks relatedPatterns={toRelatedPatterns(['refactor'])} />)
-      expect(screen.getByRole('link', { name: 'Refactor' })).toBeInTheDocument()
-    })
-
-    it('converts multi-word slug with hyphens correctly', () => {
-      render(<RelatedLinks relatedPatterns={toRelatedPatterns(['active-partner'])} />)
-      expect(screen.getByRole('link', { name: 'Active Partner' })).toBeInTheDocument()
-    })
-
-    it('converts slug with three words correctly', () => {
-      render(<RelatedLinks relatedPatterns={toRelatedPatterns(['chain-of-small-steps'])} />)
-      expect(screen.getByRole('link', { name: 'Chain Of Small Steps' })).toBeInTheDocument()
-    })
-
-    it('capitalizes each word in slug', () => {
-      render(<RelatedLinks relatedPatterns={toRelatedPatterns(['test-multiple-word-slug'])} />)
-      expect(screen.getByRole('link', { name: 'Test Multiple Word Slug' })).toBeInTheDocument()
+  describe('Link labels', () => {
+    it('renders the document title rather than deriving one from the slug', () => {
+      const patterns: RelatedPattern[] = [
+        { slug: 'pr-theatre', title: 'PR Theatre', type: 'related', direction: 'outgoing' }
+      ]
+      render(<RelatedLinks relatedAntiPatterns={patterns} />)
+      expect(screen.getByRole('link', { name: 'PR Theatre' })).toBeInTheDocument()
     })
   })
 
@@ -226,7 +217,7 @@ describe('RelatedLinks Component', () => {
   describe('Relationship direction and label display', () => {
     it('displays "Solves" for outgoing solves relationship', () => {
       const patterns: RelatedPattern[] = [
-        { slug: 'black-box-ai', type: 'solves', direction: 'outgoing' }
+        { slug: 'black-box-ai', title: 'Black Box Ai', type: 'solves', direction: 'outgoing' }
       ]
       render(<RelatedLinks relatedObstacles={patterns} />)
       expect(screen.getByRole('heading', { name: 'Solves', level: 4 })).toBeInTheDocument()
@@ -234,7 +225,7 @@ describe('RelatedLinks Component', () => {
 
     it('displays "Solved by" for incoming solves relationship', () => {
       const patterns: RelatedPattern[] = [
-        { slug: 'active-partner', type: 'solves', direction: 'incoming' }
+        { slug: 'active-partner', title: 'Active Partner', type: 'solves', direction: 'incoming' }
       ]
       render(<RelatedLinks relatedPatterns={patterns} />)
       expect(screen.getByRole('heading', { name: 'Solved by', level: 4 })).toBeInTheDocument()
@@ -242,7 +233,7 @@ describe('RelatedLinks Component', () => {
 
     it('displays "Uses" for outgoing uses relationship', () => {
       const patterns: RelatedPattern[] = [
-        { slug: 'chain-of-small-steps', type: 'uses', direction: 'outgoing' }
+        { slug: 'chain-of-small-steps', title: 'Chain Of Small Steps', type: 'uses', direction: 'outgoing' }
       ]
       render(<RelatedLinks relatedPatterns={patterns} />)
       expect(screen.getByRole('heading', { name: 'Uses', level: 4 })).toBeInTheDocument()
@@ -250,7 +241,7 @@ describe('RelatedLinks Component', () => {
 
     it('displays "Used by" for incoming uses relationship', () => {
       const patterns: RelatedPattern[] = [
-        { slug: 'active-partner', type: 'uses', direction: 'incoming' }
+        { slug: 'active-partner', title: 'Active Partner', type: 'uses', direction: 'incoming' }
       ]
       render(<RelatedLinks relatedPatterns={patterns} />)
       expect(screen.getByRole('heading', { name: 'Used by', level: 4 })).toBeInTheDocument()
@@ -258,7 +249,7 @@ describe('RelatedLinks Component', () => {
 
     it('displays "Enables" for outgoing enables relationship', () => {
       const patterns: RelatedPattern[] = [
-        { slug: 'active-partner', type: 'enables', direction: 'outgoing' }
+        { slug: 'active-partner', title: 'Active Partner', type: 'enables', direction: 'outgoing' }
       ]
       render(<RelatedLinks relatedPatterns={patterns} />)
       expect(screen.getByRole('heading', { name: 'Enables', level: 4 })).toBeInTheDocument()
@@ -266,7 +257,7 @@ describe('RelatedLinks Component', () => {
 
     it('displays "Enabled by" for incoming enables relationship', () => {
       const patterns: RelatedPattern[] = [
-        { slug: 'chain-of-small-steps', type: 'enables', direction: 'incoming' }
+        { slug: 'chain-of-small-steps', title: 'Chain Of Small Steps', type: 'enables', direction: 'incoming' }
       ]
       render(<RelatedLinks relatedPatterns={patterns} />)
       expect(screen.getByRole('heading', { name: 'Enabled by', level: 4 })).toBeInTheDocument()
@@ -274,7 +265,7 @@ describe('RelatedLinks Component', () => {
 
     it('displays "Causes" for outgoing causes relationship', () => {
       const patterns: RelatedPattern[] = [
-        { slug: 'context-rot', type: 'causes', direction: 'outgoing' }
+        { slug: 'context-rot', title: 'Context Rot', type: 'causes', direction: 'outgoing' }
       ]
       render(<RelatedLinks relatedAntiPatterns={patterns} />)
       expect(screen.getByRole('heading', { name: 'Causes', level: 4 })).toBeInTheDocument()
@@ -282,7 +273,7 @@ describe('RelatedLinks Component', () => {
 
     it('displays "Caused by" for incoming causes relationship', () => {
       const patterns: RelatedPattern[] = [
-        { slug: 'answer-injection', type: 'causes', direction: 'incoming' }
+        { slug: 'answer-injection', title: 'Answer Injection', type: 'causes', direction: 'incoming' }
       ]
       render(<RelatedLinks relatedAntiPatterns={patterns} />)
       expect(screen.getByRole('heading', { name: 'Caused by', level: 4 })).toBeInTheDocument()
@@ -290,7 +281,7 @@ describe('RelatedLinks Component', () => {
 
     it('displays "Extends" for outgoing extends relationship', () => {
       const patterns: RelatedPattern[] = [
-        { slug: 'text-native', type: 'extends', direction: 'outgoing' }
+        { slug: 'text-native', title: 'Text Native', type: 'extends', direction: 'outgoing' }
       ]
       render(<RelatedLinks relatedPatterns={patterns} />)
       expect(screen.getByRole('heading', { name: 'Extends', level: 4 })).toBeInTheDocument()
@@ -298,7 +289,7 @@ describe('RelatedLinks Component', () => {
 
     it('displays "Extended by" for incoming extends relationship', () => {
       const patterns: RelatedPattern[] = [
-        { slug: 'diagrams-as-code', type: 'extends', direction: 'incoming' }
+        { slug: 'diagrams-as-code', title: 'Diagrams As Code', type: 'extends', direction: 'incoming' }
       ]
       render(<RelatedLinks relatedPatterns={patterns} />)
       expect(screen.getByRole('heading', { name: 'Extended by', level: 4 })).toBeInTheDocument()
@@ -306,10 +297,10 @@ describe('RelatedLinks Component', () => {
 
     it('displays same label for symmetric "similar" regardless of direction', () => {
       const outgoing: RelatedPattern[] = [
-        { slug: 'pattern-one', type: 'similar', direction: 'outgoing' }
+        { slug: 'pattern-one', title: 'Pattern One', type: 'similar', direction: 'outgoing' }
       ]
       const incoming: RelatedPattern[] = [
-        { slug: 'pattern-two', type: 'similar', direction: 'incoming' }
+        { slug: 'pattern-two', title: 'Pattern Two', type: 'similar', direction: 'incoming' }
       ]
 
       const { rerender } = render(<RelatedLinks relatedPatterns={outgoing} />)
@@ -321,10 +312,10 @@ describe('RelatedLinks Component', () => {
 
     it('displays same label for symmetric "alternative" regardless of direction', () => {
       const outgoing: RelatedPattern[] = [
-        { slug: 'pattern-one', type: 'alternative', direction: 'outgoing' }
+        { slug: 'pattern-one', title: 'Pattern One', type: 'alternative', direction: 'outgoing' }
       ]
       const incoming: RelatedPattern[] = [
-        { slug: 'pattern-two', type: 'alternative', direction: 'incoming' }
+        { slug: 'pattern-two', title: 'Pattern Two', type: 'alternative', direction: 'incoming' }
       ]
 
       const { rerender } = render(<RelatedLinks relatedAntiPatterns={outgoing} />)
@@ -336,9 +327,9 @@ describe('RelatedLinks Component', () => {
 
     it('groups patterns by relationship type and direction', () => {
       const patterns: RelatedPattern[] = [
-        { slug: 'pattern-one', type: 'related', direction: 'outgoing' },
-        { slug: 'pattern-two', type: 'solves', direction: 'outgoing' },
-        { slug: 'pattern-three', type: 'solves', direction: 'incoming' }
+        { slug: 'pattern-one', title: 'Pattern One', type: 'related', direction: 'outgoing' },
+        { slug: 'pattern-two', title: 'Pattern Two', type: 'solves', direction: 'outgoing' },
+        { slug: 'pattern-three', title: 'Pattern Three', type: 'solves', direction: 'incoming' }
       ]
 
       render(<RelatedLinks relatedPatterns={patterns} />)

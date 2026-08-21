@@ -9,13 +9,6 @@ interface RelatedLinksProps {
   relatedObstacles?: RelatedPattern[]
 }
 
-function slugToTitle(slug: string): string {
-  return slug
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ')
-}
-
 function formatRelationshipType(type: RelationshipType, direction: 'outgoing' | 'incoming'): string {
   // Symmetric relationships (same label regardless of direction)
   if (type === 'similar' || type === 'alternative' || type === 'related') {
@@ -131,7 +124,7 @@ export default function RelatedLinks({
                         href={`/${category}/${pattern.slug}/`}
                         className={`${styles.link} ${styles[config.styleClass]}`}
                       >
-                        {slugToTitle(pattern.slug)}
+                        {pattern.title}
                       </Link>
                     </li>
                   ))}
