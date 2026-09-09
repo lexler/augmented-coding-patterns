@@ -1,19 +1,17 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback, useSyncExternalStore } from 'react'
 
 type Theme = 'light' | 'dark'
 
-function getInitialTheme(): Theme {
-  if (typeof window === 'undefined') {
-    return 'light'
-  }
+const serverRenderedTheme: Theme = 'light'
 
-  const storedTheme = localStorage.getItem('theme')
-  if (storedTheme === 'light' || storedTheme === 'dark') {
-    return storedTheme
-  }
+function readThemeFromDocument(): Theme {
+  return document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+}
 
-  const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
-  return isDarkMode ? 'dark' : 'light'
+function subscribeToDocumentTheme(onChange: () => void) {
+  const observer = new MutationObserver(onChange)
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+  return () => observer.disconnect()
 }
 
 function applyThemeToDOM(theme: Theme) {
@@ -22,15 +20,15 @@ function applyThemeToDOM(theme: Theme) {
 }
 
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme)
-
-  useEffect(() => {
-    applyThemeToDOM(theme)
-  }, [theme])
+  const theme = useSyncExternalStore(
+    subscribeToDocumentTheme,
+    readThemeFromDocument,
+    () => serverRenderedTheme
+  )
 
   const toggleTheme = useCallback(() => {
     const newTheme: Theme = theme === 'light' ? 'dark' : 'light'
-    setTheme(newTheme)
+    applyThemeToDOM(newTheme)
     localStorage.setItem('theme', newTheme)
   }, [theme])
 
