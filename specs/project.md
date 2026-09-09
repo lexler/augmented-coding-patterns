@@ -2,7 +2,7 @@
 
 A static documentation website that presents an evolving collection of patterns, anti-patterns, and obstacles for developing software with LLMs.
 
-Deployed at https://lexler.github.io/augmented-coding-patterns/
+Deployed at https://ai-coding-patterns.dev/ (Cloudflare Pages) and mirrored on GitHub Pages at https://lexler.github.io/augmented-coding-patterns/
 
 ## Purpose
 

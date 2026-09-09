@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Next.js 15 static documentation website that presents an evolving collection of patterns, anti-patterns, and obstacles for developing software with LLMs. The site is deployed to GitHub Pages at https://lexler.github.io/augmented-coding-patterns/
+This is a Next.js 15 static documentation website that presents an evolving collection of patterns, anti-patterns, and obstacles for developing software with LLMs. The site is deployed to https://ai-coding-patterns.dev/ (Cloudflare Pages) and mirrored on GitHub Pages at https://lexler.github.io/augmented-coding-patterns/
 
 See `specs/project.md` for the overall architecture and `specs/map.md` for the full directory map.
 

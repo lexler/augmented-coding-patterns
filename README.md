@@ -3,7 +3,9 @@
 This repository is an evolving collection of emerging patterns and anti-patterns for developing software with LLMs.
 
 ## View Online
-[lexler.github.io/augmented-coding-patterns/](https://lexler.github.io/augmented-coding-patterns//)
+[ai-coding-patterns.dev](https://ai-coding-patterns.dev/)
+
+Also mirrored on GitHub Pages at [lexler.github.io/augmented-coding-patterns](https://lexler.github.io/augmented-coding-patterns/).
 
 ## Repository Structure
 
