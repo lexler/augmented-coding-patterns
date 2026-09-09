@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Augmented Coding Patterns — Learning Path</title>
+<style>
+  :root {
+    --ground: #f2f1ec;
+    --card: #ffffff;
+    --ink: #26282a;
+    --muted: #71746f;
+    --faint: #a3a49c;
+    --line: #c9c8bd;
+    --spine: #b4b3a6;
+    --pattern: #1e7a5a;
+    --pattern-soft: #e2f0ea;
+    --anti: #b0492d;
+    --anti-soft: #f6e6e0;
+    --obstacle: #4c617e;
+    --obstacle-soft: #e4e9f0;
+    --badge: #8a6d1f;
+    --badge-soft: #f3ecd6;
+    --card-border: #dddcd2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #17181a;
+      --card: #1f2124;
+      --ink: #e6e4dc;
+      --muted: #9b9e96;
+      --faint: #6a6d66;
+      --line: #35373a;
+      --spine: #4a4c48;
+      --pattern: #4fb890;
+      --pattern-soft: #1d3229;
+      --anti: #d97b5c;
+      --anti-soft: #38231b;
+      --obstacle: #8ba3c4;
+      --obstacle-soft: #232c39;
+      --badge: #cdb060;
+      --badge-soft: #322b16;
+      --card-border: #33363a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #17181a; --card: #1f2124; --ink: #e6e4dc; --muted: #9b9e96;
+    --faint: #6a6d66; --line: #35373a; --spine: #4a4c48;
+    --pattern: #4fb890; --pattern-soft: #1d3229;
+    --anti: #d97b5c; --anti-soft: #38231b;
+    --obstacle: #8ba3c4; --obstacle-soft: #232c39;
+    --badge: #cdb060; --badge-soft: #322b16; --card-border: #33363a;
+  }
+  :root[data-theme="light"] {
+    --ground: #f2f1ec; --card: #ffffff; --ink: #26282a; --muted: #71746f;
+    --faint: #a3a49c; --line: #c9c8bd; --spine: #b4b3a6;
+    --pattern: #1e7a5a; --pattern-soft: #e2f0ea;
+    --anti: #b0492d; --anti-soft: #f6e6e0;
+    --obstacle: #4c617e; --obstacle-soft: #e4e9f0;
+    --badge: #8a6d1f; --badge-soft: #f3ecd6; --card-border: #dddcd2;
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Avenir Next", "Avenir", "Segoe UI", system-ui, sans-serif;
+    line-height: 1.45;
+    margin: 0;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; }
+
+  /* ---------- header ---------- */
+  .masthead { margin-bottom: 1rem; }
+  .eyebrow {
+    font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 .5rem;
+  }
+  h1 {
+    font-family: "Futura", "Avenir Next", "Century Gothic", sans-serif;
+    font-size: clamp(1.7rem, 4.5vw, 2.5rem);
+    line-height: 1.12; margin: 0 0 .75rem; text-wrap: balance; font-weight: 600;
+  }
+  .thesis { max-width: 62ch; color: var(--muted); margin: 0 0 1.1rem; font-size: .98rem; }
+  .thesis strong { color: var(--ink); font-weight: 600; }
+  .facts { display: flex; flex-wrap: wrap; gap: .4rem .45rem; margin: 0 0 1.4rem; padding: 0; list-style: none; }
+  .facts li {
+    font-size: .78rem; padding: .22rem .6rem; border: 1px solid var(--line);
+    border-radius: 999px; color: var(--muted); background: var(--card);
+  }
+  .legend {
+    display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; align-items: center;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    padding: .65rem 0; margin-bottom: 2.2rem; font-size: .8rem; color: var(--muted);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: .45rem; }
+  .count { margin-left: auto; font-variant-numeric: tabular-nums; }
+
+  /* ---------- markers ---------- */
+  .mk { flex: 0 0 auto; width: 12px; height: 12px; display: inline-block; }
+  .mk-p { border-radius: 50%; background: var(--pattern); }
+  .mk-a { background: var(--anti); transform: rotate(45deg) scale(.85); }
+  .mk-o { background: var(--obstacle); clip-path: polygon(50% 0, 100% 100%, 0 100%); height: 11px; }
+
+  /* ---------- trail ---------- */
+  .trail { position: relative; padding-left: 44px; }
+  .trail::before {
+    content: ""; position: absolute; top: 8px; bottom: 8px; left: 13px;
+    width: 2px; background: var(--spine);
+  }
+  @media (max-width: 560px) { .trail { padding-left: 30px; } .trail::before { left: 6px; } }
+
+  .part { position: relative; margin: 2.6rem 0 1.3rem; display: flex; gap: 1rem; align-items: baseline; }
+  .part:first-child { margin-top: 0; }
+  .pno {
+    position: absolute; left: -44px; top: -2px; width: 28px; height: 28px;
+    background: var(--ink); color: var(--ground); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Futura", "Avenir Next", sans-serif; font-size: .85rem; font-weight: 600;
+  }
+  @media (max-width: 560px) { .pno { left: -30px; width: 22px; height: 22px; font-size: .72rem; } }
+  .part h2 {
+    font-family: "Futura", "Avenir Next", "Century Gothic", sans-serif;
+    font-size: 1.35rem; font-weight: 600; margin: 0; letter-spacing: .01em;
+  }
+  .part p { margin: .15rem 0 0; color: var(--muted); font-size: .88rem; max-width: 58ch; }
+
+  .chapter { position: relative; margin-bottom: 1.4rem; }
+  .chapter::before {
+    content: ""; position: absolute; left: -37px; top: 14px; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--ground); border: 3px solid var(--ink);
+  }
+  @media (max-width: 560px) { .chapter::before { left: -29px; width: 9px; height: 9px; border-width: 2.5px; } }
+
+  .card {
+    background: var(--card); border: 1px solid var(--card-border); border-radius: 10px;
+    padding: 1rem 1.15rem 1.05rem;
+  }
+  .ch-label {
+    font-size: .68rem; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--faint); margin: 0 0 .1rem;
+  }
+  .card h3 { margin: 0 0 .25rem; font-size: 1.08rem; font-weight: 600; }
+  .lede { margin: 0 0 .75rem; color: var(--muted); font-size: .86rem; max-width: 60ch; }
+
+  .items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .32rem; }
+  .it { display: flex; align-items: baseline; gap: .55rem; font-size: .88rem; }
+  .it .mk { position: relative; top: 1px; }
+  .nm { font-weight: 600; white-space: nowrap; }
+  .it-o .nm { color: var(--obstacle); font-weight: 500; }
+  .it-a .nm { color: var(--anti); font-weight: 500; }
+  .nt { color: var(--muted); font-size: .82rem; }
+  .sub { padding-left: 1.35rem; }
+  .sub::before { content: "↳"; color: var(--faint); margin-right: -.1rem; }
+  .flag {
+    font-size: .68rem; padding: .1rem .45rem; border-radius: 999px;
+    background: var(--badge-soft); color: var(--badge); white-space: nowrap; font-weight: 600;
+  }
+
+  /* ---------- findings ---------- */
+  .findings { margin-top: 3rem; }
+  .findings h2 {
+    font-family: "Futura", "Avenir Next", "Century Gothic", sans-serif;
+    font-size: 1.2rem; font-weight: 600; margin: 0 0 .9rem;
+  }
+  .fgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: .7rem; }
+  .fcard {
+    background: var(--card); border: 1px solid var(--card-border); border-radius: 10px;
+    padding: .85rem 1rem; font-size: .84rem;
+  }
+  .fcard h3 { margin: 0 0 .3rem; font-size: .88rem; font-weight: 600; }
+  .fcard p { margin: 0; color: var(--muted); }
+  .fcard .flag { display: inline-block; margin-bottom: .45rem; }
+
+  footer { margin-top: 2.4rem; font-size: .78rem; color: var(--faint); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">Augmented Coding Patterns · all 84 documents</p>
+    <h1>One trail through the whole collection</h1>
+    <p class="thesis">Your AI partner is brilliant and absurdly well-read — but it has <strong>no memory</strong>, <strong>limited attention</strong>, <strong>rolls dice on every answer</strong>, <strong>never says no</strong>, and <strong>you can't see what it's thinking</strong>. Every obstacle is one of these five facts showing up; every anti-pattern is a natural-but-wrong reaction; every pattern is the working counter-move.</p>
+    <ul class="facts">
+      <li>no memory → Part I</li>
+      <li>limited attention → Part I</li>
+      <li>dice-roll outputs → Part II</li>
+      <li>never says no → Part III</li>
+      <li>opaque → Part III</li>
+      <li>…then scale it → Part IV</li>
+    </ul>
+    <div class="legend">
+      <span><i class="mk mk-o"></i> obstacle — the terrain</span>
+      <span><i class="mk mk-a"></i> anti-pattern — the wrong turn</span>
+      <span><i class="mk mk-p"></i> pattern — the move</span>
+      <span>↳ special case / composition</span>
+      <span class="count">59 🧩 · 10 ⚠️ · 15 ⛰</span>
+    </div>
+  </header>
+
+  <div class="trail">
+
+    <header class="part"><span class="pno">I</span>
+      <div><h2>You Are Its Memory</h2>
+      <p>The machine cannot learn and forgets everything. Whatever should persist, you must externalize — then curate what little fits.</p></div>
+    </header>
+
+    <section class="chapter">
+      <div class="card">
+        <p class="ch-label">Chapter 1</p>
+        <h3>Manage the Context</h3>
+        <ul class="items">
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Cannot Learn</span><span class="nt">fixed weights, stateless — you are the memory</span></li>
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Limited Context Window</span><span class="nt">and the memory you manage is small</span></li>
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Context Rot</span><span class="nt">and it decays before it's full</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Context Management</span><span class="nt">the umbrella: you can only append or reset</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Knowledge Document</span><span class="nt">externalize to files — resets become cheap</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Ground Rules</span><span class="nt">knowledge document, always loaded</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Reference Docs</span><span class="nt">knowledge document, loaded on demand</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">JIT Docs</span><span class="nt">third policy: not stored — searched live</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Extract Knowledge</span><span class="nt">capture insights the moment they emerge</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Knowledge Composition</span><span class="nt">small, single-responsibility files</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="card">
+        <p class="ch-label">Chapter 2</p>
+        <h3>Manage the Attention</h3>
+        <ul class="items">
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Limited Focus</span><span class="nt">attention dilutes or fixates</span></li>
+          <li class="it it-a"><i class="mk mk-a"></i><span class="nm">Distracted Agent</span><span class="nt">one agent for everything — rules silently ignored</span></li>
+          <li class="it it-a"><i class="mk mk-a"></i><span class="nm">Obsess Over Rules</span><span class="nt">more rules → each rule weaker</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Focused Agent</span><span class="nt">narrow responsibility wins</span></li>
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Excess Verbosity</span><span class="nt">it floods you by default</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Noise Cancellation</span><span class="nt">compress everything; fight bloat as hygiene</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Semantic Zoom</span><span class="nt">text is elastic — choose your abstraction level</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <header class="part"><span class="pno">II</span>
+      <div><h2>Trust Nothing, Verify Everything</h2>
+      <p>It fabricates confidently and rolls dice on every answer. Verify cheaply, checkpoint, reroll — and keep the task small enough to survive.</p></div>
+    </header>
+
+    <section class="chapter">
+      <div class="card">
+        <p class="ch-label">Chapter 3</p>
+        <h3>Close the Loop</h3>
+        <ul class="items">
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Hallucinations</span><span class="nt">invents APIs — mercifully self-revealing in code</span></li>
+          <li class="it it-a"><i class="mk mk-a"></i><span class="nm">Perfect Recall Fallacy</span><span class="nt">expecting it to remember library details</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Playgrounds</span><span class="nt">let it discover reality, not recall it</span></li>
+          <li class="it it-a"><i class="mk mk-a"></i><span class="nm">Unvalidated Leaps</span><span class="nt">every fix built on an unchecked assumption</span></li>
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Solution Fixation</span><span class="nt">first plausible hypothesis becomes “the answer”</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Feedback Loop</span><span class="nt">success signal + permission to iterate</span></li>
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Keeping Up</span><span class="nt">it generates faster than you can review</span></li>
+          <li class="it it-a"><i class="mk mk-a"></i><span class="nm">Flying Blind</span><span class="nt">the surrender: skip review, understand nothing</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Constrained Tests</span><span class="nt">tests designed so they can't be invalid</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Approved Scenarios</span><span class="nt">Constrained Tests, tuned for easy validation</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Approved Logs</span><span class="nt">Constrained Tests, tuned for bug reproduction</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Refinement Loop</span><span class="nt">one improvement goal per pass, until clean</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Feedback Flip</span><span class="nt">Refinement Loop with goal = critique</span><span class="flag">mark as special case</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="card">
+        <p class="ch-label">Chapter 4</p>
+        <h3>Ride the Dice</h3>
+        <ul class="items">
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Non-Determinism</span><span class="nt">same prompt, different results</span></li>
+          <li class="it it-a"><i class="mk mk-a"></i><span class="nm">Sunk Cost</span><span class="nt">pushing iteration 5 when a fresh roll would win</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Knowledge Checkpoint</span><span class="nt">Extract Knowledge at the plan boundary — save plan, reroll code</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Happy to Delete</span><span class="nt">revert freely, keep the lesson</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Parallel Implementations</span><span class="nt">roll five dice, pick or combine the best</span><span class="flag">≈ Take All Paths</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Offload Deterministic</span><span class="nt">write the script once, run it forever</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="card">
+        <p class="ch-label">Chapter 5</p>
+        <h3>Tame the Complexity</h3>
+        <ul class="items">
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Degrades Under Complexity</span><span class="nt">errors compound with step and artifact size</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Chain of Small Steps</span><span class="nt">small, verified, committed — you carry the complexity</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Canary in the Code Mine</span><span class="nt">AI struggling = your codebase asking for refactoring</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Surface Change Attractors</span><span class="nt">the same signal mined from history — hotspots and change coupling become redesign constraints</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <header class="part"><span class="pno">III</span>
+      <div><h2>Make It a Dialogue</h2>
+      <p>It's a black box trained to say yes. License the pushback, phrase to open the space, and meet it in its native medium.</p></div>
+    </header>
+
+    <section class="chapter">
+      <div class="card">
+        <p class="ch-label">Chapter 6</p>
+        <h3>Two-Way Alignment</h3>
+        <ul class="items">
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Black Box AI</span><span class="nt">you can't inspect its mental model</span></li>
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Compliance Bias</span><span class="nt">trained to comply over clarify</span></li>
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Obedient Contractor</span><span class="nt">literal, short-term, no pushback</span></li>
+          <li class="it it-a"><i class="mk mk-a"></i><span class="nm">Silent Misalignment</span><span class="nt">“sure thing, boss” while you talk past each other</span></li>
+          <li class="it it-a"><i class="mk mk-a"></i><span class="nm">Tell Me a Lie</span><span class="nt">your framing forces an answer that can't be true</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Active Partner</span><span class="nt">grant and reinforce permission to push back</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Check Alignment</span><span class="nt">it shows its understanding before implementing</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Context Markers</span><span class="nt">emoji make invisible context state visible</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Reverse Direction</span><span class="nt">break monologue inertia — flip who asks</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">You Do It</span><span class="nt">Reverse Direction for actions — “you do it”</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">ROSE Feedback</span><span class="nt">risk → observation → solution → expected outcome</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="card">
+        <p class="ch-label">Chapter 7</p>
+        <h3>Speak Its Language</h3>
+        <ul class="items">
+          <li class="it it-a"><i class="mk mk-a"></i><span class="nm">Answer Injection</span><span class="nt">your question smuggles in the answer</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Cast Wide</span><span class="nt">the antidote — ask what you're not considering</span></li>
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Negative Bleedthrough</span><span class="nt">“no moon” puts the moon in the room</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Point the Target</span><span class="nt">say what you want, never what to avoid</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Semantic Anchors</span><span class="nt">one canonical term beats a paragraph</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="card">
+        <p class="ch-label">Chapter 8</p>
+        <h3>Explore While It's Cheap</h3>
+        <ul class="items">
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Take All Paths</span><span class="nt">ten working prototypes, not one mockup</span><span class="flag">≈ Parallel Implementations</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Borrow Behaviors</span><span class="nt">the solution exists — transplant and adapt it</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Softest Prototype</span><span class="nt">markdown + AI is the system while you learn what you need</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="card">
+        <p class="ch-label">Chapter 9</p>
+        <h3>Live in Text</h3>
+        <ul class="items">
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Text Native</span><span class="nt">if it can be text, make it text</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Diagrams as Code</span><span class="nt">extends Text Native to architecture docs</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Shared Canvas</span><span class="nt">Text Native as common ground for expert + dev + AI</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Polyglot AI</span><span class="nt">beyond text: voice and images, both directions</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Mind Dump</span><span class="nt">the voice channel, inbound — dump unfiltered, AI extracts signal</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Speak to Me</span><span class="nt">the voice channel, outbound — spoken one-line progress updates while you're elsewhere</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <header class="part"><span class="pno">IV</span>
+      <div><h2>From Sessions to Systems</h2>
+      <p>Instructions decay; mechanisms don't. Mechanize the enforcement, multiply the agents, close the meta-loop.</p></div>
+    </header>
+
+    <section class="chapter">
+      <div class="card">
+        <p class="ch-label">Chapter 10</p>
+        <h3>Make It Mechanical</h3>
+        <ul class="items">
+          <li class="it it-o"><i class="mk mk-o"></i><span class="nm">Selective Hearing</span><span class="nt">it filters your instructions by its priorities</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Hooks</span><span class="nt">the mechanism — deterministic lifecycle interception</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Reminders</span><span class="nt">TODOs, instruction sandwiches; User Reminders = Hooks re-injecting your rules</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Contextual Prompts</span><span class="nt">separate lever: guidance inside your own scripts' messages</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Habit Hooks</span><span class="nt">Contextual Prompts for tools you can't modify, via Hooks</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Coerce to Interface</span><span class="nt">typed interfaces make violations impossible</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="card">
+        <p class="ch-label">Chapter 11</p>
+        <h3>Many Hands</h3>
+        <ul class="items">
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Chunking</span><span class="nt">orchestrator stays strategic, subagents execute</span><span class="flag">boundary unstated</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Background Agent</span><span class="nt">async agents for standalone tasks</span><span class="flag">boundary unstated</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Yak Shave Delegation</span><span class="nt">Background Agent for the blocking tangent</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Orchestrator</span><span class="nt">monitors, merges, keeps trunk green</span><span class="flag">boundary unstated</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Smart Plan, Cheap Execution</span><span class="nt">tier the models — the strongest plans, a cheaper one executes the spec</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Escalate When Stuck</span><span class="nt">reverse tiering — cheap by default, consult the strong model on triggers</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Phased Delivery</span><span class="nt">Background Agent with structure: plan → implement → review loop → rebase to atomic commits</span><span class="flag">name provisional</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Overnight Batch</span><span class="nt">issues batch-planned with deterministic gates, delivered unattended by a cloud agent</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Slice for Review</span><span class="nt">the agent splits a big delivery into stacked, reviewable PRs — shedding cruft as it goes</span><span class="flag">name provisional</span></li>
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">AI First Responder</span><span class="nt">capstone: Background Agent + Orchestrator + Focused Agent on incidents</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <div class="card">
+        <p class="ch-label">Chapter 12</p>
+        <h3>The System That Learns</h3>
+        <ul class="items">
+          <li class="it sub"><i class="mk mk-p"></i><span class="nm">Show the Agent, Let It Repeat, Automate</span><span class="nt">Extract Knowledge + Refinement Loop + Offload Deterministic as one lifecycle</span></li>
+          <li class="it"><i class="mk mk-p"></i><span class="nm">Learning Loop</span><span class="nt">every session ends with a learning pass, routed into ground rules, docs, habit hooks, or skills — a log surfaces recurring issues</span></li>
+          <li class="it it-a"><i class="mk mk-a"></i><span class="nm">AI Slop</span><span class="nt">the coda: no judgment added? don't hit publish</span></li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+
+  <section class="findings">
+    <h2>Consolidation findings</h2>
+    <div class="fgrid">
+      <div class="fcard">
+        <span class="flag">merge candidate</span>
+        <h3>Take All Paths ≈ Parallel Implementations</h3>
+        <p>The latter's “exploration mode” is Take All Paths, down to the examples. Merge, or split into economics vs mechanics.</p>
+      </div>
+      <div class="fcard">
+        <span class="flag">clarify boundaries</span>
+        <h3>Chunking / Background Agent / Orchestrator</h3>
+        <p>Three angles on boss-plus-workers: decompose one task / offload independent tasks / integrate results. Real boundaries, stated nowhere.</p>
+      </div>
+      <div class="fcard">
+        <span class="flag">mark special case</span>
+        <h3>Feedback Flip ⊂ Refinement Loop</h3>
+        <p>Refinement Loop says it verbatim. Make it structural, like Approved Scenarios/Logs already do with Constrained Tests.</p>
+      </div>
+      <div class="fcard">
+        <span class="flag">document distinctions</span>
+        <h3>The Hooks family</h3>
+        <p>Hooks = mechanism · User Reminders = one use of it · Contextual Prompts = separate concept (meaningful tool output) · Habit Hooks = Contextual Prompts for tools you can't modify. Distinct — but no doc says so.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>Companion to <code>documents/learning_path.md</code> · Lada's 27-station map survives intact as Chapters 1–7; post-talk additions extend the arc into Chapters 8–12.</footer>
+</div>
+</body>
+</html>
