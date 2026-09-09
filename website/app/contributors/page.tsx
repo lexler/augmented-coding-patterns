@@ -13,6 +13,13 @@ export default function ContributorsPage() {
         <p className={styles.description}>
           Thank you to all the contributors who have documented patterns, anti-patterns, and obstacles.
         </p>
+        <p className={styles.description}>
+          <Link
+            href="https://github.com/lexler/augmented-coding-patterns/blob/main/CONTRIBUTE.md"
+          >
+            Guide for future contributors
+          </Link>.
+        </p>
       </header>
 
       <div className={styles.contributorGrid}>
