@@ -1,207 +1,106 @@
 import { renderHook, act } from '@testing-library/react'
+import { renderToString } from 'react-dom/server'
+import { createElement } from 'react'
 import { useTheme } from '@/app/hooks/useTheme'
 
+function setDocumentTheme(theme: 'light' | 'dark') {
+  document.documentElement.classList.remove('light', 'dark')
+  document.documentElement.classList.add(theme)
+}
+
+function ThemeProbe() {
+  return createElement('span', null, useTheme().theme)
+}
+
 describe('useTheme', () => {
-  it('returns dark theme when system prefers dark and no stored preference', () => {
-    const matchMediaNullable = {
-      matches: true,
-      addEventListener: () => {},
-      removeEventListener: () => {}
-    }
-    window.matchMedia = jest.fn().mockReturnValue(matchMediaNullable)
+  beforeEach(() => {
+    document.documentElement.classList.remove('light', 'dark')
+    window.localStorage.clear()
+  })
 
-    const localStorageNullable = {
-      getItem: jest.fn().mockReturnValue(null),
-      setItem: jest.fn(),
-      removeItem: jest.fn(),
-      clear: jest.fn(),
-      key: jest.fn(),
-      length: 0
-    }
-    Object.defineProperty(window, 'localStorage', {
-      value: localStorageNullable,
-      writable: true
-    })
+  it('reads light theme from the document when the pre-hydration script chose light', () => {
+    setDocumentTheme('light')
+
+    const { result } = renderHook(() => useTheme())
+
+    expect(result.current.theme).toBe('light')
+  })
+
+  it('reads dark theme from the document when the pre-hydration script chose dark', () => {
+    setDocumentTheme('dark')
 
     const { result } = renderHook(() => useTheme())
 
     expect(result.current.theme).toBe('dark')
   })
 
-  it('returns light theme when system prefers light and no stored preference', () => {
-    const matchMediaNullable = {
-      matches: false,
-      addEventListener: () => {},
-      removeEventListener: () => {}
-    }
-    window.matchMedia = jest.fn().mockReturnValue(matchMediaNullable)
-
-    const localStorageNullable = {
-      getItem: jest.fn().mockReturnValue(null),
-      setItem: jest.fn(),
-      removeItem: jest.fn(),
-      clear: jest.fn(),
-      key: jest.fn(),
-      length: 0
-    }
-    Object.defineProperty(window, 'localStorage', {
-      value: localStorageNullable,
-      writable: true
-    })
-
+  it('falls back to light when the document has no theme class', () => {
     const { result } = renderHook(() => useTheme())
 
     expect(result.current.theme).toBe('light')
   })
 
-  it('returns stored theme preference over system preference', () => {
-    const matchMediaNullable = {
-      matches: true,
-      addEventListener: () => {},
-      removeEventListener: () => {}
-    }
-    window.matchMedia = jest.fn().mockReturnValue(matchMediaNullable)
+  it('renders light on the server so the markup matches the first client render', () => {
+    setDocumentTheme('dark')
 
-    const localStorageNullable = {
-      getItem: jest.fn().mockReturnValue('light'),
-      setItem: jest.fn(),
-      removeItem: jest.fn(),
-      clear: jest.fn(),
-      key: jest.fn(),
-      length: 0
-    }
-    Object.defineProperty(window, 'localStorage', {
-      value: localStorageNullable,
-      writable: true
-    })
+    const markup = renderToString(createElement(ThemeProbe))
 
-    const { result } = renderHook(() => useTheme())
-
-    expect(result.current.theme).toBe('light')
+    expect(markup).toContain('light')
   })
 
-  it('toggleTheme switches from light to dark', () => {
-    const matchMediaNullable = {
-      matches: false,
-      addEventListener: () => {},
-      removeEventListener: () => {}
-    }
-    window.matchMedia = jest.fn().mockReturnValue(matchMediaNullable)
-
-    const localStorageNullable = {
-      getItem: jest.fn().mockReturnValue(null),
-      setItem: jest.fn(),
-      removeItem: jest.fn(),
-      clear: jest.fn(),
-      key: jest.fn(),
-      length: 0
-    }
-    Object.defineProperty(window, 'localStorage', {
-      value: localStorageNullable,
-      writable: true
-    })
-
+  it('toggleTheme switches from light to dark', async () => {
+    setDocumentTheme('light')
     const { result } = renderHook(() => useTheme())
 
-    expect(result.current.theme).toBe('light')
-
-    act(() => {
+    await act(async () => {
       result.current.toggleTheme()
     })
 
     expect(result.current.theme).toBe('dark')
   })
 
-  it('toggleTheme switches from dark to light', () => {
-    const matchMediaNullable = {
-      matches: true,
-      addEventListener: () => {},
-      removeEventListener: () => {}
-    }
-    window.matchMedia = jest.fn().mockReturnValue(matchMediaNullable)
-
-    const localStorageNullable = {
-      getItem: jest.fn().mockReturnValue(null),
-      setItem: jest.fn(),
-      removeItem: jest.fn(),
-      clear: jest.fn(),
-      key: jest.fn(),
-      length: 0
-    }
-    Object.defineProperty(window, 'localStorage', {
-      value: localStorageNullable,
-      writable: true
-    })
-
+  it('toggleTheme switches from dark to light', async () => {
+    setDocumentTheme('dark')
     const { result } = renderHook(() => useTheme())
 
-    expect(result.current.theme).toBe('dark')
-
-    act(() => {
+    await act(async () => {
       result.current.toggleTheme()
     })
 
     expect(result.current.theme).toBe('light')
   })
 
-  it('theme change updates localStorage', () => {
-    const matchMediaNullable = {
-      matches: false,
-      addEventListener: () => {},
-      removeEventListener: () => {}
-    }
-    window.matchMedia = jest.fn().mockReturnValue(matchMediaNullable)
-
-    const setItemSpy = jest.fn()
-    const localStorageNullable = {
-      getItem: jest.fn().mockReturnValue(null),
-      setItem: setItemSpy,
-      removeItem: jest.fn(),
-      clear: jest.fn(),
-      key: jest.fn(),
-      length: 0
-    }
-    Object.defineProperty(window, 'localStorage', {
-      value: localStorageNullable,
-      writable: true
-    })
-
+  it('toggleTheme remembers the choice in localStorage', async () => {
+    setDocumentTheme('light')
     const { result } = renderHook(() => useTheme())
 
-    act(() => {
+    await act(async () => {
       result.current.toggleTheme()
     })
 
-    expect(setItemSpy).toHaveBeenCalledWith('theme', 'dark')
+    expect(window.localStorage.getItem('theme')).toBe('dark')
   })
 
-  it('theme change applies class to HTML element', () => {
-    const matchMediaNullable = {
-      matches: false,
-      addEventListener: () => {},
-      removeEventListener: () => {}
-    }
-    window.matchMedia = jest.fn().mockReturnValue(matchMediaNullable)
-
-    const localStorageNullable = {
-      getItem: jest.fn().mockReturnValue(null),
-      setItem: jest.fn(),
-      removeItem: jest.fn(),
-      clear: jest.fn(),
-      key: jest.fn(),
-      length: 0
-    }
-    Object.defineProperty(window, 'localStorage', {
-      value: localStorageNullable,
-      writable: true
-    })
-
+  it('toggleTheme replaces the theme class on the HTML element', async () => {
+    setDocumentTheme('light')
     const { result } = renderHook(() => useTheme())
 
-    act(() => {
+    await act(async () => {
       result.current.toggleTheme()
     })
 
     expect(document.documentElement.classList.contains('dark')).toBe(true)
+    expect(document.documentElement.classList.contains('light')).toBe(false)
+  })
+
+  it('follows theme class changes made outside the hook', async () => {
+    setDocumentTheme('light')
+    const { result } = renderHook(() => useTheme())
+
+    await act(async () => {
+      setDocumentTheme('dark')
+    })
+
+    expect(result.current.theme).toBe('dark')
   })
 })
