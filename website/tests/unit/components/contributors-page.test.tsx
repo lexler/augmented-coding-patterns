@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import ContributorsPage from '@/app/contributors/page'
 import { getContributorStats } from '@/lib/contributors'
 import { ContributorStats } from '@/lib/contributors'
+import { siteConfig } from '@/config/site'
 
 jest.mock('@/lib/contributors')
 
@@ -75,6 +76,14 @@ describe('Contributors Page', () => {
     render(<ContributorsPage />)
     const description = screen.getByText(/Thank you to all the contributors/i)
     expect(description).toBeInTheDocument()
+  })
+
+  it('should link to the contribution guide in a new tab', () => {
+    render(<ContributorsPage />)
+    const guideLink = screen.getByRole('link', { name: /contribution guide/i })
+    expect(guideLink).toHaveAttribute('href', `${siteConfig.links.github}/blob/main/CONTRIBUTE.md`)
+    expect(guideLink).toHaveAttribute('target', '_blank')
+    expect(guideLink).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
   it('should render contributor cards with avatar, name, and counts', () => {

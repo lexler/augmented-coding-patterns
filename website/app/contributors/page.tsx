@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getContributorStats } from "@/lib/contributors";
+import { siteConfig } from "@/config/site";
 import styles from "./page.module.css";
 
 export default function ContributorsPage() {
@@ -12,6 +13,16 @@ export default function ContributorsPage() {
         <h1 className={styles.title}>Contributors</h1>
         <p className={styles.description}>
           Thank you to all the contributors who have documented patterns, anti-patterns, and obstacles.
+        </p>
+        <p className={styles.description}>
+          Want to contribute? Read the{" "}
+          <Link
+            href={`${siteConfig.links.github}/blob/main/CONTRIBUTE.md`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            contribution guide
+          </Link>.
         </p>
       </header>
 
