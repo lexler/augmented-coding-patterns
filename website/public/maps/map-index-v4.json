@@ -115,14 +115,14 @@
     "slug": "active-partner"
   },
   "24": {
-    "name": "Check Alignment",
-    "category": "patterns",
-    "slug": "check-alignment"
-  },
-  "25": {
     "name": "Reverse Direction",
     "category": "patterns",
     "slug": "reverse-direction"
+  },
+  "25": {
+    "name": "Check Alignment",
+    "category": "patterns",
+    "slug": "check-alignment"
   },
   "26": {
     "name": "Answer Injection",
@@ -138,11 +138,6 @@
     "name": "Context Markers",
     "category": "patterns",
     "slug": "context-markers"
-  },
-  "31": {
-    "name": "Polyglot AI",
-    "category": "patterns",
-    "slug": "polyglot-ai"
   },
   "32": {
     "name": "Text Native",
