@@ -29,6 +29,7 @@ Files live in `website/public/maps/`:
 - `semantic_map.svg` + `map-index.json` — v1 (interactive)
 - `semantic_map_v2.svg` + `map-index-v2.json` — v2 (interactive)
 - `semantic_map_v3.svg` + `map-index-v3.json` — v3 (interactive)
+- `semantic_map_v4.svg` + `map-index-v4.json` — v4 (interactive, adds Polyglot AI; numbers 29 and 30 are unused)
 
 ## Adding a map
 
