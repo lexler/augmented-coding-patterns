@@ -139,7 +139,12 @@
     "category": "patterns",
     "slug": "context-markers"
   },
-  "32": {
+  "29": {
+    "name": "Polyglot AI",
+    "category": "patterns",
+    "slug": "polyglot-ai"
+  },
+  "30": {
     "name": "Text Native",
     "category": "patterns",
     "slug": "text-native"
