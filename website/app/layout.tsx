@@ -72,23 +72,50 @@ export default function RootLayout({
 
           <footer className={styles.footer}>
             <div className={styles.footerContent}>
-              <p>
-                {siteConfig.name} - A guide to effective AI-augmented software development
-              </p>
-              <div className={styles.footerLinks}>
-                <a
-                  href={siteConfig.links.github}
-                  className={styles.footerLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  GitHub
-                </a>
-              </div>
+              <p>{siteConfig.tagline}</p>
+              <ul className={styles.footerLinks}>
+                <li>
+                  <FooterLink href={siteConfig.links.github}>GitHub</FooterLink>
+                </li>
+                <li>
+                  <FooterLink href={siteConfig.links.contribute}>Contribute</FooterLink>
+                </li>
+                <li>
+                  License: content{" "}
+                  <FooterLink href={siteConfig.licenses.content.url} isLicense>
+                    {siteConfig.licenses.content.name}
+                  </FooterLink>
+                  , code{" "}
+                  <FooterLink href={siteConfig.licenses.code.url} isLicense>
+                    {siteConfig.licenses.code.name}
+                  </FooterLink>
+                </li>
+              </ul>
             </div>
           </footer>
         </div>
       </body>
     </html>
+  );
+}
+
+function FooterLink({
+  href,
+  isLicense = false,
+  children,
+}: Readonly<{
+  href: string;
+  isLicense?: boolean;
+  children: React.ReactNode;
+}>) {
+  return (
+    <a
+      href={href}
+      className={styles.footerLink}
+      target="_blank"
+      rel={isLicense ? "license noopener noreferrer" : "noopener noreferrer"}
+    >
+      {children}
+    </a>
   );
 }

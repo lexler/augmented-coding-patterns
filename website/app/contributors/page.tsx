@@ -17,7 +17,7 @@ export default function ContributorsPage() {
         <p className={styles.description}>
           Want to contribute? Read the{" "}
           <Link
-            href={`${siteConfig.links.github}/blob/main/CONTRIBUTE.md`}
+            href={siteConfig.links.contribute}
             target="_blank"
             rel="noopener noreferrer"
           >
