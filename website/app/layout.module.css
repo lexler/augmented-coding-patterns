@@ -99,9 +99,17 @@
 
 .footerLinks {
   display: flex;
-  gap: var(--space-lg);
+  flex-wrap: wrap;
   justify-content: center;
-  margin-top: var(--space-md);
+  margin: var(--space-md) 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-tertiary);
+}
+
+.footerLinks li + li::before {
+  content: "·";
+  margin: 0 var(--space-sm);
 }
 
 .footerLink {
@@ -152,7 +160,10 @@
   }
 
   .footerLinks {
-    flex-direction: column;
-    gap: var(--space-sm);
+    gap: var(--space-sm) var(--space-lg);
+  }
+
+  .footerLinks li + li::before {
+    content: none;
   }
 }

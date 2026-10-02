@@ -88,8 +88,8 @@ describe('RootLayout', () => {
   })
 
   describe('Footer', () => {
-    it('renders footer with site description', () => {
-      const footerText = screen.getByText(/A guide to effective AI-augmented software development/i)
+    it('renders footer with site tagline', () => {
+      const footerText = screen.getByText('Patterns for building software with AI')
       expect(footerText).toBeInTheDocument()
     })
 
@@ -99,6 +99,30 @@ describe('RootLayout', () => {
       expect(githubLink).toHaveAttribute('href', siteConfig.links.github)
       expect(githubLink).toHaveAttribute('target', '_blank')
       expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer')
+    })
+
+    it('links the contribution guide', () => {
+      const contributeLink = screen.getByRole('link', { name: 'Contribute' })
+      expect(contributeLink).toHaveAttribute('href', `${siteConfig.repository.url}/blob/main/CONTRIBUTE.md`)
+      expect(contributeLink).toHaveAttribute('target', '_blank')
+      expect(contributeLink).toHaveAttribute('rel', 'noopener noreferrer')
+    })
+
+    it('labels the licenses for content and code', () => {
+      const footer = screen.getByRole('contentinfo')
+      expect(footer).toHaveTextContent('License: content CC BY 4.0, code MIT')
+    })
+
+    it('links the content license', () => {
+      const contentLicense = screen.getByRole('link', { name: 'CC BY 4.0' })
+      expect(contentLicense).toHaveAttribute('href', 'https://creativecommons.org/licenses/by/4.0/')
+      expect(contentLicense).toHaveAttribute('rel', 'license noopener noreferrer')
+    })
+
+    it('links the code license', () => {
+      const codeLicense = screen.getByRole('link', { name: 'MIT' })
+      expect(codeLicense).toHaveAttribute('href', `${siteConfig.repository.url}/blob/main/LICENSE-CODE`)
+      expect(codeLicense).toHaveAttribute('rel', 'license noopener noreferrer')
     })
 
     it('has proper semantic HTML structure with footer element', () => {
