@@ -2,6 +2,8 @@
 
 This guide explains how to contribute patterns, anti-patterns, or obstacles to this collection.
 
+By contributing, you agree that your written content is licensed under [CC BY 4.0](./LICENSE) and your code under [MIT](./LICENSE-CODE), like the rest of the repository.
+
 ## Content Types & Locations
 
 - **Patterns** (solutions to common problems when coding with AI): `documents/patterns/{slug}.md`
