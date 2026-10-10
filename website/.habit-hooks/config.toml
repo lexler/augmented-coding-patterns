@@ -1,0 +1,12 @@
+plugins = ["typescript", "generic"]
+files = [
+  "**/*.ts",
+  "**/*.tsx",
+  "!node_modules/**",
+  "!.next/**",
+  "!out/**",
+  "!next-env.d.ts",
+]
+
+[sensors.eslint]
+args = ["--config", ".habit-hooks/eslint.config.mjs"]

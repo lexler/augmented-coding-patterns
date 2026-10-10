@@ -28,6 +28,7 @@ npx playwright test path/to/test.spec.ts # Run single Playwright test
 # Quality Checks
 npm run lint                  # Must have 0 errors, 0 warnings
 npm run validate              # Validate relationships graph
+../tools/habit-hooks.sh --all # Code-smell sensors with fix guidance (exit 1 = findings)
 
 # Build
 npm run build                 # Create static site in out/ directory

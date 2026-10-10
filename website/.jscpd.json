@@ -1,0 +1,7 @@
+{
+  "path": ["app", "lib", "tests"],
+  "format": ["typescript", "tsx"],
+  "threshold": 0,
+  "minLines": 5,
+  "minTokens": 50
+}

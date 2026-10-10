@@ -1,0 +1,9 @@
+{
+  "ignore": [".habit-hooks/**"],
+  "ignoreDependencies": [
+    "eslint-config-next",
+    "wrangler",
+    "ts-morph",
+    "jscpd"
+  ]
+}

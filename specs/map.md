@@ -28,6 +28,7 @@ Where everything lives in this repo.
 │
 ├── tools/                  Map processing utilities
 │   ├── process_map.py
+│   ├── habit-hooks.sh      Code-smell sensors for website/ (config in website/.habit-hooks/)
 │   └── map images
 │
 ├── slides/                 Talk presentation materials
