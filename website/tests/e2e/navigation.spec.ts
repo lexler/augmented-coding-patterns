@@ -13,6 +13,7 @@ const headerDestinations = [
 ]
 
 const screenWidths = [360, 390, 768, 1024, 1280, 1440]
+const phoneHeldSideways = { width: 844, height: 390 }
 
 async function pageScrollsSideways(page: Page) {
   return page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)
@@ -21,7 +22,7 @@ async function pageScrollsSideways(page: Page) {
 test.describe('Header navigation', () => {
   for (const destination of headerDestinations) {
     test(`a reader reaches ${destination.link} from the header`, async ({ page }) => {
-      await page.goto('/contributors/')
+      await page.goto('/patterns/active-partner/')
 
       await followHeaderLink(page, destination.link)
 
@@ -50,6 +51,32 @@ test.describe('Header navigation', () => {
     await expect(page).toHaveURL('/patterns/')
     await expect(menuButton).toHaveAttribute('aria-expanded', 'false')
     await expect(page.getByRole('navigation').getByRole('link', { name: 'Talk' })).toBeHidden()
+  })
+})
+
+test.describe('Header on a wide screen', () => {
+  test.use({ viewport: { width: 1440, height: 900 } })
+
+  test('shows every page link without a menu button', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'phones never get the wide header')
+    await page.goto('/')
+
+    await expect(page.getByRole('button', { name: 'Menu' })).toBeHidden()
+    for (const destination of headerDestinations) {
+      await expect(page.getByRole('navigation').getByRole('link', { name: destination.link, exact: true })).toBeVisible()
+    }
+    await expect(page.getByRole('button', { name: 'Toggle theme' })).toBeVisible()
+  })
+})
+
+test.describe('Header on a phone held sideways', () => {
+  test('a reader reaches the last menu item', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'only phones are held sideways')
+    await page.setViewportSize(phoneHeldSideways)
+    await page.goto('/patterns/active-partner/')
+
+    await openHeaderMenuIfCollapsed(page)
+    await page.getByRole('button', { name: 'Toggle theme' }).click({ trial: true })
   })
 })
 

@@ -87,9 +87,13 @@ test.describe('Smoke Tests - Critical User Journeys', () => {
 
     const contributorCard = page.getByRole('article').first();
     await expect(contributorCard).toBeVisible();
-    await expect(contributorCard.getByRole('link').filter({ hasNotText: /contributions?$/ })).toBeVisible();
+    const contributorName = contributorCard.getByRole('link').filter({ hasNotText: /contributions?$/ });
+    await expect(contributorName).toBeVisible();
+    await expect(contributorName).toHaveAttribute('target', '_blank');
     await expect(contributorCard.getByRole('img', { name: /avatar/ })).toBeVisible();
-    await expect(contributorCard.getByRole('link', { name: /contributions?$/ })).toBeVisible();
+    const contributionsBadge = contributorCard.getByRole('link', { name: /contributions?$/ });
+    await expect(contributionsBadge).toBeVisible();
+    await expect(contributionsBadge).toHaveAttribute('href', /^\/contributors\/.+\/$/);
   });
 });
 

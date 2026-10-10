@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type RefObject } from 'react'
 import Link from 'next/link'
 import styles from '../layout.module.css'
 import ThemeToggle from './ThemeToggle'
@@ -28,9 +28,16 @@ function useCollapseOnEscape(isOpen: boolean, collapse: () => void) {
   }, [isOpen, collapse])
 }
 
-function MenuButton({ isOpen, onToggle }: { isOpen: boolean; onToggle: () => void }) {
+type MenuButtonProps = {
+  isOpen: boolean
+  onToggle: () => void
+  ref: RefObject<HTMLButtonElement | null>
+}
+
+function MenuButton({ isOpen, onToggle, ref }: MenuButtonProps) {
   return (
     <button
+      ref={ref}
       type="button"
       className={styles.mobileMenuButton}
       aria-label="Menu"
@@ -60,15 +67,26 @@ function NavigationPanel({ isOpen, onPick }: { isOpen: boolean; onPick: () => vo
   )
 }
 
-export default function SiteNavigation() {
+function useCollapsibleMenu() {
   const [isOpen, setIsOpen] = useState(false)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
+  const toggle = useCallback(() => setIsOpen(open => !open), [])
   const collapse = useCallback(() => setIsOpen(false), [])
-  useCollapseOnEscape(isOpen, collapse)
+  const collapseBackToMenuButton = useCallback(() => {
+    collapse()
+    menuButtonRef.current?.focus()
+  }, [collapse])
+  useCollapseOnEscape(isOpen, collapseBackToMenuButton)
+  return { isOpen, menuButtonRef, toggle, collapse }
+}
+
+export default function SiteNavigation() {
+  const menu = useCollapsibleMenu()
 
   return (
     <>
-      <MenuButton isOpen={isOpen} onToggle={() => setIsOpen(open => !open)} />
-      <NavigationPanel isOpen={isOpen} onPick={collapse} />
+      <MenuButton ref={menu.menuButtonRef} isOpen={menu.isOpen} onToggle={menu.toggle} />
+      <NavigationPanel isOpen={menu.isOpen} onPick={menu.collapse} />
     </>
   )
 }

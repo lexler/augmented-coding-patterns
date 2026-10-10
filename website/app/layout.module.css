@@ -140,6 +140,8 @@
     flex-direction: column;
     gap: var(--space-sm);
     box-shadow: var(--shadow-lg);
+    max-height: 80dvh;
+    overflow-y: auto;
   }
 
   .nav.open {

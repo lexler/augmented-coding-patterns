@@ -47,6 +47,14 @@ describe('SiteNavigation', () => {
     expect(menuButton()).toHaveAttribute('aria-expanded', 'false')
   })
 
+  it('returns focus to the menu button when the reader presses Escape from a link', async () => {
+    await userEvent.click(menuButton())
+    await userEvent.tab()
+    await userEvent.keyboard('{Escape}')
+
+    expect(menuButton()).toHaveFocus()
+  })
+
   it('offers every page and the theme toggle', () => {
     const navigation = screen.getByRole('navigation')
     const linkNames = Array.from(navigation.querySelectorAll('a')).map(link => link.textContent)
