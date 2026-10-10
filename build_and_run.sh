@@ -3,4 +3,5 @@ set -euo pipefail
 
 cd "$(dirname "$0")/website"
 npm install
-npm run dev
+npm run build:cloudflare
+npm run serve

@@ -9,6 +9,7 @@ const basePath = isCloudflare ? '' : (isProduction ? githubPagesBasePath : '');
 
 const nextConfig: NextConfig = {
   output: isProduction ? 'export' : undefined,
+  ...(isProduction ? {} : { distDir: '.next-dev' }),
   basePath,
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,

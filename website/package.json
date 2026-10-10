@@ -7,6 +7,8 @@
     "validate": "node ../scripts/validate-relationships.js",
     "fetch:videos": "node ../scripts/fetch-video-titles.mjs",
     "build": "npm run validate && next build",
+    "build:cloudflare": "DEPLOY_TARGET=cloudflare npm run build",
+    "serve": "wrangler pages dev out --port 4173",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",

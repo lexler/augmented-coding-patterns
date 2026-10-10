@@ -1,100 +1,97 @@
-import { test, expect } from '@playwright/test';
+import type { Page } from '@playwright/test';
+import { test, expect } from './fixtures';
+
+const headerLink = (page: Page, name: string) =>
+  page.getByRole('navigation').getByRole('link', { name, exact: true });
+
+const firstPatternOnList = (page: Page) =>
+  page.getByRole('main').getByRole('link').filter({ has: page.getByRole('heading') }).first();
 
 test.describe('Smoke Tests - Critical User Journeys', () => {
   test('home page loads with correct title and main heading', async ({ page }) => {
     await page.goto('/');
 
     await expect(page).toHaveTitle(/Augmented Coding Patterns/);
-    await expect(page.locator('h1')).toContainText('Augmented Coding Patterns');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Augmented Coding Patterns');
   });
 
   test('navigate from home to patterns list page', async ({ page }) => {
     await page.goto('/');
 
-    await page.locator('a[href="/patterns/"]').first().click();
+    await headerLink(page, 'Patterns').click();
     await expect(page).toHaveURL('/patterns/');
-    await expect(page.locator('h1')).toContainText('Patterns');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Patterns');
   });
 
   test('navigate from patterns list to pattern detail page and verify content displays', async ({ page }) => {
     await page.goto('/patterns/');
 
-    const firstPatternLink = page.locator('a[href^="/patterns/"][href$="/"]').nth(1);
-    await firstPatternLink.click();
+    await firstPatternOnList(page).click();
 
     await expect(page).toHaveURL(/\/patterns\/[a-z-]+\//);
-    await expect(page.locator('h1')).toBeVisible();
-    await expect(page.locator('article')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(page.getByRole('article')).toBeVisible();
   });
 
   test('use back button to return to patterns list', async ({ page }) => {
     await page.goto('/patterns/');
 
-    const firstPatternLink = page.locator('a[href^="/patterns/"][href$="/"]').nth(1);
-    await firstPatternLink.click();
+    await firstPatternOnList(page).click();
     await expect(page).toHaveURL(/\/patterns\/[a-z-]+\//);
 
     await page.goBack();
     await expect(page).toHaveURL('/patterns/');
-    await expect(page.locator('h1')).toContainText('Patterns');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Patterns');
   });
 
   test('header navigation works across pages', async ({ page }) => {
     await page.goto('/');
 
-    await page.locator('nav a[href="/obstacles/"]').click();
+    await headerLink(page, 'Obstacles').click();
     await expect(page).toHaveURL('/obstacles/');
-    await expect(page.locator('h1')).toContainText('Obstacles');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Obstacles');
 
-    await page.locator('nav a[href="/anti-patterns/"]').click();
+    await headerLink(page, 'Anti-Patterns').click();
     await expect(page).toHaveURL('/anti-patterns/');
-    await expect(page.locator('h1')).toContainText('Anti-Patterns');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Anti-Patterns');
 
-    await page.locator('nav a[href="/patterns/"]').click();
+    await headerLink(page, 'Patterns').click();
     await expect(page).toHaveURL('/patterns/');
-    await expect(page.locator('h1')).toContainText('Patterns');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Patterns');
 
-    await page.locator('nav a[href="/"]').click();
+    await headerLink(page, 'Home').click();
     await expect(page).toHaveURL('/');
-    await expect(page.locator('h1')).toContainText('Augmented Coding Patterns');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Augmented Coding Patterns');
   });
 
   test('can navigate via related links', async ({ page }) => {
     await page.goto('/patterns/active-partner/');
 
-    const relatedSection = page.locator('aside h2').filter({ hasText: 'Related' });
-    await expect(relatedSection).toBeVisible();
+    const related = page.getByRole('complementary');
+    await expect(related.getByRole('heading', { name: /Related/ })).toBeVisible();
+    await expect(related.getByRole('heading', { name: /Obstacles/ })).toBeVisible();
 
-    const obstaclesHeading = page.locator('h3').filter({ hasText: 'Obstacles' });
-    await expect(obstaclesHeading).toBeVisible();
-
-    const complianceBiasLink = page.locator('a[href="/obstacles/compliance-bias/"]');
+    const complianceBiasLink = related.getByRole('link', { name: /Compliance Bias/ });
     await expect(complianceBiasLink).toBeVisible();
     await complianceBiasLink.click();
 
     await expect(page).toHaveURL('/obstacles/compliance-bias/');
-    await expect(page.locator('h1')).toContainText('Compliance Bias');
-    await expect(page.locator('article')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Compliance Bias');
+    await expect(page.getByRole('article')).toBeVisible();
   });
 
   test('navigate to contributors page and verify contributor cards display', async ({ page }) => {
     await page.goto('/');
 
-    await page.locator('nav a[href="/contributors/"]').click();
+    await headerLink(page, 'Contributors').click();
     await expect(page).toHaveURL('/contributors/');
-    await expect(page.locator('h1')).toContainText('Contributors');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Contributors');
 
-    const contributorCard = page.locator('article').first();
+    const contributorCard = page.getByRole('article').first();
     await expect(contributorCard).toBeVisible();
-
-    const contributorName = contributorCard.locator('a[target="_blank"]');
-    await expect(contributorName).toBeVisible();
-
-    const contributionsBadge = contributorCard.locator('a[href^="/contributors/"]');
-    await expect(contributionsBadge).toBeVisible();
-
-    const contributorAvatar = contributorCard.locator('img');
-    await expect(contributorAvatar).toBeVisible();
+    await expect(contributorCard.getByRole('link').filter({ hasNotText: /contributions?$/ })).toBeVisible();
+    await expect(contributorCard.getByRole('img', { name: /avatar/ })).toBeVisible();
+    await expect(contributorCard.getByRole('link', { name: /contributions?$/ })).toBeVisible();
   });
 });
 
