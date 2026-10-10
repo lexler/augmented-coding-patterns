@@ -5,7 +5,7 @@ import "./globals.css";
 import styles from "./layout.module.css";
 import { siteConfig } from "@/config/site";
 import ThemeScript from "./components/ThemeScript";
-import ThemeToggle from "./components/ThemeToggle";
+import SiteNavigation from "./components/SiteNavigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,30 +39,7 @@ export default function RootLayout({
               <Link href="/" className={styles.logo}>
                 {siteConfig.name}
               </Link>
-              <nav className={styles.nav}>
-                <Link href="/" className={styles.navLink}>
-                  Home
-                </Link>
-                <Link href="/pattern-catalog" className={styles.navLink}>
-                  Complete Catalog
-                </Link>
-                <Link href="/obstacles" className={styles.navLink}>
-                  Obstacles
-                </Link>
-                <Link href="/anti-patterns" className={styles.navLink}>
-                  Anti-Patterns
-                </Link>
-                <Link href="/patterns" className={styles.navLink}>
-                  Patterns
-                </Link>
-                <Link href="/talk" className={styles.navLink}>
-                  Talk
-                </Link>
-                <Link href="/contributors" className={styles.navLink}>
-                  Contributors
-                </Link>
-                <ThemeToggle />
-              </nav>
+              <SiteNavigation />
             </div>
           </header>
 

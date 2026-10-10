@@ -1,8 +1,6 @@
 import type { Page } from '@playwright/test';
 import { test, expect } from './fixtures';
-
-const headerLink = (page: Page, name: string) =>
-  page.getByRole('navigation').getByRole('link', { name, exact: true });
+import { followHeaderLink } from './header';
 
 const firstPatternOnList = (page: Page) =>
   page.getByRole('main').getByRole('link').filter({ has: page.getByRole('heading') }).first();
@@ -18,7 +16,7 @@ test.describe('Smoke Tests - Critical User Journeys', () => {
   test('navigate from home to patterns list page', async ({ page }) => {
     await page.goto('/');
 
-    await headerLink(page, 'Patterns').click();
+    await followHeaderLink(page, 'Patterns');
     await expect(page).toHaveURL('/patterns/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Patterns');
   });
@@ -47,19 +45,19 @@ test.describe('Smoke Tests - Critical User Journeys', () => {
   test('header navigation works across pages', async ({ page }) => {
     await page.goto('/');
 
-    await headerLink(page, 'Obstacles').click();
+    await followHeaderLink(page, 'Obstacles');
     await expect(page).toHaveURL('/obstacles/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Obstacles');
 
-    await headerLink(page, 'Anti-Patterns').click();
+    await followHeaderLink(page, 'Anti-Patterns');
     await expect(page).toHaveURL('/anti-patterns/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Anti-Patterns');
 
-    await headerLink(page, 'Patterns').click();
+    await followHeaderLink(page, 'Patterns');
     await expect(page).toHaveURL('/patterns/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Patterns');
 
-    await headerLink(page, 'Home').click();
+    await followHeaderLink(page, 'Home');
     await expect(page).toHaveURL('/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Augmented Coding Patterns');
   });
@@ -83,7 +81,7 @@ test.describe('Smoke Tests - Critical User Journeys', () => {
   test('navigate to contributors page and verify contributor cards display', async ({ page }) => {
     await page.goto('/');
 
-    await headerLink(page, 'Contributors').click();
+    await followHeaderLink(page, 'Contributors');
     await expect(page).toHaveURL('/contributors/');
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Contributors');
 

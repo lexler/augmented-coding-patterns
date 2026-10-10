@@ -123,11 +123,7 @@
   text-decoration: none;
 }
 
-@media (max-width: 768px) {
-  .headerContent {
-    padding: var(--space-md) var(--space-lg);
-  }
-
+@media (max-width: 1319px) {
   .mobileMenuButton {
     display: block;
   }
@@ -153,6 +149,12 @@
   .navLink {
     width: 100%;
     padding: var(--space-md);
+  }
+}
+
+@media (max-width: 768px) {
+  .headerContent {
+    padding: var(--space-md) var(--space-lg);
   }
 
   .footerContent {
