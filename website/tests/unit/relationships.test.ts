@@ -7,15 +7,15 @@ jest.mock('path')
 
 describe('Relationship Parser', () => {
   let relationships: typeof import('@/lib/relationships')
-  let mockedFs: jest.Mocked<typeof import('fs')>
+  let mockedReadFileSync: jest.MockedFunction<typeof import('fs').readFileSync>
   let mockedPath: jest.Mocked<typeof import('path')>
 
   beforeEach(async () => {
     jest.clearAllMocks()
 
     // Import mocked modules
-    mockedFs = (await import('fs')) as jest.Mocked<typeof import('fs')>
-    mockedPath = (await import('path')) as jest.Mocked<typeof import('path')>
+    mockedReadFileSync = jest.mocked((await import('fs')).readFileSync)
+    mockedPath = jest.mocked(await import('path'))
 
     // Set up default mocks
     mockedPath.join = jest.fn().mockReturnValue('/fake/path/relationships.mmd')
@@ -32,7 +32,7 @@ describe('Relationship Parser', () => {
       const content = `graph TD
 patterns/active-partner -->|solves| obstacles/black-box-ai`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsFor('active-partner', 'patterns')
 
@@ -49,7 +49,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai`
       const content = `graph TD
 patterns/active-partner <-->|related| patterns/chain-of-small-steps`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsFor('active-partner', 'patterns')
 
@@ -66,7 +66,7 @@ patterns/active-partner <-->|related| patterns/chain-of-small-steps`
       const content = `graph TD
 patterns/active-partner <-->|related| patterns/chain-of-small-steps`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const resultForActivePartner = relationships.getRelationshipsFor('active-partner', 'patterns')
       const resultForChain = relationships.getRelationshipsFor('chain-of-small-steps', 'patterns')
@@ -86,7 +86,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai
 patterns/active-partner -->|related| patterns/chain-of-small-steps
 patterns/chain-of-small-steps -->|uses| patterns/show-me`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsFor('active-partner', 'patterns')
 
@@ -100,7 +100,7 @@ patterns/chain-of-small-steps -->|uses| patterns/show-me`
 patterns/active-partner -->|solves| obstacles/black-box-ai
 patterns/active-partner <-->|related| patterns/chain-of-small-steps`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsFor('active-partner', 'patterns')
 
@@ -118,7 +118,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai
 
 patterns/chain-of-small-steps -->|uses| patterns/show-me`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const allRels = relationships.getAllRelationships()
       expect(allRels.relationships).toHaveLength(2)
@@ -131,7 +131,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai
 %% Another comment
 patterns/chain-of-small-steps -->|uses| patterns/show-me`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const allRels = relationships.getAllRelationships()
       expect(allRels.relationships).toHaveLength(2)
@@ -141,7 +141,7 @@ patterns/chain-of-small-steps -->|uses| patterns/show-me`
       const content = `graph TD
 patterns/active-partner -->|solves| obstacles/black-box-ai`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const allRels = relationships.getAllRelationships()
       expect(allRels.relationships).toHaveLength(1)
@@ -153,7 +153,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai`
 
 %% Comment 2`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const allRels = relationships.getAllRelationships()
       expect(allRels.relationships).toHaveLength(0)
@@ -168,7 +168,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai`
         const content = `graph TD
 patterns/active-partner -->|${type}| patterns/chain-of-small-steps`
 
-        mockedFs.readFileSync.mockReturnValue(content)
+        mockedReadFileSync.mockReturnValue(content)
 
         const result = relationships.getRelationshipsFor('active-partner', 'patterns')
 
@@ -181,7 +181,7 @@ patterns/active-partner -->|${type}| patterns/chain-of-small-steps`
       const content = `graph TD
 patterns/active-partner -->|invalid-type| patterns/chain-of-small-steps`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       expect(() => {
         relationships.getAllRelationships()
@@ -194,7 +194,7 @@ patterns/active-partner -->|invalid-type| patterns/chain-of-small-steps`
       const content = `graph TD
 patterns/active-partner -> |solves| obstacles/black-box-ai`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       expect(() => {
         relationships.getAllRelationships()
@@ -205,7 +205,7 @@ patterns/active-partner -> |solves| obstacles/black-box-ai`
       const content = `graph TD
 patterns/active-partner <-> |related| patterns/chain-of-small-steps`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       expect(() => {
         relationships.getAllRelationships()
@@ -216,7 +216,7 @@ patterns/active-partner <-> |related| patterns/chain-of-small-steps`
       const content = `graph TD
 patterns/active-partner patterns/chain-of-small-steps`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       expect(() => {
         relationships.getAllRelationships()
@@ -227,7 +227,7 @@ patterns/active-partner patterns/chain-of-small-steps`
       const content = `graph TD
 patterns/active-partner --> patterns/chain-of-small-steps`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       expect(() => {
         relationships.getAllRelationships()
@@ -240,7 +240,7 @@ patterns/active-partner --> patterns/chain-of-small-steps`
       const content = `graph TD
     patterns/active-partner -->|solves| obstacles/black-box-ai`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsFor('active-partner', 'patterns')
 
@@ -252,7 +252,7 @@ patterns/active-partner --> patterns/chain-of-small-steps`
       const content = `graph TD
 patterns/active-partner -->|solves| obstacles/black-box-ai    `
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsFor('active-partner', 'patterns')
 
@@ -264,7 +264,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai    `
       const content = `graph TD
 patterns/active-partner -->| solves | obstacles/black-box-ai`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsFor('active-partner', 'patterns')
 
@@ -279,7 +279,7 @@ patterns/active-partner -->| solves | obstacles/black-box-ai`
 patterns/active-partner -->|solves| obstacles/black-box-ai
 patterns/chain-of-small-steps -->|uses| patterns/show-me`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsFor('active-partner', 'patterns')
 
@@ -291,7 +291,7 @@ patterns/chain-of-small-steps -->|uses| patterns/show-me`
       const content = `graph TD
 patterns/active-partner -->|solves| obstacles/black-box-ai`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsFor('nonexistent', 'patterns')
 
@@ -303,7 +303,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai`
 patterns/active-partner -->|solves| obstacles/black-box-ai
 anti-patterns/answer-injection -->|causes| obstacles/confusion`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const patternResult = relationships.getRelationshipsFor('active-partner', 'patterns')
       const antiPatternResult = relationships.getRelationshipsFor('answer-injection', 'anti-patterns')
@@ -319,7 +319,7 @@ anti-patterns/answer-injection -->|causes| obstacles/confusion`
 patterns/active-partner -->|solves| obstacles/black-box-ai
 patterns/chain-of-small-steps -->|uses| patterns/show-me`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsForBoth('active-partner', 'patterns')
 
@@ -337,7 +337,7 @@ patterns/chain-of-small-steps -->|uses| patterns/show-me`
 patterns/active-partner -->|uses| patterns/chain-of-small-steps
 patterns/show-me -->|related| patterns/active-partner`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsForBoth('active-partner', 'patterns')
 
@@ -352,7 +352,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai
 patterns/chain-of-small-steps -->|uses| patterns/active-partner
 patterns/active-partner -->|related| patterns/show-me`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsForBoth('active-partner', 'patterns')
 
@@ -367,7 +367,7 @@ patterns/active-partner -->|related| patterns/show-me`
       const content = `graph TD
 patterns/active-partner <-->|related| patterns/chain-of-small-steps`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsForBoth('active-partner', 'patterns')
 
@@ -391,7 +391,7 @@ patterns/active-partner <-->|related| patterns/chain-of-small-steps`
       const content = `graph TD
 patterns/chain-of-small-steps -->|uses| patterns/show-me`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsForBoth('active-partner', 'patterns')
 
@@ -403,7 +403,7 @@ patterns/chain-of-small-steps -->|uses| patterns/show-me`
 patterns/active-partner -->|solves| obstacles/black-box-ai
 obstacles/context-rot -->|causes| patterns/active-partner`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsForBoth('active-partner', 'patterns')
 
@@ -420,7 +420,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai
 patterns/chain-of-small-steps -->|uses| patterns/show-me
 anti-patterns/answer-injection -->|causes| obstacles/confusion`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getAllRelationships()
 
@@ -431,7 +431,7 @@ anti-patterns/answer-injection -->|causes| obstacles/confusion`
       const content = `graph TD
 patterns/active-partner -->|solves| obstacles/black-box-ai`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       // First call
       relationships.getAllRelationships()
@@ -439,7 +439,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai`
       relationships.getAllRelationships()
 
       // File should only be read once due to caching
-      expect(mockedFs.readFileSync).toHaveBeenCalledTimes(1)
+      expect(mockedReadFileSync).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -449,7 +449,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai`
 patterns/active-partner -->|solves| obstacles/black-box-ai
 patterns/chain-of-small-steps -->|uses| patterns/show-me`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const validSlugs = new Set([
         'patterns/active-partner',
@@ -468,7 +468,7 @@ patterns/chain-of-small-steps -->|uses| patterns/show-me`
       const content = `graph TD
 patterns/nonexistent -->|solves| obstacles/black-box-ai`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const validSlugs = new Set([
         'patterns/active-partner',
@@ -485,7 +485,7 @@ patterns/nonexistent -->|solves| obstacles/black-box-ai`
       const content = `graph TD
 patterns/active-partner -->|solves| obstacles/nonexistent`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const validSlugs = new Set([
         'patterns/active-partner',
@@ -503,7 +503,7 @@ patterns/active-partner -->|solves| obstacles/nonexistent`
 patterns/nonexistent1 -->|solves| obstacles/nonexistent2
 patterns/nonexistent3 -->|uses| patterns/active-partner`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const validSlugs = new Set([
         'patterns/active-partner',
@@ -521,7 +521,7 @@ patterns/nonexistent3 -->|uses| patterns/active-partner`
       const content = `graph TD
 patterns/active-partner -->|solves| obstacles/black-box-ai`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsFor('active-partner', 'patterns')
 
@@ -534,7 +534,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai`
       const content = `graph TD
 patterns/active-partner -->|alternative| anti-patterns/answer-injection`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsFor('active-partner', 'patterns')
 
@@ -546,7 +546,7 @@ patterns/active-partner -->|alternative| anti-patterns/answer-injection`
       const content = `graph TD
 anti-patterns/answer-injection -->|causes| obstacles/confusion`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsFor('answer-injection', 'anti-patterns')
 
@@ -563,7 +563,7 @@ patterns/active-partner -->|solves| obstacles/black-box-ai
 patterns/active-partner -->|related| patterns/chain-of-small-steps
 patterns/active-partner -->|alternative| anti-patterns/answer-injection`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const result = relationships.getRelationshipsFor('active-partner', 'patterns')
 
@@ -579,7 +579,7 @@ patterns/active-partner <-->|related| patterns/chain-of-small-steps
 patterns/active-partner -->|uses| patterns/show-me
 patterns/chain-of-small-steps -->|uses| patterns/show-me`
 
-      mockedFs.readFileSync.mockReturnValue(content)
+      mockedReadFileSync.mockReturnValue(content)
 
       const activePartnerRels = relationships.getRelationshipsFor('active-partner', 'patterns')
       const chainRels = relationships.getRelationshipsFor('chain-of-small-steps', 'patterns')

@@ -1,4 +1,5 @@
-import { getPatternSlugs, getPatternBySlug, getAllPatterns } from '@/lib/markdown'
+import { getPatternSlugs, getAllPatterns } from '@/lib/markdown'
+import { existingPattern } from '../support/existing-pattern'
 
 describe('Markdown utilities - Integration tests', () => {
   describe('getPatternSlugs', () => {
@@ -31,7 +32,7 @@ describe('Markdown utilities - Integration tests', () => {
 
   describe('getPatternBySlug', () => {
     it('should correctly parse Active Partner pattern', () => {
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
       expect(pattern.title).toBe('Active Partner')
       expect(pattern.category).toBe('patterns')
@@ -42,7 +43,7 @@ describe('Markdown utilities - Integration tests', () => {
     })
 
     it('should correctly parse Answer Injection anti-pattern', () => {
-      const pattern = getPatternBySlug('anti-patterns', 'answer-injection')
+      const pattern = existingPattern('anti-patterns', 'answer-injection')
 
       expect(pattern.title).toBe('Answer Injection')
       expect(pattern.category).toBe('anti-patterns')
@@ -51,7 +52,7 @@ describe('Markdown utilities - Integration tests', () => {
     })
 
     it('should correctly parse Black Box AI obstacle', () => {
-      const pattern = getPatternBySlug('obstacles', 'black-box-ai')
+      const pattern = existingPattern('obstacles', 'black-box-ai')
 
       expect(pattern.title).toBe('Black Box AI')
       expect(pattern.category).toBe('obstacles')

@@ -1,7 +1,8 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { getPatternSlugs, getPatternBySlug, getAllPatterns, slugToTitleCase, titleToSlug } from '@/lib/markdown'
+import { getPatternSlugs, getAllPatterns, slugToTitleCase, titleToSlug } from '@/lib/markdown'
 import * as relationships from '@/lib/relationships'
+import { existingPattern } from '../support/existing-pattern'
 
 jest.mock('fs')
 jest.mock('path')
@@ -10,6 +11,7 @@ jest.mock('@/lib/relationships')
 const mockedFs = fs as jest.Mocked<typeof fs>
 const mockedPath = path as jest.Mocked<typeof path>
 const mockedRelationships = relationships as jest.Mocked<typeof relationships>
+const mockedDirectoryListing = jest.mocked(fs.readdirSync as (directory: fs.PathLike) => string[])
 
 describe('Markdown utilities', () => {
   beforeEach(() => {
@@ -21,11 +23,11 @@ describe('Markdown utilities', () => {
   describe('getPatternSlugs', () => {
     it('should return array of slugs for patterns category', () => {
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns')
-      mockedFs.readdirSync.mockReturnValue([
+      mockedDirectoryListing.mockReturnValue([
         'active-partner.md',
         'chain-of-small-steps.md',
         'check-alignment.md',
-      ] as fs.Dirent[])
+      ])
 
       const slugs = getPatternSlugs('patterns')
 
@@ -39,10 +41,10 @@ describe('Markdown utilities', () => {
 
     it('should return array of slugs for anti-patterns category', () => {
       mockedPath.join.mockReturnValue('/fake/path/documents/anti-patterns')
-      mockedFs.readdirSync.mockReturnValue([
+      mockedDirectoryListing.mockReturnValue([
         'answer-injection.md',
         'distracted-agent.md',
-      ] as fs.Dirent[])
+      ])
 
       const slugs = getPatternSlugs('anti-patterns')
 
@@ -55,10 +57,10 @@ describe('Markdown utilities', () => {
 
     it('should return array of slugs for obstacles category', () => {
       mockedPath.join.mockReturnValue('/fake/path/documents/obstacles')
-      mockedFs.readdirSync.mockReturnValue([
+      mockedDirectoryListing.mockReturnValue([
         'black-box-ai.md',
         'context-rot.md',
-      ] as fs.Dirent[])
+      ])
 
       const slugs = getPatternSlugs('obstacles')
 
@@ -71,12 +73,12 @@ describe('Markdown utilities', () => {
 
     it('should filter out non-markdown files', () => {
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns')
-      mockedFs.readdirSync.mockReturnValue([
+      mockedDirectoryListing.mockReturnValue([
         'active-partner.md',
         '.DS_Store',
         'README.txt',
         'check-alignment.md',
-      ] as fs.Dirent[])
+      ])
 
       const slugs = getPatternSlugs('patterns')
 
@@ -102,9 +104,8 @@ Explicitly grant permission and encourage AI to:
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.title).toBe('Active Partner')
       expect(pattern.category).toBe('patterns')
       expect(pattern.slug).toBe('active-partner')
@@ -124,9 +125,8 @@ Putting solutions in your questions, limiting AI to your preconceived approach.`
       mockedPath.join.mockReturnValue('/fake/path/documents/anti-patterns/answer-injection.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('anti-patterns', 'answer-injection')
+      const pattern = existingPattern('anti-patterns', 'answer-injection')
 
-      expect(pattern).toBeDefined()
       expect(pattern.title).toBe('Answer Injection')
       expect(pattern.category).toBe('anti-patterns')
       expect(pattern.slug).toBe('answer-injection')
@@ -142,9 +142,8 @@ AI reasoning is hidden. You only see inputs and outputs.`
       mockedPath.join.mockReturnValue('/fake/path/documents/obstacles/black-box-ai.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('obstacles', 'black-box-ai')
+      const pattern = existingPattern('obstacles', 'black-box-ai')
 
-      expect(pattern).toBeDefined()
       expect(pattern.title).toBe('Black Box AI')
       expect(pattern.category).toBe('obstacles')
       expect(pattern.slug).toBe('black-box-ai')
@@ -159,7 +158,7 @@ AI defaults to silent compliance.`
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
       expect(pattern.title).toBe('Active Partner')
       expect(pattern.emojiIndicator).toBe('🎯')
@@ -177,9 +176,8 @@ AI defaults to silent compliance.`
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.authors).toEqual(['lexler'])
     })
 
@@ -192,9 +190,8 @@ AI defaults to silent compliance.`
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.title).toBe('Active Partner')
       expect(pattern.relatedPatterns).toBeUndefined()
       expect(pattern.relatedAntiPatterns).toBeUndefined()
@@ -215,9 +212,8 @@ AI defaults to silent compliance.`
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.alternativeTitles).toEqual(["Show Me, I'll Repeat", "Repeat After Me"])
     })
 
@@ -233,9 +229,8 @@ AI defaults to silent compliance.`
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.alternativeTitles).toBeUndefined()
     })
 
@@ -253,9 +248,8 @@ Context degrades as the conversation grows.`
       mockedPath.join.mockReturnValue('/fake/path/documents/obstacles/context-rot.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('obstacles', 'context-rot')
+      const pattern = existingPattern('obstacles', 'context-rot')
 
-      expect(pattern).toBeDefined()
       expect(pattern.synonyms).toEqual(['Dementia', 'Memory Loss'])
     })
 
@@ -271,9 +265,8 @@ AI defaults to silent compliance.`
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.synonyms).toBeUndefined()
     })
 
@@ -290,9 +283,8 @@ Context degrades as the conversation grows.`
       mockedPath.join.mockReturnValue('/fake/path/documents/obstacles/context-rot.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('obstacles', 'context-rot')
+      const pattern = existingPattern('obstacles', 'context-rot')
 
-      expect(pattern).toBeDefined()
       expect(pattern.synonyms).toEqual(['Dementia'])
     })
 
@@ -309,9 +301,8 @@ AI defaults to silent compliance.`
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.alternativeTitles).toEqual(["Old Name"])
     })
 
@@ -327,9 +318,8 @@ AI defaults to silent compliance.`
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.video).toBe('https://www.youtube.com/watch?v=abc123&t=412')
     })
 
@@ -345,9 +335,8 @@ AI defaults to silent compliance.`
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns/active-partner.md')
       mockedFs.readFileSync.mockReturnValue(mockMarkdown)
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.video).toBeUndefined()
     })
   })
@@ -359,10 +348,10 @@ AI defaults to silent compliance.`
         .mockReturnValueOnce('/fake/path/documents/patterns/pattern-one.md')
         .mockReturnValueOnce('/fake/path/documents/patterns/pattern-two.md')
 
-      mockedFs.readdirSync.mockReturnValue([
+      mockedDirectoryListing.mockReturnValue([
         'pattern-one.md',
         'pattern-two.md',
-      ] as fs.Dirent[])
+      ])
 
       mockedFs.readFileSync
         .mockReturnValueOnce('# Pattern One\n\n## Problem\nFirst problem.')
@@ -379,7 +368,7 @@ AI defaults to silent compliance.`
 
     it('should handle empty directory', () => {
       mockedPath.join.mockReturnValue('/fake/path/documents/patterns')
-      mockedFs.readdirSync.mockReturnValue([] as fs.Dirent[])
+      mockedDirectoryListing.mockReturnValue([])
 
       const patterns = getAllPatterns('patterns')
 
@@ -391,11 +380,11 @@ AI defaults to silent compliance.`
         .mockReturnValueOnce('/fake/path/documents/patterns')
         .mockReturnValueOnce('/fake/path/documents/patterns/pattern-one.md')
 
-      mockedFs.readdirSync.mockReturnValue([
+      mockedDirectoryListing.mockReturnValue([
         'pattern-one.md',
         '.DS_Store',
         'README.txt',
-      ] as fs.Dirent[])
+      ])
 
       mockedFs.readFileSync.mockReturnValue('# Pattern One\n\n## Problem\nFirst problem.')
 
@@ -430,9 +419,8 @@ AI defaults to silent compliance.`
         { from: 'patterns/active-partner', to: 'obstacles/black-box-ai', type: 'solves', bidirectional: false },
       ])
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.relatedPatterns).toEqual([
         { slug: 'chain-of-small-steps', title: 'Chain of Small Steps', type: 'related', direction: 'outgoing' }
       ])
@@ -449,9 +437,8 @@ AI defaults to silent compliance.`
         { from: 'patterns/semantic-zoom', to: 'patterns/active-partner', type: 'similar', bidirectional: true },
       ])
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.relatedPatterns).toEqual([
         { slug: 'semantic-zoom', title: 'Semantic Zoom', type: 'similar', direction: 'outgoing' }
       ])
@@ -471,9 +458,8 @@ AI defaults to silent compliance.`
         { from: 'patterns/active-partner', to: 'obstacles/black-box-ai', type: 'solves', bidirectional: false },
       ])
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.relatedPatterns).toEqual([
         { slug: 'chain-of-small-steps', title: 'Chain of Small Steps', type: 'uses', direction: 'outgoing' },
         { slug: 'show-me', title: 'Show Me', type: 'similar', direction: 'outgoing' }
@@ -497,9 +483,8 @@ AI defaults to silent compliance.`
         { from: 'patterns/active-partner', to: 'obstacles/black-box-ai', type: 'solves', bidirectional: false },
       ])
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.relatedPatterns).toHaveLength(1)
       expect(pattern.relatedPatterns![0]).toMatchObject({ slug: 'chain-of-small-steps', type: 'related', direction: 'outgoing' })
       expect(pattern.relatedAntiPatterns).toHaveLength(1)
@@ -515,9 +500,8 @@ AI defaults to silent compliance.`
         { from: 'patterns/active-partner', to: 'patterns/chain-of-small-steps', type: 'related', bidirectional: false },
       ])
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
       expect(pattern.relatedPatterns).toEqual([{ slug: 'chain-of-small-steps', title: 'Chain of Small Steps', type: 'related', direction: 'outgoing' }])
       expect(pattern.relatedAntiPatterns).toBeUndefined()
       expect(pattern.relatedObstacles).toBeUndefined()
@@ -537,9 +521,8 @@ AI defaults to silent compliance.`
         { from: 'patterns/active-partner', to: 'obstacles/black-box-ai', type: 'solves', bidirectional: false },
       ])
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
-      expect(pattern).toBeDefined()
 
       // Slugs should not include category prefix
       expect(pattern.relatedPatterns![0].slug).toBe('chain-of-small-steps')
@@ -558,7 +541,7 @@ AI defaults to silent compliance.`
         { from: 'patterns/active-partner', to: 'patterns/deleted-pattern', type: 'related', bidirectional: false },
       ])
 
-      const pattern = getPatternBySlug('patterns', 'active-partner')
+      const pattern = existingPattern('patterns', 'active-partner')
 
       expect(pattern.relatedPatterns).toEqual([
         { slug: 'deleted-pattern', title: 'Deleted Pattern', type: 'related', direction: 'outgoing' }
