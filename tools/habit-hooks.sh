@@ -9,7 +9,7 @@ arguments=()
 while (($#)); do
   case $1 in
     --file)
-      (($# >= 2)) || { echo "usage: $0 --file <path>" >&2; exit 2; }
+      (($# >= 2)) && [[ $2 != -* ]] || { echo "usage: $0 --file <path>" >&2; exit 2; }
       arguments+=(--file "$(from_caller "$2")"); shift 2 ;;
     --file=*) arguments+=(--file "$(from_caller "${1#--file=}")"); shift ;;
     *) arguments+=("$1"); shift ;;
