@@ -1,6 +1,8 @@
 import '@testing-library/jest-dom'
 import React from 'react'
 
+Element.prototype.scrollIntoView = jest.fn()
+
 global.matchMedia = global.matchMedia || function(query: string) {
   return {
     matches: false,

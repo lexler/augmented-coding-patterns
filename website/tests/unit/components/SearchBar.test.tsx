@@ -368,6 +368,7 @@ describe('SearchBar', () => {
 
       const links = screen.getAllByRole('option')
       expect(links[0]).toHaveAttribute('aria-selected', 'true')
+      expect(links[0]).toHaveClass('resultItemSelected')
     })
 
     it('arrow down selects next result', () => {

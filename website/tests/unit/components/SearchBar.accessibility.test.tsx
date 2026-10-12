@@ -26,6 +26,7 @@ const resultsList = () => screen.getByRole('listbox', { name: 'Search results' }
 
 describe('SearchBar accessibility', () => {
   beforeEach(() => {
+    jest.mocked(Element.prototype.scrollIntoView).mockClear()
     render(<SearchBar patterns={searchablePatterns} />)
   })
 
@@ -77,5 +78,53 @@ describe('SearchBar accessibility', () => {
     await userEvent.type(searchBox(), 'nothing like this')
 
     expect(screen.getByRole('status')).toHaveTextContent('No results found')
+  })
+
+  it('keeps the results out of the Tab order, so focus stays in the search box', async () => {
+    await userEvent.type(searchBox(), 'active')
+
+    const options = within(resultsList()).getAllByRole('option')
+    expect(options.every(option => option.getAttribute('tabindex') === '-1')).toBe(true)
+  })
+
+  it('closes the results when focus leaves the search box', async () => {
+    await userEvent.type(searchBox(), 'active')
+    await userEvent.tab()
+
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+  })
+
+  it('keeps focus in the search box when the reader presses Escape', async () => {
+    await userEvent.type(searchBox(), 'active')
+    await userEvent.keyboard('{Escape}')
+
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+    expect(searchBox()).toHaveFocus()
+  })
+
+  it('keeps focus in the search box when Escape clears a search with no matches', async () => {
+    await userEvent.type(searchBox(), 'nothing like this')
+    await userEvent.keyboard('{Escape}')
+
+    expect(searchBox()).toHaveValue('')
+    expect(searchBox()).toHaveFocus()
+  })
+
+  it('clears the highlight when the reader moves the text cursor left or right', async () => {
+    await userEvent.type(searchBox(), 'active')
+    await userEvent.keyboard('{ArrowDown}{ArrowLeft}')
+
+    expect(within(resultsList()).queryByRole('option', { selected: true })).not.toBeInTheDocument()
+    expect(searchBox()).not.toHaveAttribute('aria-activedescendant')
+  })
+
+  it('scrolls the highlighted result into view', async () => {
+    await userEvent.type(searchBox(), 'active')
+    await userEvent.keyboard('{ArrowDown}')
+
+    const highlighted = within(resultsList()).getByRole('option', { selected: true })
+    const scrollIntoView = jest.mocked(Element.prototype.scrollIntoView)
+    expect(scrollIntoView.mock.contexts).toContain(highlighted)
+    expect(scrollIntoView).toHaveBeenLastCalledWith({ block: 'nearest' })
   })
 })

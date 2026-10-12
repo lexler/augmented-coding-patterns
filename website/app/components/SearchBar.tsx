@@ -18,6 +18,8 @@ interface GroupedResults {
   patterns: PatternContent[]
 }
 
+const resultOptionId = (resultsListId: string, index: number) => `${resultsListId}-option-${index}`
+
 export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [isOpen, setIsOpen] = useState(false)
@@ -29,7 +31,6 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
   })
 
   const resultsListId = useId()
-  const optionId = (index: number) => `${resultsListId}-option-${index}`
   const searchRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
@@ -88,11 +89,15 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
 
   const totalResults = flattenedResults.length
 
+  useEffect(() => {
+    if (selectedIndex < 0) return
+    document.getElementById(resultOptionId(resultsListId, selectedIndex))?.scrollIntoView({ block: 'nearest' })
+  }, [selectedIndex, resultsListId])
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (!isOpen || totalResults === 0) {
       if (event.key === 'Escape') {
         setSearchQuery('')
-        inputRef.current?.blur()
       }
       return
     }
@@ -128,7 +133,10 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
         event.preventDefault()
         setIsOpen(false)
         setSearchQuery('')
-        inputRef.current?.blur()
+        break
+      case 'ArrowLeft':
+      case 'ArrowRight':
+        setSelectedIndex(-1)
         break
     }
   }
@@ -142,7 +150,7 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
   const hasResults = totalResults > 0
   const showsResults = isOpen && searchQuery.trim() !== ''
   const listsResults = showsResults && hasResults
-  const activeOptionId = listsResults && selectedIndex >= 0 ? optionId(selectedIndex) : undefined
+  const activeOptionId = listsResults && selectedIndex >= 0 ? resultOptionId(resultsListId, selectedIndex) : undefined
 
   return (
     <div className={styles.searchContainer} ref={searchRef} role="search">
@@ -161,6 +169,7 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
           onKeyDown={handleKeyDown}
+          onBlur={() => setIsOpen(false)}
           autoComplete="off"
         />
         <span className={styles.searchIcon} aria-hidden="true">🔍</span>
@@ -210,8 +219,10 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
                               isSelected ? styles.resultItemSelected : ''
                             }`}
                             onClick={handleClick}
+                            onMouseDown={event => event.preventDefault()}
+                            tabIndex={-1}
                             role="option"
-                            id={optionId(absoluteIndex)}
+                            id={resultOptionId(resultsListId, absoluteIndex)}
                             aria-selected={isSelected}
                           >
                             <span className={styles.resultCategoryIcon} aria-hidden="true">
