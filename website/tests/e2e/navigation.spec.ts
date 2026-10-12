@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test'
+import type { Locator, Page } from '@playwright/test'
 import { test, expect } from './fixtures'
 import { followHeaderLink, openHeaderMenuIfCollapsed } from './header'
 
@@ -13,7 +13,19 @@ const headerDestinations = [
 ]
 
 const screenWidths = [360, 390, 768, 1024, 1280, 1440]
+const phoneWidths = [360, 375, 390, 412]
 const phoneHeldSideways = { width: 844, height: 390 }
+
+async function onScreenBox(locator: Locator) {
+  const box = await locator.boundingBox()
+  if (box === null) throw new Error('expected the element to be on screen')
+  return box
+}
+
+async function siteNameIsCutOff(page: Page) {
+  return page.getByRole('banner').getByRole('link', { name: 'Augmented Coding Patterns' })
+    .evaluate(siteName => siteName.scrollWidth > siteName.clientWidth)
+}
 
 async function pageScrollsSideways(page: Page) {
   return page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)
@@ -35,10 +47,20 @@ test.describe('Header navigation', () => {
     await page.goto('/')
     const themeBefore = await page.locator('html').getAttribute('class')
 
-    await openHeaderMenuIfCollapsed(page)
     await page.getByRole('button', { name: 'Toggle theme' }).click()
 
     await expect(page.locator('html')).not.toHaveAttribute('class', themeBefore ?? '')
+  })
+
+  test('the theme toggle sits beside the menu button, not inside the menu', async ({ page }) => {
+    await page.goto('/')
+    const menuButton = page.getByRole('button', { name: 'Menu' })
+    test.skip(!(await menuButton.isVisible()), 'the header shows every link at this width')
+    const themeToggle = await onScreenBox(page.getByRole('button', { name: 'Toggle theme' }))
+    const menu = await onScreenBox(menuButton)
+
+    expect(themeToggle.x + themeToggle.width).toBeLessThanOrEqual(menu.x)
+    expect(Math.abs(themeToggle.y + themeToggle.height / 2 - (menu.y + menu.height / 2))).toBeLessThan(4)
   })
 
   test('the menu closes once the reader picks a page', async ({ page }) => {
@@ -76,7 +98,7 @@ test.describe('Header on a phone held sideways', () => {
     await page.goto('/patterns/active-partner/')
 
     await openHeaderMenuIfCollapsed(page)
-    await page.getByRole('button', { name: 'Toggle theme' }).click({ trial: true })
+    await page.getByRole('navigation').getByRole('link', { name: 'Contributors' }).click({ trial: true })
   })
 })
 
@@ -94,6 +116,16 @@ test.describe('Page width', () => {
     for (const width of screenWidths) {
       await page.setViewportSize({ width, height: 800 })
       expect(await pageScrollsSideways(page), `sideways scrolling at ${width}px`).toBe(false)
+    }
+  })
+
+  test('the site name shows in full on phone widths', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'phone widths are swept from the desktop browser')
+    await page.goto('/')
+
+    for (const width of phoneWidths) {
+      await page.setViewportSize({ width, height: 700 })
+      expect(await siteNameIsCutOff(page), `site name cut off at ${width}px`).toBe(false)
     }
   })
 })

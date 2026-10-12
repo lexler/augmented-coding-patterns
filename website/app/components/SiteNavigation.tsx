@@ -62,7 +62,6 @@ function NavigationPanel({ isOpen, onPick }: { isOpen: boolean; onPick: () => vo
   return (
     <nav id={NAVIGATION_ID} className={`${styles.nav} ${isOpen ? styles.open : ''}`}>
       <PageLinks onPick={onPick} />
-      <ThemeToggle />
     </nav>
   )
 }
@@ -84,9 +83,10 @@ export default function SiteNavigation() {
   const menu = useCollapsibleMenu()
 
   return (
-    <>
-      <MenuButton ref={menu.menuButtonRef} isOpen={menu.isOpen} onToggle={menu.toggle} />
+    <div className={styles.headerActions}>
       <NavigationPanel isOpen={menu.isOpen} onPick={menu.collapse} />
-    </>
+      <ThemeToggle />
+      <MenuButton ref={menu.menuButtonRef} isOpen={menu.isOpen} onToggle={menu.toggle} />
+    </div>
   )
 }

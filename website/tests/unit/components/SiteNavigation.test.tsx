@@ -55,7 +55,7 @@ describe('SiteNavigation', () => {
     expect(menuButton()).toHaveFocus()
   })
 
-  it('offers every page and the theme toggle', () => {
+  it('offers every page in the navigation', () => {
     const navigation = screen.getByRole('navigation')
     const linkNames = Array.from(navigation.querySelectorAll('a')).map(link => link.textContent)
 
@@ -68,6 +68,12 @@ describe('SiteNavigation', () => {
       'Talk',
       'Contributors',
     ])
-    expect(screen.getByRole('button', { name: 'Toggle theme' })).toBeInTheDocument()
+  })
+
+  it('keeps the theme toggle outside the collapsible navigation', () => {
+    const navigation = screen.getByRole('navigation')
+    const themeToggle = screen.getByRole('button', { name: 'Toggle theme' })
+
+    expect(navigation).not.toContainElement(themeToggle)
   })
 })
