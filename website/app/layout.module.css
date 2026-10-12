@@ -194,7 +194,7 @@
   }
 }
 
-@media (max-width: 374px) {
+@media (max-width: 389px) {
   .logo {
     font-size: var(--font-size-base);
   }
