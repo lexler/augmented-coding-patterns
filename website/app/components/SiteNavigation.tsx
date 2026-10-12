@@ -58,25 +58,43 @@ function PageLinks({ onPick }: { onPick: () => void }) {
   ))
 }
 
-function NavigationPanel({ isOpen, onPick }: { isOpen: boolean; onPick: () => void }) {
+type NavigationPanelProps = {
+  isOpen: boolean
+  onPick: () => void
+  ref: RefObject<HTMLElement | null>
+}
+
+function NavigationPanel({ isOpen, onPick, ref }: NavigationPanelProps) {
   return (
-    <nav id={NAVIGATION_ID} className={`${styles.nav} ${isOpen ? styles.open : ''}`}>
+    <nav ref={ref} id={NAVIGATION_ID} className={`${styles.nav} ${isOpen ? styles.open : ''}`}>
       <PageLinks onPick={onPick} />
     </nav>
   )
 }
 
-function useCollapsibleMenu() {
-  const [isOpen, setIsOpen] = useState(false)
+function useFocusFirstPageWhenOpened(isOpen: boolean, navigationRef: RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    if (isOpen) navigationRef.current?.querySelector('a')?.focus()
+  }, [isOpen, navigationRef])
+}
+
+function useMenuKeyboardFocus(isOpen: boolean, collapse: () => void) {
   const menuButtonRef = useRef<HTMLButtonElement>(null)
-  const toggle = useCallback(() => setIsOpen(open => !open), [])
-  const collapse = useCallback(() => setIsOpen(false), [])
+  const navigationRef = useRef<HTMLElement>(null)
   const collapseBackToMenuButton = useCallback(() => {
     collapse()
     menuButtonRef.current?.focus()
   }, [collapse])
   useCollapseOnEscape(isOpen, collapseBackToMenuButton)
-  return { isOpen, menuButtonRef, toggle, collapse }
+  useFocusFirstPageWhenOpened(isOpen, navigationRef)
+  return { menuButtonRef, navigationRef }
+}
+
+function useCollapsibleMenu() {
+  const [isOpen, setIsOpen] = useState(false)
+  const toggle = useCallback(() => setIsOpen(open => !open), [])
+  const collapse = useCallback(() => setIsOpen(false), [])
+  return { isOpen, toggle, collapse, ...useMenuKeyboardFocus(isOpen, collapse) }
 }
 
 export default function SiteNavigation() {
@@ -84,7 +102,7 @@ export default function SiteNavigation() {
 
   return (
     <div className={styles.headerActions}>
-      <NavigationPanel isOpen={menu.isOpen} onPick={menu.collapse} />
+      <NavigationPanel ref={menu.navigationRef} isOpen={menu.isOpen} onPick={menu.collapse} />
       <ThemeToggle />
       <MenuButton ref={menu.menuButtonRef} isOpen={menu.isOpen} onToggle={menu.toggle} />
     </div>

@@ -63,6 +63,20 @@ test.describe('Header navigation', () => {
     expect(Math.abs(themeToggle.y + themeToggle.height / 2 - (menu.y + menu.height / 2))).toBeLessThan(4)
   })
 
+  test('a keyboard reader opens the menu and tabs through the pages', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'phones have no keyboard')
+    await page.goto('/')
+    const menuButton = page.getByRole('button', { name: 'Menu' })
+    test.skip(!(await menuButton.isVisible()), 'the header shows every link at this width')
+
+    await menuButton.focus()
+    await page.keyboard.press('Enter')
+    await expect(page.getByRole('link', { name: 'Home', exact: true })).toBeFocused()
+
+    await page.keyboard.press('Tab')
+    await expect(page.getByRole('link', { name: 'Complete Catalog' })).toBeFocused()
+  })
+
   test('the menu closes once the reader picks a page', async ({ page }) => {
     await page.goto('/')
     const menuButton = page.getByRole('button', { name: 'Menu' })

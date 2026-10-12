@@ -47,9 +47,25 @@ describe('SiteNavigation', () => {
     expect(menuButton()).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('returns focus to the menu button when the reader presses Escape from a link', async () => {
+  it('moves focus to the first page when the reader opens the menu', async () => {
+    await userEvent.click(menuButton())
+
+    expect(screen.getByRole('link', { name: 'Home' })).toHaveFocus()
+  })
+
+  it('lets the reader tab through the pages after opening the menu', async () => {
     await userEvent.click(menuButton())
     await userEvent.tab()
+
+    expect(screen.getByRole('link', { name: 'Complete Catalog' })).toHaveFocus()
+  })
+
+  it('returns focus to the menu button when the reader presses Escape from a link', async () => {
+    await userEvent.click(menuButton())
+    const talkLink = screen.getByRole('link', { name: 'Talk' })
+    talkLink.focus()
+    expect(talkLink).toHaveFocus()
+
     await userEvent.keyboard('{Escape}')
 
     expect(menuButton()).toHaveFocus()
