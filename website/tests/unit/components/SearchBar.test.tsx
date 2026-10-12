@@ -69,7 +69,7 @@ describe('SearchBar', () => {
     it('renders search input with correct placeholder', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       expect(searchInput).toBeInTheDocument()
       expect(searchInput).toHaveAttribute('placeholder', 'Search patterns...')
     })
@@ -77,7 +77,7 @@ describe('SearchBar', () => {
     it('renders search input with correct aria-label', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       expect(searchInput).toHaveAttribute('aria-label', 'Search patterns')
     })
 
@@ -98,14 +98,14 @@ describe('SearchBar', () => {
     it('has search input with type="search"', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       expect(searchInput).toHaveAttribute('type', 'search')
     })
 
     it('has search input with autocomplete off', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       expect(searchInput).toHaveAttribute('autocomplete', 'off')
     })
   })
@@ -114,7 +114,7 @@ describe('SearchBar', () => {
     it('filters patterns by title (case-insensitive)', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       expect(screen.getByText('Active Partner')).toBeInTheDocument()
@@ -125,7 +125,7 @@ describe('SearchBar', () => {
     it('filters patterns case-insensitively with uppercase', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'ACTIVE' } })
 
       expect(screen.getByText('Active Partner')).toBeInTheDocument()
@@ -134,7 +134,7 @@ describe('SearchBar', () => {
     it('filters patterns case-insensitively with mixed case', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'AcTiVe' } })
 
       expect(screen.getByText('Active Partner')).toBeInTheDocument()
@@ -143,7 +143,7 @@ describe('SearchBar', () => {
     it('shows results grouped by category', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'co' } })
 
       expect(screen.getByText('Anti-Patterns')).toBeInTheDocument()
@@ -155,7 +155,7 @@ describe('SearchBar', () => {
     it('shows all categories when results exist in multiple categories', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'e' } })
 
       expect(screen.getByText('Patterns')).toBeInTheDocument()
@@ -168,7 +168,7 @@ describe('SearchBar', () => {
     it('shows "No results found" when search returns nothing', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'xyz123notfound' } })
 
       expect(screen.getByText('No results found')).toBeInTheDocument()
@@ -177,7 +177,7 @@ describe('SearchBar', () => {
     it('shows correct pattern emoji and title in results', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       expect(screen.getByText('🤝')).toBeInTheDocument()
@@ -187,7 +187,7 @@ describe('SearchBar', () => {
     it('displays all pattern emojis in search results', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'e' } })
 
       expect(screen.getByText('🤝')).toBeInTheDocument()
@@ -198,7 +198,7 @@ describe('SearchBar', () => {
     it('displays category icons in results', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'context' } })
 
       const categoryIcons = screen.getAllByText('⛰️')
@@ -208,7 +208,7 @@ describe('SearchBar', () => {
     it('filters by partial matches', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'part' } })
 
       expect(screen.getByText('Active Partner')).toBeInTheDocument()
@@ -217,7 +217,7 @@ describe('SearchBar', () => {
     it('does not show dropdown when search is empty', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: '' } })
 
       expect(screen.queryByText('No results found')).not.toBeInTheDocument()
@@ -226,7 +226,7 @@ describe('SearchBar', () => {
     it('does not show dropdown when search is only whitespace', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: '   ' } })
 
       expect(screen.queryByText('No results found')).not.toBeInTheDocument()
@@ -237,7 +237,7 @@ describe('SearchBar', () => {
     it('opens dropdown when user types', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       expect(screen.queryByText('Active Partner')).not.toBeInTheDocument()
 
       fireEvent.change(searchInput, { target: { value: 'active' } })
@@ -248,7 +248,7 @@ describe('SearchBar', () => {
     it('closes dropdown on Escape key', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       expect(screen.getByText('Active Partner')).toBeInTheDocument()
@@ -261,7 +261,7 @@ describe('SearchBar', () => {
     it('clears search input on Escape key', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search') as HTMLInputElement
+      const searchInput = screen.getByRole('combobox') as HTMLInputElement
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       expect(searchInput.value).toBe('active')
@@ -279,7 +279,7 @@ describe('SearchBar', () => {
         </div>
       )
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       expect(screen.getByText('Active Partner')).toBeInTheDocument()
@@ -295,7 +295,7 @@ describe('SearchBar', () => {
     it('keeps dropdown open when clicking inside search area', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       expect(screen.getByText('Active Partner')).toBeInTheDocument()
@@ -308,10 +308,10 @@ describe('SearchBar', () => {
     it('navigates to pattern when clicking a result', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
-      const resultLink = screen.getByRole('link', { name: /Active Partner/i })
+      const resultLink = screen.getByRole('option', { name: /Active Partner/i })
       fireEvent.click(resultLink)
 
       expect(resultLink).toHaveAttribute('href', '/patterns/active-partner/')
@@ -320,12 +320,12 @@ describe('SearchBar', () => {
     it('clears search input after selecting a result', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search') as HTMLInputElement
+      const searchInput = screen.getByRole('combobox') as HTMLInputElement
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       expect(searchInput.value).toBe('active')
 
-      const resultLink = screen.getByRole('link', { name: /Active Partner/i })
+      const resultLink = screen.getByRole('option', { name: /Active Partner/i })
       fireEvent.click(resultLink)
 
       expect(searchInput.value).toBe('')
@@ -334,10 +334,10 @@ describe('SearchBar', () => {
     it('closes dropdown after selecting a result', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
-      const resultLink = screen.getByRole('link', { name: /Active Partner/i })
+      const resultLink = screen.getByRole('option', { name: /Active Partner/i })
       fireEvent.click(resultLink)
 
       expect(screen.queryByText('Active Partner')).not.toBeInTheDocument()
@@ -346,13 +346,13 @@ describe('SearchBar', () => {
     it('generates correct URLs for different categories', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'co' } })
 
-      const antiPatternLink = screen.getByRole('link', { name: /Copy Paste Coding/i })
+      const antiPatternLink = screen.getByRole('option', { name: /Copy Paste Coding/i })
       expect(antiPatternLink).toHaveAttribute('href', '/anti-patterns/copy-paste-coding/')
 
-      const obstacleLink = screen.getByRole('link', { name: /Context Window/i })
+      const obstacleLink = screen.getByRole('option', { name: /Context Window/i })
       expect(obstacleLink).toHaveAttribute('href', '/obstacles/context-window/')
     })
   })
@@ -361,59 +361,59 @@ describe('SearchBar', () => {
     it('arrow down selects first result', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'e' } })
 
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
 
-      const links = screen.getAllByRole('link')
-      expect(links[0]).toHaveClass('resultItemSelected')
+      const links = screen.getAllByRole('option')
+      expect(links[0]).toHaveAttribute('aria-selected', 'true')
     })
 
     it('arrow down selects next result', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'e' } })
 
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
 
-      const links = screen.getAllByRole('link')
-      expect(links[1]).toHaveClass('resultItemSelected')
+      const links = screen.getAllByRole('option')
+      expect(links[1]).toHaveAttribute('aria-selected', 'true')
     })
 
     it('arrow up selects previous result', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'e' } })
 
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
       fireEvent.keyDown(searchInput, { key: 'ArrowUp' })
 
-      const links = screen.getAllByRole('link')
-      expect(links[0]).toHaveClass('resultItemSelected')
+      const links = screen.getAllByRole('option')
+      expect(links[0]).toHaveAttribute('aria-selected', 'true')
     })
 
     it('arrow up at first result deselects all', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
       fireEvent.keyDown(searchInput, { key: 'ArrowUp' })
 
-      const links = screen.getAllByRole('link')
-      expect(links[0]).not.toHaveClass('resultItemSelected')
+      const links = screen.getAllByRole('option')
+      expect(links[0]).toHaveAttribute('aria-selected', 'false')
     })
 
     it('enter key navigates to selected result', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'e' } })
 
       // First arrow down selects first result (Context Window from obstacles category)
@@ -426,7 +426,7 @@ describe('SearchBar', () => {
     it('enter key without selection does nothing', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       fireEvent.keyDown(searchInput, { key: 'Enter' })
@@ -437,7 +437,7 @@ describe('SearchBar', () => {
     it('enter key clears search after navigation', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search') as HTMLInputElement
+      const searchInput = screen.getByRole('combobox') as HTMLInputElement
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
@@ -449,7 +449,7 @@ describe('SearchBar', () => {
     it('enter key closes dropdown after navigation', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
@@ -461,44 +461,44 @@ describe('SearchBar', () => {
     it('does not wrap around at end of results list', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
 
-      const links = screen.getAllByRole('link')
-      expect(links[0]).toHaveClass('resultItemSelected')
+      const links = screen.getAllByRole('option')
+      expect(links[0]).toHaveAttribute('aria-selected', 'true')
     })
 
     it('navigates through multiple results correctly', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'co' } })
 
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
 
-      const links = screen.getAllByRole('link')
-      expect(links[0]).toHaveClass('resultItemSelected')
+      const links = screen.getAllByRole('option')
+      expect(links[0]).toHaveAttribute('aria-selected', 'true')
 
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
-      expect(links[1]).toHaveClass('resultItemSelected')
+      expect(links[1]).toHaveAttribute('aria-selected', 'true')
     })
 
     it('keyboard navigation works without causing page scroll', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       // Arrow keys navigate results instead of scrolling the page
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
-      const links = screen.getAllByRole('link')
-      expect(links[0]).toHaveClass('resultItemSelected')
+      const links = screen.getAllByRole('option')
+      expect(links[0]).toHaveAttribute('aria-selected', 'true')
 
       fireEvent.keyDown(searchInput, { key: 'ArrowUp' })
-      expect(links[0]).not.toHaveClass('resultItemSelected')
+      expect(links[0]).toHaveAttribute('aria-selected', 'false')
     })
   })
 
@@ -506,7 +506,7 @@ describe('SearchBar', () => {
     it('handles empty patterns array', () => {
       render(<SearchBar patterns={[]} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'test' } })
 
       expect(screen.getByText('No results found')).toBeInTheDocument()
@@ -525,7 +525,7 @@ describe('SearchBar', () => {
 
       render(<SearchBar patterns={patternsWithoutEmojis} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'emoji' } })
 
       expect(screen.getByText('No Emoji Pattern')).toBeInTheDocument()
@@ -534,7 +534,7 @@ describe('SearchBar', () => {
     it('maintains category order in results', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'e' } })
 
       const categoryHeaders = screen.queryAllByText(/Obstacles|Anti-Patterns|Patterns/)
@@ -555,7 +555,7 @@ describe('SearchBar', () => {
     it('does not show category header if no results in that category', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
       expect(screen.queryByText('Anti-Patterns')).not.toBeInTheDocument()
@@ -565,7 +565,7 @@ describe('SearchBar', () => {
     it('handles special characters in search', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: '()[]{}' } })
 
       expect(screen.getByText('No results found')).toBeInTheDocument()
@@ -574,25 +574,25 @@ describe('SearchBar', () => {
     it('resets selected index when search query changes', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'e' } })
 
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
       fireEvent.keyDown(searchInput, { key: 'ArrowDown' })
 
-      const links = screen.getAllByRole('link')
-      expect(links[1]).toHaveClass('resultItemSelected')
+      const links = screen.getAllByRole('option')
+      expect(links[1]).toHaveAttribute('aria-selected', 'true')
 
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
-      const newLinks = screen.getAllByRole('link')
-      expect(newLinks[0]).not.toHaveClass('resultItemSelected')
+      const newLinks = screen.getAllByRole('option')
+      expect(newLinks[0]).toHaveAttribute('aria-selected', 'false')
     })
 
     it('does not match with trailing spaces that break the search term', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active  ' } })
 
       // The component searches for 'active  ' (with trailing spaces) which won't match 'Active Partner'
@@ -602,7 +602,7 @@ describe('SearchBar', () => {
     it('does not match with leading spaces that break the search term', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: '  active' } })
 
       // The component searches for '  active' (with leading spaces) which won't match 'Active Partner'
@@ -611,10 +611,10 @@ describe('SearchBar', () => {
   })
 
   describe('Accessibility', () => {
-    it('uses role="search" on input', () => {
+    it('presents the input as a combobox', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       expect(searchInput).toBeInTheDocument()
     })
 
@@ -628,7 +628,7 @@ describe('SearchBar', () => {
     it('maintains focus on input during keyboard navigation', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       searchInput.focus()
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
@@ -642,10 +642,10 @@ describe('SearchBar', () => {
     it('results are rendered as links for accessibility', () => {
       render(<SearchBar patterns={mockPatterns} />)
 
-      const searchInput = screen.getByRole('search')
+      const searchInput = screen.getByRole('combobox')
       fireEvent.change(searchInput, { target: { value: 'active' } })
 
-      const resultLink = screen.getByRole('link', { name: /Active Partner/i })
+      const resultLink = screen.getByRole('option', { name: /Active Partner/i })
       expect(resultLink).toBeInTheDocument()
       expect(resultLink.tagName).toBe('A')
     })

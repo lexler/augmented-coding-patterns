@@ -97,148 +97,109 @@ test.describe('Smoke Tests - Critical User Journeys', () => {
   });
 });
 
+const searchBox = (page: Page) => page.getByRole('combobox', { name: 'Search patterns' });
+const searchResults = (page: Page) => page.getByRole('listbox', { name: 'Search results' });
+
 test.describe('Search Functionality', () => {
   test('search bar is visible with correct placeholder', async ({ page }) => {
     await page.goto('/');
 
-    const searchInput = page.locator('input[role="search"]');
-    await expect(searchInput).toBeVisible();
-    await expect(searchInput).toHaveAttribute('placeholder', 'Search patterns...');
-    await expect(searchInput).toHaveAttribute('aria-label', 'Search patterns');
+    await expect(searchBox(page)).toBeVisible();
+    await expect(searchBox(page)).toHaveAttribute('placeholder', 'Search patterns...');
   });
 
   test('can type in search input and dropdown appears with results', async ({ page }) => {
     await page.goto('/');
 
-    const searchInput = page.locator('input[role="search"]');
-    await searchInput.fill('active');
+    await searchBox(page).fill('active');
 
-    const dropdown = page.locator('[class*="dropdown"]');
-    await expect(dropdown).toBeVisible();
-
-    const results = dropdown.locator('a[href*="/patterns/"]');
-    await expect(results.first()).toBeVisible();
+    await expect(searchResults(page)).toBeVisible();
+    await expect(searchResults(page).getByRole('option').first()).toBeVisible();
   });
 
   test('clicking a search result navigates to correct pattern page', async ({ page }) => {
     await page.goto('/');
 
-    const searchInput = page.locator('input[role="search"]');
-    await searchInput.fill('active partner');
+    await searchBox(page).fill('active partner');
 
-    const dropdown = page.locator('[class*="dropdown"]');
-    await expect(dropdown).toBeVisible();
-
-    const activePartnerLink = dropdown.locator('a[href="/patterns/active-partner/"]');
-    await expect(activePartnerLink).toBeVisible();
-    await activePartnerLink.click();
+    const activePartner = searchResults(page).getByRole('option', { name: 'Active Partner' });
+    await expect(activePartner).toBeVisible();
+    await activePartner.click();
 
     await expect(page).toHaveURL('/patterns/active-partner/');
-    await expect(page.locator('h1')).toContainText('Active Partner');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Active Partner');
   });
 
   test('search returns relevant results and is case-insensitive', async ({ page }) => {
     await page.goto('/');
 
-    const searchInput = page.locator('input[role="search"]');
-    await searchInput.fill('ACTIVE');
+    await searchBox(page).fill('ACTIVE');
 
-    const dropdown = page.locator('[class*="dropdown"]');
-    await expect(dropdown).toBeVisible();
-
-    const activePartnerLink = dropdown.locator('a[href="/patterns/active-partner/"]');
-    await expect(activePartnerLink).toBeVisible();
+    await expect(searchResults(page).getByRole('option', { name: 'Active Partner' })).toBeVisible();
   });
 
   test('no results found message appears for nonsense query', async ({ page }) => {
     await page.goto('/');
 
-    const searchInput = page.locator('input[role="search"]');
-    await searchInput.fill('xyzabc123nonexistent');
+    await searchBox(page).fill('xyzabc123nonexistent');
 
-    const dropdown = page.locator('[class*="dropdown"]');
-    await expect(dropdown).toBeVisible();
-
-    const noResults = dropdown.locator('text=No results found');
-    await expect(noResults).toBeVisible();
+    await expect(page.getByRole('status')).toHaveText('No results found');
   });
 
   test('dropdown closes when clicking outside', async ({ page }) => {
     await page.goto('/');
 
-    const searchInput = page.locator('input[role="search"]');
-    await searchInput.fill('active');
+    await searchBox(page).fill('active');
+    await expect(searchResults(page)).toBeVisible();
 
-    const dropdown = page.locator('[class*="dropdown"]');
-    await expect(dropdown).toBeVisible();
-
-    await page.locator('h1').click();
-    await expect(dropdown).not.toBeVisible();
+    await page.getByRole('heading', { level: 1 }).click();
+    await expect(searchResults(page)).not.toBeVisible();
   });
 
   test('can navigate search results with arrow keys', async ({ page }) => {
     await page.goto('/');
 
-    const searchInput = page.locator('input[role="search"]');
-    await searchInput.fill('active');
+    await searchBox(page).fill('active');
+    await expect(searchResults(page)).toBeVisible();
 
-    const dropdown = page.locator('[class*="dropdown"]');
-    await expect(dropdown).toBeVisible();
+    await searchBox(page).press('ArrowDown');
+    await expect(searchResults(page).getByRole('option', { selected: true })).toBeVisible();
 
-    await searchInput.press('ArrowDown');
-    const selectedResult = dropdown.locator('[class*="resultItemSelected"]');
-    await expect(selectedResult).toBeVisible();
-
-    await searchInput.press('ArrowDown');
-    const selectedResults = dropdown.locator('[class*="resultItemSelected"]');
-    await expect(selectedResults).toHaveCount(1);
+    await searchBox(page).press('ArrowDown');
+    await expect(searchResults(page).getByRole('option', { selected: true })).toHaveCount(1);
   });
 
   test('enter key navigates to selected result', async ({ page }) => {
     await page.goto('/');
 
-    const searchInput = page.locator('input[role="search"]');
-    await searchInput.fill('active partner');
+    await searchBox(page).fill('active partner');
+    await expect(searchResults(page)).toBeVisible();
 
-    const dropdown = page.locator('[class*="dropdown"]');
-    await expect(dropdown).toBeVisible();
+    await searchBox(page).press('ArrowDown');
+    await expect(searchResults(page).getByRole('option', { selected: true })).toBeVisible();
 
-    await searchInput.press('ArrowDown');
-    const selectedResult = dropdown.locator('[class*="resultItemSelected"]');
-    await expect(selectedResult).toBeVisible();
-
-    await searchInput.press('Enter');
+    await searchBox(page).press('Enter');
     await expect(page).toHaveURL(/\/patterns\/.*\//);
-    await expect(page.locator('h1')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   });
 
   test('escape key closes dropdown and clears search', async ({ page }) => {
     await page.goto('/');
 
-    const searchInput = page.locator('input[role="search"]');
-    await searchInput.fill('active');
+    await searchBox(page).fill('active');
+    await expect(searchResults(page)).toBeVisible();
 
-    const dropdown = page.locator('[class*="dropdown"]');
-    await expect(dropdown).toBeVisible();
-
-    await searchInput.press('Escape');
-    await expect(dropdown).not.toBeVisible();
-    await expect(searchInput).toHaveValue('');
+    await searchBox(page).press('Escape');
+    await expect(searchResults(page)).not.toBeVisible();
+    await expect(searchBox(page)).toHaveValue('');
   });
 
   test('search displays results grouped by category', async ({ page }) => {
     await page.goto('/');
 
-    const searchInput = page.locator('input[role="search"]');
-    await searchInput.fill('bias');
+    await searchBox(page).fill('bias');
 
-    const dropdown = page.locator('[class*="dropdown"]');
-    await expect(dropdown).toBeVisible();
-
-    const categoryGroups = dropdown.locator('[class*="categoryGroup"]');
-    await expect(categoryGroups.first()).toBeVisible();
-
-    const categoryLabel = dropdown.locator('[class*="categoryLabel"]');
-    await expect(categoryLabel.first()).toBeVisible();
+    await expect(searchResults(page).getByRole('group').first()).toBeVisible();
+    await expect(searchResults(page).getByRole('group', { name: /Obstacles|Anti-Patterns|Patterns/ }).first()).toBeVisible();
   });
 });

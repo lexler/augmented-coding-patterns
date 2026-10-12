@@ -24,12 +24,12 @@ function setMobileViewport() {
 }
 
 async function selectSearchResult(user: ReturnType<typeof userEvent.setup>, optionTitle: string) {
-  const searchbox = screen.getByRole('search', { name: /Search patterns/i })
+  const searchbox = screen.getByRole('combobox', { name: /Search patterns/i })
   await user.clear(searchbox)
   await user.type(searchbox, optionTitle)
 
-  const resultLink = await screen.findByRole('link', { name: new RegExp(optionTitle, 'i') })
-  await user.click(resultLink)
+  const result = await screen.findByRole('option', { name: new RegExp(optionTitle, 'i') })
+  await user.click(result)
 }
 
 async function expectCatalogGroupOrder(expectedLabels: string[]) {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useId } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { PatternContent, PatternCategory } from '@/lib/types'
@@ -28,6 +28,8 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
     patterns: []
   })
 
+  const resultsListId = useId()
+  const optionId = (index: number) => `${resultsListId}-option-${index}`
   const searchRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
@@ -138,15 +140,22 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
   }
 
   const hasResults = totalResults > 0
+  const showsResults = isOpen && searchQuery.trim() !== ''
+  const listsResults = showsResults && hasResults
+  const activeOptionId = listsResults && selectedIndex >= 0 ? optionId(selectedIndex) : undefined
 
   return (
-    <div className={styles.searchContainer} ref={searchRef}>
+    <div className={styles.searchContainer} ref={searchRef} role="search">
       <div className={styles.searchInputWrapper}>
         <input
           ref={inputRef}
           type="search"
-          role="search"
+          role="combobox"
           aria-label="Search patterns"
+          aria-autocomplete="list"
+          aria-expanded={listsResults}
+          aria-controls={resultsListId}
+          aria-activedescendant={activeOptionId}
           className={styles.searchInput}
           placeholder="Search patterns..."
           value={searchQuery}
@@ -154,13 +163,13 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
           onKeyDown={handleKeyDown}
           autoComplete="off"
         />
-        <span className={styles.searchIcon}>🔍</span>
+        <span className={styles.searchIcon} aria-hidden="true">🔍</span>
       </div>
 
-      {isOpen && searchQuery.trim() !== '' && (
+      {showsResults && (
         <div className={styles.dropdown}>
           {hasResults ? (
-            <div className={styles.resultsList}>
+            <div className={styles.resultsList} role="listbox" id={resultsListId} aria-label="Search results">
               {categoryOrder.map(category => {
                 const categoryResults = filteredPatterns[category]
                 if (categoryResults.length === 0) return null
@@ -171,9 +180,9 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
                 )
 
                 return (
-                  <div key={category} className={styles.categoryGroup}>
-                    <div className={styles.categoryLabel}>
-                      <span className={styles.categoryIcon}>
+                  <div key={category} className={styles.categoryGroup} role="group" aria-labelledby={`${resultsListId}-${category}`}>
+                    <div className={styles.categoryLabel} id={`${resultsListId}-${category}`}>
+                      <span className={styles.categoryIcon} aria-hidden="true">
                         {categoryConfig.icon}
                       </span>
                       <span>{categoryConfig.labelPlural}</span>
@@ -201,12 +210,15 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
                               isSelected ? styles.resultItemSelected : ''
                             }`}
                             onClick={handleClick}
+                            role="option"
+                            id={optionId(absoluteIndex)}
+                            aria-selected={isSelected}
                           >
-                            <span className={styles.resultCategoryIcon}>
+                            <span className={styles.resultCategoryIcon} aria-hidden="true">
                               {categoryConfig.icon}
                             </span>
                             {pattern.emojiIndicator && (
-                              <span className={styles.resultEmoji}>
+                              <span className={styles.resultEmoji} aria-hidden="true">
                                 {pattern.emojiIndicator}
                               </span>
                             )}
@@ -222,7 +234,7 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
               })}
             </div>
           ) : (
-            <div className={styles.noResults}>No results found</div>
+            <div className={styles.noResults} role="status">No results found</div>
           )}
         </div>
       )}
