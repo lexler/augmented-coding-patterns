@@ -94,6 +94,16 @@ describe('SearchBar accessibility', () => {
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
   })
 
+  it('reopens the matches on Arrow Down when the reader comes back to the search box', async () => {
+    await userEvent.type(searchBox(), 'active')
+    await userEvent.tab()
+    await userEvent.tab({ shift: true })
+    await userEvent.keyboard('{ArrowDown}')
+
+    expect(searchBox()).toHaveAttribute('aria-expanded', 'true')
+    expect(within(resultsList()).getByRole('option', { selected: true })).toHaveAccessibleName('Active Distraction')
+  })
+
   it('keeps focus in the search box when the reader presses Escape', async () => {
     await userEvent.type(searchBox(), 'active')
     await userEvent.keyboard('{Escape}')

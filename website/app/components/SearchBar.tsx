@@ -95,6 +95,13 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
   }, [selectedIndex, resultsListId])
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!isOpen && totalResults > 0 && event.key === 'ArrowDown') {
+      event.preventDefault()
+      setIsOpen(true)
+      setSelectedIndex(0)
+      return
+    }
+
     if (!isOpen || totalResults === 0) {
       if (event.key === 'Escape') {
         setSearchQuery('')
