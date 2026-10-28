@@ -4,6 +4,7 @@ import PatternCatalogPage from '@/app/pattern-catalog/page'
 import { COMPLETE_CATALOG_TEST_IDS } from '@/app/pattern-catalog/test-ids'
 import { PATTERN_CATALOG_GROUPS } from '@/app/pattern-catalog/constants'
 import { getAllPatterns } from '@/lib/markdown'
+import { getAuthorById } from '@/lib/authors'
 import { useRouter } from 'next/navigation'
 
 function setMobileViewport() {
@@ -173,8 +174,9 @@ describe('PatternCatalogPage', () => {
     ).toBeInTheDocument()
     expect(within(detailPane).getByText(/Description/i)).toBeInTheDocument()
     expect(within(detailPane).getByText(/Documented by/i)).toBeInTheDocument()
+    const authorName = getAuthorById(target.authors![0])!.name
     expect(
-      within(detailPane).getByRole('link', { name: /Lada Kesseler's avatar Lada Kesseler/i })
+      within(detailPane).getByRole('link', { name: `${authorName}'s avatar ${authorName}` })
     ).toBeInTheDocument()
     expect(within(detailPane).queryByText(/Open full entry/i)).not.toBeInTheDocument()
   })
