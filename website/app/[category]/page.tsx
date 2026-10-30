@@ -28,7 +28,8 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     return {};
   }
 
-  return { title: getCategoryConfig(category as PatternCategory).labelPlural };
+  const config = getCategoryConfig(category as PatternCategory);
+  return { title: config.labelPlural, description: config.listDescription };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { getPatternBySlug, getPatternSlugs, titleToSlug } from "@/lib/markdown";
+import { extractSummary, getPatternBySlug, getPatternSlugs, titleToSlug } from "@/lib/markdown";
 import { getCategoryConfig, isValidCategory } from "@/app/lib/category-config";
 import { basePath } from "@/lib/config";
 import { PatternCategory, PatternContent } from "@/lib/types";
@@ -57,7 +57,9 @@ export async function generateMetadata({ params }: PatternPageProps): Promise<Me
   }
 
   const resolved = resolvePattern(category as PatternCategory, slug);
-  return resolved ? { title: resolved.pattern.title } : {};
+  return resolved
+    ? { title: resolved.pattern.title, description: extractSummary(resolved.pattern.content) }
+    : {};
 }
 
 interface ResolvedPattern {

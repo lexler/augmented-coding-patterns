@@ -61,6 +61,58 @@ function validateSlug(slug: string): void {
   }
 }
 
+export function extractSummary(markdown: string): string | undefined {
+  const lines = markdown.split('\n')
+  const summaryLines: string[] = []
+
+  for (const line of lines) {
+    const trimmed = line.trim()
+
+    if (trimmed.length === 0) {
+      if (summaryLines.length > 0) {
+        break
+      }
+      continue
+    }
+
+    if (/^#{1,6}\s/.test(trimmed)) {
+      continue
+    }
+
+    if (/^[-*]\s/.test(trimmed)) {
+      continue
+    }
+
+    if (/^>/.test(trimmed)) {
+      continue
+    }
+
+    if (/^(closely\s+)?related:/i.test(trimmed)) {
+      continue
+    }
+
+    const plain = trimmed
+      .replace(/\*\*(.*?)\*\*/g, '$1')
+      .replace(/_(.*?)_/g, '$1')
+      .replace(/`(.*?)`/g, '$1')
+      .replace(/\[(.*?)]\((.*?)\)/g, '$1')
+
+    summaryLines.push(plain)
+
+    if (summaryLines.join(' ').length >= 220) {
+      break
+    }
+  }
+
+  const summary = summaryLines.join(' ').trim()
+
+  if (!summary) {
+    return undefined
+  }
+
+  return summary.length > 240 ? `${summary.slice(0, 237).trimEnd()}…` : summary
+}
+
 export function slugToTitleCase(slug: string): string {
   return slug
     .split('-')

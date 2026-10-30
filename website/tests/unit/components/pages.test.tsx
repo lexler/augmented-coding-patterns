@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import { metadata as siteMetadata } from '@/app/layout'
-import Home from '@/app/page'
+import Home, { metadata as homeMetadata } from '@/app/page'
 import CategoryPage, { generateMetadata as generateCategoryMetadata } from '@/app/[category]/page'
 import PatternPage, { generateMetadata as generatePatternMetadata } from '@/app/[category]/[slug]/page'
-import { metadata as contributorsMetadata } from '@/app/contributors/page'
+import ContributorsPage, { metadata as contributorsMetadata } from '@/app/contributors/page'
 import { generateMetadata as generateContributorMetadata } from '@/app/contributors/[authorId]/page'
 import { metadata as patternCatalogMetadata } from '@/app/pattern-catalog/page'
 import { metadata as talkMetadata } from '@/app/talk/page'
@@ -24,6 +24,7 @@ jest.mock('@/lib/markdown', () => ({
   getAllPatterns: jest.fn(() => []),
   getPatternBySlug: jest.fn(),
   titleToSlug: jest.requireActual('@/lib/markdown').titleToSlug,
+  extractSummary: jest.requireActual('@/lib/markdown').extractSummary,
 }))
 
 jest.mock('@/lib/contributors', () => ({
@@ -119,6 +120,63 @@ describe('Page titles', () => {
 
   it('titles the talk page with its default map title', () => {
     expect(talkMetadata.title).toBe('Patterns for Coding with AI')
+  })
+})
+
+describe('Page descriptions', () => {
+  afterEach(() => {
+    mockGetPatternSlugs.mockReset()
+    mockGetPatternBySlug.mockReset()
+    mockGetContributorDetailById.mockReset()
+  })
+
+  it('describes the home page with its intro text', () => {
+    mockGetPatternSlugs.mockReturnValue([])
+    render(<Home />)
+
+    expect(homeMetadata.description).toBe(screen.getByText(/^A collection of emerging patterns/).textContent)
+  })
+
+  it('describes a pattern page with the opening paragraph of the pattern as plain text', async () => {
+    mockGetPatternBySlug.mockReturnValue({
+      title: 'Answer Injection',
+      slug: 'answer-injection',
+      category: 'anti-patterns',
+      content: '## Problem\n\nPutting **the answer** you expect into the [prompt](/x/) makes the model echo it.\n\nSecond paragraph.',
+      rawContent: ''
+    })
+    const params = Promise.resolve({ category: 'anti-patterns', slug: 'answer-injection' })
+
+    expect((await generatePatternMetadata({ params })).description)
+      .toBe('Putting the answer you expect into the prompt makes the model echo it.')
+  })
+
+  it('describes a category page with the intro text it shows', async () => {
+    const params = Promise.resolve({ category: 'obstacles' })
+    render(await CategoryPage({ params: Promise.resolve({ category: 'obstacles' }) }))
+
+    expect((await generateCategoryMetadata({ params })).description)
+      .toBe(screen.getByText(/^Understand the inherent limitations/).textContent)
+  })
+
+  it('describes the contributors page with its intro text', () => {
+    render(<ContributorsPage />)
+
+    expect(contributorsMetadata.description).toBe(screen.getByText(/^Thank you to all the contributors/).textContent)
+  })
+
+  it('describes a contributor page by naming the contributor', async () => {
+    mockGetContributorDetailById.mockReturnValue({ name: 'Ivett Ördög' } as ContributorDetail)
+    const params = Promise.resolve({ authorId: 'ivett_ordog' })
+
+    expect((await generateContributorMetadata({ params })).description).toContain('Ivett Ördög')
+  })
+
+  it('gives the pattern catalog and talk pages distinct descriptions of their own', () => {
+    const descriptions = [homeMetadata, patternCatalogMetadata, talkMetadata].map(m => m.description)
+
+    expect(descriptions.every(Boolean)).toBe(true)
+    expect(new Set(descriptions).size).toBe(descriptions.length)
   })
 })
 

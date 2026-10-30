@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import styles from "./page.module.css";
 import { PATTERN_CATALOG_GROUPS } from "./constants";
-import { getAllPatterns } from "@/lib/markdown";
+import { extractSummary, getAllPatterns } from "@/lib/markdown";
 import { getAuthorById } from "@/lib/authors";
 import CatalogView from "./CatalogView";
 import { CatalogGroupData, CatalogPreviewItem } from "./types";
@@ -11,55 +11,8 @@ const catalogTitle = "Complete Catalog";
 
 export const metadata: Metadata = {
   title: catalogTitle,
+  description: "Every pattern, anti-pattern, and obstacle in one filterable catalog, each with a short summary and its authors.",
 };
-
-function extractSummary(markdown: string): string | undefined {
-  const lines = markdown.split("\n");
-  const summaryLines: string[] = [];
-
-  for (const line of lines) {
-    const trimmed = line.trim();
-
-    if (trimmed.length === 0) {
-      if (summaryLines.length > 0) {
-        break;
-      }
-      continue;
-    }
-
-    if (/^#{1,6}\s/.test(trimmed)) {
-      continue;
-    }
-
-    if (/^[-*]\s/.test(trimmed)) {
-      continue;
-    }
-
-    if (/^>/.test(trimmed)) {
-      continue;
-    }
-
-    const plain = trimmed
-      .replace(/\*\*(.*?)\*\*/g, "$1")
-      .replace(/_(.*?)_/g, "$1")
-      .replace(/`(.*?)`/g, "$1")
-      .replace(/\[(.*?)]\((.*?)\)/g, "$1");
-
-    summaryLines.push(plain);
-
-    if (summaryLines.join(" ").length >= 220) {
-      break;
-    }
-  }
-
-  const summary = summaryLines.join(" ").trim();
-
-  if (!summary) {
-    return undefined;
-  }
-
-  return summary.length > 240 ? `${summary.slice(0, 237).trimEnd()}…` : summary;
-}
 
 function resolveAuthorNames(authorIds: string[] | undefined): string[] {
   if (!authorIds || authorIds.length === 0) {
