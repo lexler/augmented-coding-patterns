@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { getPatternSlugs, getAllPatterns, slugToTitleCase, titleToSlug } from '@/lib/markdown'
+import { getPatternSlugs, getAllPatterns, slugToTitleCase, titleToSlug, extractSummary } from '@/lib/markdown'
 import * as relationships from '@/lib/relationships'
 import { existingPattern } from '../support/existing-pattern'
 
@@ -619,5 +619,26 @@ AI defaults to silent compliance.`
     it('should remove parentheses and brackets', () => {
       expect(titleToSlug('Chain of Small Steps [draft]')).toBe('chain-of-small-steps-draft')
     })
+  })
+})
+
+describe('extractSummary', () => {
+  it('summarises with the first real paragraph, skipping a leading related-reading line', () => {
+    const content = [
+      'Closely related: ["Engineer the Harness"](https://example.com/harness)',
+      '',
+      '## Pattern',
+      'Set up automated feedback, give AI permission to iterate.',
+      '',
+      'Later paragraph.',
+    ].join('\n')
+
+    expect(extractSummary(content)).toBe('Set up automated feedback, give AI permission to iterate.')
+  })
+
+  it('keeps an opening paragraph that comes before a related line', () => {
+    const content = 'Names beat descriptions. Always.\n\nRelated: [Catalog](https://example.com/)'
+
+    expect(extractSummary(content)).toBe('Names beat descriptions. Always.')
   })
 })

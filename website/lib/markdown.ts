@@ -87,6 +87,10 @@ export function extractSummary(markdown: string): string | undefined {
       continue
     }
 
+    if (/^(closely\s+)?related:/i.test(trimmed)) {
+      continue
+    }
+
     const plain = trimmed
       .replace(/\*\*(.*?)\*\*/g, '$1')
       .replace(/_(.*?)_/g, '$1')
