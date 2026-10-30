@@ -205,3 +205,8 @@ graph LR
   obstacles/black-box-ai -->|causes| anti-patterns/silent-misalignment
   obstacles/keeping-up -->|causes| anti-patterns/flying-blind
   obstacles/keeping-up -->|causes| anti-patterns/big-chunk-working
+  patterns/memory-grooming -->|solves| obstacles/session-residue
+  patterns/noise-cancellation -->|solves| obstacles/session-residue
+  patterns/decision-guards -->|solves| obstacles/session-residue
+  obstacles/session-residue -->|related| obstacles/excess-verbosity
+  obstacles/session-residue -->|causes| obstacles/negative-bleedthrough
