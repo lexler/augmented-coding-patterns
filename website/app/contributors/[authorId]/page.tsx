@@ -21,7 +21,12 @@ export async function generateMetadata({ params }: ContributorDetailPageProps): 
   const { authorId } = await params;
   const contributor = getContributorDetailById(authorId);
 
-  return contributor ? { title: contributor.name } : {};
+  return contributor
+    ? {
+        title: contributor.name,
+        description: `Patterns, anti-patterns, and obstacles contributed by ${contributor.name}.`,
+      }
+    : {};
 }
 
 export default async function ContributorDetailPage({ params }: ContributorDetailPageProps) {

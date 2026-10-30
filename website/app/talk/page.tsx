@@ -16,6 +16,7 @@ const currentMapTitle = "Patterns for Coding with AI";
 
 export const metadata: Metadata = {
   title: currentMapTitle,
+  description: "Interactive maps of the patterns, anti-patterns, and obstacles from the Augmented Coding talks, with links to the recorded walkthroughs.",
 };
 
 type MapIndex = Record<string, { name: string; category: string; slug: string }>;

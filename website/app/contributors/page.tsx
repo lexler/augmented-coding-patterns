@@ -6,9 +6,11 @@ import { siteConfig } from "@/config/site";
 import styles from "./page.module.css";
 
 const pageTitle = "Contributors";
+const intro = "Thank you to all the contributors who have documented patterns, anti-patterns, and obstacles.";
 
 export const metadata: Metadata = {
   title: pageTitle,
+  description: intro,
 };
 
 export default function ContributorsPage() {
@@ -18,9 +20,7 @@ export default function ContributorsPage() {
     <div className={styles.container}>
       <header className={styles.header}>
         <h1 className={styles.title}>{pageTitle}</h1>
-        <p className={styles.description}>
-          Thank you to all the contributors who have documented patterns, anti-patterns, and obstacles.
-        </p>
+        <p className={styles.description}>{intro}</p>
         <p className={styles.description}>
           Want to contribute? Read the{" "}
           <Link

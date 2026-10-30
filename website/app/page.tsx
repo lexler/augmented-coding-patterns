@@ -1,9 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "./page.module.css";
 import { getPatternSlugs, getAllPatterns } from "@/lib/markdown";
 import { getGraphData } from "@/lib/graph-data";
 import RelationshipGraph from "./components/RelationshipGraph";
 import SearchBar from "./components/SearchBar";
+
+const intro =
+  "A collection of emerging patterns, anti-patterns and obstacles for effective AI-augmented software development. " +
+  "Learn how to collaborate successfully with AI coding assistants and avoid common pitfalls.";
+
+export const metadata: Metadata = {
+  description: intro,
+};
 
 export default function Home() {
   const patternsCount = getPatternSlugs("patterns").length;
@@ -20,10 +29,7 @@ export default function Home() {
     <div className={styles.container}>
       <section className={styles.hero}>
         <h1>Augmented Coding Patterns</h1>
-        <p>
-          A collection of emerging patterns, anti-patterns and obstacles for effective AI-augmented software development.
-          Learn how to collaborate successfully with AI coding assistants and avoid common pitfalls.
-        </p>
+        <p>{intro}</p>
         <div className={styles.searchContainer}>
           <SearchBar patterns={allPatterns} />
         </div>
