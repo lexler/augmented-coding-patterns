@@ -50,13 +50,13 @@ jobs:
         run: npm test
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
 
       - name: Build the Cloudflare site for E2E tests
         run: npm run build:cloudflare
 
-      - name: Run E2E tests on desktop
-        run: npx playwright test --project=desktop-chrome
+      - name: Run E2E tests on desktop and iPhone
+        run: npx playwright test --project=desktop-chrome --project=iphone
 
   build:
     name: Build Static Site
