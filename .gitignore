@@ -154,3 +154,6 @@ scratches/
 
 # Exceptions: Allow website source code
 !website/lib/playground/
+
+# Amp orb portals
+.amp/portals/*
