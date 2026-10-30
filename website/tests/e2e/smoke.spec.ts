@@ -117,6 +117,19 @@ test.describe('Search Functionality', () => {
     await expect(searchResults(page).getByRole('option').first()).toBeVisible();
   });
 
+  test('text typed while the page is still loading is kept', async ({ page }) => {
+    await page.route('**/_next/static/chunks/**', async route => {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      await route.continue();
+    });
+    await page.goto('/', { waitUntil: 'commit' });
+
+    await searchBox(page).fill('active');
+
+    await expect(searchResults(page).getByRole('option', { name: 'Active Partner' })).toBeVisible();
+    await expect(searchBox(page)).toHaveValue('active');
+  });
+
   test('clicking a search result navigates to correct pattern page', async ({ page }) => {
     await page.goto('/');
 

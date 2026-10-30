@@ -22,6 +22,7 @@ const resultOptionId = (resultsListId: string, index: number) => `${resultsListI
 
 export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
   const [searchQuery, setSearchQuery] = useState('')
+  const [isReadyForTyping, setIsReadyForTyping] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(-1)
   const [filteredPatterns, setFilteredPatterns] = useState<GroupedResults>({
@@ -36,6 +37,10 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
   const router = useRouter()
 
   const categoryOrder: PatternCategory[] = ['obstacles', 'anti-patterns', 'patterns']
+
+  useEffect(() => {
+    setIsReadyForTyping(true)
+  }, [])
 
   useEffect(() => {
     if (searchQuery.trim() === '') {
@@ -174,6 +179,7 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
           className={styles.searchInput}
           placeholder="Search patterns..."
           value={searchQuery}
+          readOnly={!isReadyForTyping}
           onChange={e => setSearchQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           onBlur={() => setIsOpen(false)}
