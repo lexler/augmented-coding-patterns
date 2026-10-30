@@ -124,7 +124,8 @@ test.describe('Search Functionality', () => {
     });
     await page.goto('/', { waitUntil: 'commit' });
 
-    await searchBox(page).fill('active');
+    await searchBox(page).focus();
+    await page.keyboard.type('active');
 
     await expect(searchResults(page).getByRole('option', { name: 'Active Partner' })).toBeVisible();
     await expect(searchBox(page)).toHaveValue('active');

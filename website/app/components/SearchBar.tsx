@@ -22,7 +22,7 @@ const resultOptionId = (resultsListId: string, index: number) => `${resultsListI
 
 export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [isReadyForTyping, setIsReadyForTyping] = useState(false)
+  const [isHydrated, setIsHydrated] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(-1)
   const [filteredPatterns, setFilteredPatterns] = useState<GroupedResults>({
@@ -39,7 +39,8 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
   const categoryOrder: PatternCategory[] = ['obstacles', 'anti-patterns', 'patterns']
 
   useEffect(() => {
-    setIsReadyForTyping(true)
+    setSearchQuery(inputRef.current?.value ?? '')
+    setIsHydrated(true)
   }, [])
 
   useEffect(() => {
@@ -178,8 +179,7 @@ export default function SearchBar({ patterns, onSelect }: SearchBarProps) {
           aria-activedescendant={activeOptionId}
           className={styles.searchInput}
           placeholder="Search patterns..."
-          value={searchQuery}
-          readOnly={!isReadyForTyping}
+          value={isHydrated ? searchQuery : undefined}
           onChange={e => setSearchQuery(e.target.value)}
           onKeyDown={handleKeyDown}
           onBlur={() => setIsOpen(false)}
