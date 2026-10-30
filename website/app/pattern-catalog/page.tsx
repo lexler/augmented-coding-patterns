@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import styles from "./page.module.css";
 import { PATTERN_CATALOG_GROUPS } from "./constants";
 import { getAllPatterns } from "@/lib/markdown";
@@ -5,6 +6,12 @@ import { getAuthorById } from "@/lib/authors";
 import CatalogView from "./CatalogView";
 import { CatalogGroupData, CatalogPreviewItem } from "./types";
 import { getCategoryConfig } from "@/app/lib/category-config";
+
+const catalogTitle = "Complete Catalog";
+
+export const metadata: Metadata = {
+  title: catalogTitle,
+};
 
 function extractSummary(markdown: string): string | undefined {
   const lines = markdown.split("\n");
@@ -110,7 +117,7 @@ export default function PatternCatalogPage() {
 
   return (
     <div className={styles.container}>
-      <CatalogView title="Complete Catalog" groups={catalogGroups} />
+      <CatalogView title={catalogTitle} groups={catalogGroups} />
     </div>
   );
 }

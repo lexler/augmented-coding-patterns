@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getContributorDetailById, getContributorStats } from "@/lib/contributors";
@@ -14,6 +15,13 @@ interface ContributorDetailPageProps {
   params: Promise<{
     authorId: string;
   }>;
+}
+
+export async function generateMetadata({ params }: ContributorDetailPageProps): Promise<Metadata> {
+  const { authorId } = await params;
+  const contributor = getContributorDetailById(authorId);
+
+  return contributor ? { title: contributor.name } : {};
 }
 
 export default async function ContributorDetailPage({ params }: ContributorDetailPageProps) {

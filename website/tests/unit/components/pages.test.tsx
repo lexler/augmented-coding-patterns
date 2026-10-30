@@ -1,8 +1,16 @@
 import { render, screen } from '@testing-library/react'
+import type { Metadata } from 'next'
+import { metadata as siteMetadata } from '@/app/layout'
+import * as HomeModule from '@/app/page'
 import Home from '@/app/page'
-import CategoryPage from '@/app/[category]/page'
-import PatternPage from '@/app/[category]/[slug]/page'
+import CategoryPage, { generateMetadata as generateCategoryMetadata } from '@/app/[category]/page'
+import PatternPage, { generateMetadata as generatePatternMetadata } from '@/app/[category]/[slug]/page'
+import { metadata as contributorsMetadata } from '@/app/contributors/page'
+import { generateMetadata as generateContributorMetadata } from '@/app/contributors/[authorId]/page'
+import { metadata as patternCatalogMetadata } from '@/app/pattern-catalog/page'
+import { metadata as talkMetadata } from '@/app/talk/page'
 import { getPatternSlugs, getAllPatterns, getPatternBySlug } from '@/lib/markdown'
+import { getContributorDetailById, ContributorDetail } from '@/lib/contributors'
 
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
@@ -17,11 +25,97 @@ jest.mock('@/lib/markdown', () => ({
   getPatternSlugs: jest.fn(),
   getAllPatterns: jest.fn(() => []),
   getPatternBySlug: jest.fn(),
+  titleToSlug: jest.requireActual('@/lib/markdown').titleToSlug,
+}))
+
+jest.mock('@/lib/contributors', () => ({
+  getContributorStats: jest.fn(() => []),
+  getContributorDetailById: jest.fn(),
 }))
 
 const mockGetPatternSlugs = getPatternSlugs as jest.MockedFunction<typeof getPatternSlugs>
 const mockGetAllPatterns = getAllPatterns as jest.MockedFunction<typeof getAllPatterns>
 const mockGetPatternBySlug = getPatternBySlug as jest.MockedFunction<typeof getPatternBySlug>
+const mockGetContributorDetailById = getContributorDetailById as jest.MockedFunction<typeof getContributorDetailById>
+
+const documentTitle = (pageMetadata?: Metadata) => {
+  const { default: siteName, template } = siteMetadata.title as { default: string; template: string }
+  return pageMetadata?.title ? template.replace('%s', String(pageMetadata.title)) : siteName
+}
+
+describe('Page titles', () => {
+  afterEach(() => {
+    mockGetPatternSlugs.mockReset()
+    mockGetPatternBySlug.mockReset()
+    mockGetContributorDetailById.mockReset()
+  })
+
+  it('keeps the site name on the home page', () => {
+    const homeMetadata = (HomeModule as { metadata?: Metadata }).metadata
+
+    expect(documentTitle(homeMetadata)).toBe('Augmented Coding Patterns')
+  })
+
+  it('titles a pattern page with the pattern title', async () => {
+    mockGetPatternBySlug.mockReturnValue({
+      title: 'Answer Injection',
+      slug: 'answer-injection',
+      category: 'anti-patterns',
+      content: 'Content',
+      rawContent: '# Answer Injection\n\nContent'
+    })
+    const params = Promise.resolve({ category: 'anti-patterns', slug: 'answer-injection' })
+
+    expect(documentTitle(await generatePatternMetadata({ params })))
+      .toBe('Answer Injection | Augmented Coding Patterns')
+  })
+
+  it('titles a pattern reached by an alternative title with the canonical pattern title', async () => {
+    mockGetPatternSlugs.mockReturnValue(['active-partner'])
+    mockGetPatternBySlug.mockImplementation((_category, slug) => {
+      if (slug !== 'active-partner') throw new Error('not found')
+      return {
+        title: 'Active Partner',
+        slug: 'active-partner',
+        category: 'patterns',
+        content: 'Content',
+        rawContent: '# Active Partner\n\nContent',
+        alternativeTitles: ['Push Back']
+      }
+    })
+    const params = Promise.resolve({ category: 'patterns', slug: 'push-back' })
+
+    expect(documentTitle(await generatePatternMetadata({ params })))
+      .toBe('Active Partner | Augmented Coding Patterns')
+  })
+
+  it('titles a category page with the plural category label', async () => {
+    const params = Promise.resolve({ category: 'anti-patterns' })
+
+    expect(documentTitle(await generateCategoryMetadata({ params })))
+      .toBe('Anti-Patterns | Augmented Coding Patterns')
+  })
+
+  it('titles a contributor page with the contributor name', async () => {
+    mockGetContributorDetailById.mockReturnValue({ name: 'Ivett Ördög' } as ContributorDetail)
+    const params = Promise.resolve({ authorId: 'ivett_ordog' })
+
+    expect(documentTitle(await generateContributorMetadata({ params })))
+      .toBe('Ivett Ördög | Augmented Coding Patterns')
+  })
+
+  it('titles the contributors page', () => {
+    expect(documentTitle(contributorsMetadata)).toBe('Contributors | Augmented Coding Patterns')
+  })
+
+  it('titles the pattern catalog page', () => {
+    expect(documentTitle(patternCatalogMetadata)).toBe('Complete Catalog | Augmented Coding Patterns')
+  })
+
+  it('titles the talk page with its default map title', () => {
+    expect(documentTitle(talkMetadata)).toBe('Patterns for Coding with AI | Augmented Coding Patterns')
+  })
+})
 
 describe('Home Page', () => {
   beforeEach(() => {

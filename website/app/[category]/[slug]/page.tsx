@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
@@ -5,7 +6,7 @@ import remarkGfm from "remark-gfm";
 import { getPatternBySlug, getPatternSlugs, titleToSlug } from "@/lib/markdown";
 import { getCategoryConfig, isValidCategory } from "@/app/lib/category-config";
 import { basePath } from "@/lib/config";
-import { PatternCategory } from "@/lib/types";
+import { PatternCategory, PatternContent } from "@/lib/types";
 import Authors from "@/app/components/Authors";
 import RelatedLinks from "@/app/components/RelatedLinks";
 import VideoThumbnail from "@/app/components/VideoThumbnail";
@@ -48,6 +49,49 @@ export async function generateStaticParams() {
   return params;
 }
 
+export async function generateMetadata({ params }: PatternPageProps): Promise<Metadata> {
+  const { category, slug } = await params;
+
+  if (!isValidCategory(category)) {
+    return {};
+  }
+
+  const resolved = resolvePattern(category as PatternCategory, slug);
+  return resolved ? { title: resolved.pattern.title } : {};
+}
+
+interface ResolvedPattern {
+  pattern: PatternContent;
+  canonicalSlug: string;
+  isAlternativeTitle: boolean;
+}
+
+function resolvePattern(category: PatternCategory, slug: string): ResolvedPattern | null {
+  const pattern = findPatternBySlug(category, slug);
+  if (pattern) {
+    return { pattern, canonicalSlug: slug, isAlternativeTitle: false };
+  }
+  return findPatternByAlternativeTitleSlug(category, slug);
+}
+
+function findPatternBySlug(category: PatternCategory, slug: string): PatternContent | null {
+  try {
+    return getPatternBySlug(category, slug);
+  } catch {
+    return null;
+  }
+}
+
+function findPatternByAlternativeTitleSlug(category: PatternCategory, slug: string): ResolvedPattern | null {
+  for (const candidateSlug of getPatternSlugs(category)) {
+    const candidate = getPatternBySlug(category, candidateSlug);
+    if (candidate?.alternativeTitles?.some((altTitle) => titleToSlug(altTitle) === slug)) {
+      return { pattern: candidate, canonicalSlug: candidateSlug, isAlternativeTitle: true };
+    }
+  }
+  return null;
+}
+
 export default async function PatternPage({ params }: PatternPageProps) {
   const { category, slug } = await params;
 
@@ -57,43 +101,14 @@ export default async function PatternPage({ params }: PatternPageProps) {
 
   const config = getCategoryConfig(category as PatternCategory);
 
-  // First try to get the pattern by the given slug (might be canonical or alternative)
-  let pattern = null;
-  try {
-    pattern = getPatternBySlug(category as PatternCategory, slug);
-  } catch {
-    // Slug might be an alternative title slug, not a canonical file slug
-    // We'll search for it below
-  }
+  const resolved = resolvePattern(category as PatternCategory, slug);
 
-  // If not found directly, search all patterns to find one with a matching alternative title
-  let canonicalSlug = slug;
-  let isAlternativeTitle = false;
-
-  if (!pattern) {
-    const allSlugs = getPatternSlugs(category as PatternCategory);
-    for (const candidateSlug of allSlugs) {
-      const candidatePattern = getPatternBySlug(category as PatternCategory, candidateSlug);
-      if (candidatePattern?.alternativeTitles) {
-        // Check if any alternative title converts to the requested slug
-        for (const altTitle of candidatePattern.alternativeTitles) {
-          if (titleToSlug(altTitle) === slug) {
-            pattern = candidatePattern;
-            canonicalSlug = candidateSlug;
-            isAlternativeTitle = true;
-            break;
-          }
-        }
-        if (isAlternativeTitle) break;
-      }
-    }
-  }
-
-  if (!pattern) {
+  if (!resolved) {
     notFound();
   }
 
-  // If visiting an alternative title slug, render redirect page
+  const { pattern, canonicalSlug, isAlternativeTitle } = resolved;
+
   if (isAlternativeTitle) {
     const canonicalPath = `/${category}/${canonicalSlug}/`;
     const canonicalUrl = `${basePath}${canonicalPath}`;
