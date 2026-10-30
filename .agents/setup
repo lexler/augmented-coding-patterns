@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+node_version=v22.23.4
+habit_hooks_version=1.5.0
+playwright_browsers=(chromium webkit)
+playwright_install_limit=10m
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+node_installs="$HOME/.local/share"
+node_home="$node_installs/node-$node_version"
+node_current="$node_installs/node-22"
+profile_marker="# augmented-coding-patterns Node.js 22"
+
+timed() {
+  local started=$SECONDS
+  printf '\n==> %s\n' "$1"
+  "${@:2}"
+  printf '==> %s took %ss\n' "$1" $((SECONDS - started))
+}
+
+install_node() {
+  if [[ ! -x $node_home/bin/node ]]; then
+    local staging="$node_home.partial"
+    rm -rf -- "$staging"
+    mkdir -p -- "$staging"
+    curl -fsSL "https://nodejs.org/dist/$node_version/node-$node_version-linux-x64.tar.xz" |
+      tar -xJ -C "$staging" --strip-components=1
+    mv -- "$staging" "$node_home"
+  fi
+  ln -sfn -- "$node_home" "$node_current"
+  export PATH="$node_current/bin:$PATH"
+  node --version
+}
+
+put_node_on_repository_path() {
+  grep -Fqx "$profile_marker" "$HOME/.bash_profile" 2>/dev/null && return
+  cat >> "$HOME/.bash_profile" <<EOF
+
+$profile_marker
+case "\$PWD/" in
+  "$repo_root"/*) export PATH="$node_current/bin:\$PATH" ;;
+esac
+EOF
+}
+
+install_website_dependencies() {
+  (cd "$repo_root/website" && npm ci --no-audit --no-fund)
+}
+
+missing_playwright_system_packages() {
+  local packages
+  packages="$(npx playwright install-deps --dry-run "${playwright_browsers[@]}" |
+    sed -n 's/.*apt-get install -y --no-install-recommends \([^"]*\).*/\1/p')"
+  local package
+  for package in $packages; do
+    dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -q 'install ok installed' || echo "$package"
+  done
+}
+
+install_playwright_browsers() (
+  cd "$repo_root/website"
+  if [[ -n $(missing_playwright_system_packages) ]]; then
+    npx playwright install-deps "${playwright_browsers[@]}"
+  fi
+  timeout "$playwright_install_limit" npx playwright install "${playwright_browsers[@]}"
+)
+
+install_python_tools() {
+  uv tool install --quiet "habit-hooks==$habit_hooks_version" \
+    --with "habit-hooks-typescript==$habit_hooks_version" \
+    --with "habit-hooks-generic==$habit_hooks_version"
+  uv tool install --quiet pytest
+}
+
+timed "Node.js $node_version" install_node
+timed "Node.js on repository PATH" put_node_on_repository_path
+timed "website dependencies" install_website_dependencies
+timed "Playwright ${playwright_browsers[*]}" install_playwright_browsers
+timed "habit-hooks $habit_hooks_version and pytest" install_python_tools
