@@ -1,0 +1,11 @@
+services:
+  site:
+    command: npm run build:cloudflare && npx wrangler pages dev out --ip 0.0.0.0 --port "$PORT" --show-interactive-dev-session=false
+    cwd: website
+    env:
+      WRANGLER_SEND_METRICS: "false"
+    health: /
+    portal:
+      url: /
+      title: Site
+      description: Static Cloudflare build served by wrangler pages dev. Restart the service to rebuild after content changes.
