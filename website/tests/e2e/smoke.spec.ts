@@ -31,6 +31,13 @@ test.describe('Smoke Tests - Critical User Journeys', () => {
     await expect(page.getByRole('article')).toBeVisible();
   });
 
+  test('pattern page title names the pattern', async ({ page }) => {
+    await page.goto('/anti-patterns/answer-injection/');
+
+    const heading = await page.getByRole('heading', { level: 1 }).textContent();
+    await expect(page).toHaveTitle(`${heading} | Augmented Coding Patterns`);
+  });
+
   test('use back button to return to patterns list', async ({ page }) => {
     await page.goto('/patterns/');
 

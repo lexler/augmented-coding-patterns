@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllPatterns } from "@/lib/markdown";
@@ -18,6 +19,16 @@ export async function generateStaticParams() {
     { category: 'anti-patterns' },
     { category: 'obstacles' }
   ];
+}
+
+export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
+  const { category } = await params;
+
+  if (!isValidCategory(category)) {
+    return {};
+  }
+
+  return { title: getCategoryConfig(category as PatternCategory).labelPlural };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {

@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getContributorStats } from "@/lib/contributors";
 import { siteConfig } from "@/config/site";
 import styles from "./page.module.css";
+
+const pageTitle = "Contributors";
+
+export const metadata: Metadata = {
+  title: pageTitle,
+};
 
 export default function ContributorsPage() {
   const contributors = getContributorStats();
@@ -10,7 +17,7 @@ export default function ContributorsPage() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1 className={styles.title}>Contributors</h1>
+        <h1 className={styles.title}>{pageTitle}</h1>
         <p className={styles.description}>
           Thank you to all the contributors who have documented patterns, anti-patterns, and obstacles.
         </p>
