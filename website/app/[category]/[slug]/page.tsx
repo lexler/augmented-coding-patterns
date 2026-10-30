@@ -117,7 +117,6 @@ export default async function PatternPage({ params }: PatternPageProps) {
         <head>
           <meta httpEquiv="refresh" content={`0; url=${canonicalUrl}`} />
           <link rel="canonical" href={canonicalUrl} />
-          <title>Redirecting to {pattern.title}</title>
         </head>
         <body>
           <div className={styles.container}>

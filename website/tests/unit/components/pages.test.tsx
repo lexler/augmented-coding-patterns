@@ -1,7 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import type { Metadata } from 'next'
 import { metadata as siteMetadata } from '@/app/layout'
-import * as HomeModule from '@/app/page'
 import Home from '@/app/page'
 import CategoryPage, { generateMetadata as generateCategoryMetadata } from '@/app/[category]/page'
 import PatternPage, { generateMetadata as generatePatternMetadata } from '@/app/[category]/[slug]/page'
@@ -38,9 +36,21 @@ const mockGetAllPatterns = getAllPatterns as jest.MockedFunction<typeof getAllPa
 const mockGetPatternBySlug = getPatternBySlug as jest.MockedFunction<typeof getPatternBySlug>
 const mockGetContributorDetailById = getContributorDetailById as jest.MockedFunction<typeof getContributorDetailById>
 
-const documentTitle = (pageMetadata?: Metadata) => {
-  const { default: siteName, template } = siteMetadata.title as { default: string; template: string }
-  return pageMetadata?.title ? template.replace('%s', String(pageMetadata.title)) : siteName
+const activePartnerWithAlternativeTitle = {
+  title: 'Active Partner',
+  slug: 'active-partner',
+  category: 'patterns' as const,
+  content: 'Content',
+  rawContent: '# Active Partner\n\nContent',
+  alternativeTitles: ['Push Back']
+}
+
+const servePatternOnlyByAlternativeTitle = () => {
+  mockGetPatternSlugs.mockReturnValue(['active-partner'])
+  mockGetPatternBySlug.mockImplementation((_category, slug) => {
+    if (slug !== 'active-partner') throw new Error('not found')
+    return activePartnerWithAlternativeTitle
+  })
 }
 
 describe('Page titles', () => {
@@ -50,10 +60,11 @@ describe('Page titles', () => {
     mockGetContributorDetailById.mockReset()
   })
 
-  it('keeps the site name on the home page', () => {
-    const homeMetadata = (HomeModule as { metadata?: Metadata }).metadata
-
-    expect(documentTitle(homeMetadata)).toBe('Augmented Coding Patterns')
+  it('suffixes page titles with the site name and keeps the bare site name where a page sets none', () => {
+    expect(siteMetadata.title).toEqual({
+      default: 'Augmented Coding Patterns',
+      template: '%s | Augmented Coding Patterns',
+    })
   })
 
   it('titles a pattern page with the pattern title', async () => {
@@ -66,54 +77,48 @@ describe('Page titles', () => {
     })
     const params = Promise.resolve({ category: 'anti-patterns', slug: 'answer-injection' })
 
-    expect(documentTitle(await generatePatternMetadata({ params })))
-      .toBe('Answer Injection | Augmented Coding Patterns')
+    expect((await generatePatternMetadata({ params })).title).toBe('Answer Injection')
   })
 
   it('titles a pattern reached by an alternative title with the canonical pattern title', async () => {
-    mockGetPatternSlugs.mockReturnValue(['active-partner'])
-    mockGetPatternBySlug.mockImplementation((_category, slug) => {
-      if (slug !== 'active-partner') throw new Error('not found')
-      return {
-        title: 'Active Partner',
-        slug: 'active-partner',
-        category: 'patterns',
-        content: 'Content',
-        rawContent: '# Active Partner\n\nContent',
-        alternativeTitles: ['Push Back']
-      }
-    })
+    servePatternOnlyByAlternativeTitle()
     const params = Promise.resolve({ category: 'patterns', slug: 'push-back' })
 
-    expect(documentTitle(await generatePatternMetadata({ params })))
-      .toBe('Active Partner | Augmented Coding Patterns')
+    expect((await generatePatternMetadata({ params })).title).toBe('Active Partner')
+  })
+
+  it('leaves the alternative-title redirect page without a title of its own', async () => {
+    servePatternOnlyByAlternativeTitle()
+    const params = Promise.resolve({ category: 'patterns', slug: 'push-back' })
+
+    render(await PatternPage({ params }))
+
+    expect(document.querySelector('title')).toBeNull()
   })
 
   it('titles a category page with the plural category label', async () => {
     const params = Promise.resolve({ category: 'anti-patterns' })
 
-    expect(documentTitle(await generateCategoryMetadata({ params })))
-      .toBe('Anti-Patterns | Augmented Coding Patterns')
+    expect((await generateCategoryMetadata({ params })).title).toBe('Anti-Patterns')
   })
 
   it('titles a contributor page with the contributor name', async () => {
     mockGetContributorDetailById.mockReturnValue({ name: 'Ivett Ördög' } as ContributorDetail)
     const params = Promise.resolve({ authorId: 'ivett_ordog' })
 
-    expect(documentTitle(await generateContributorMetadata({ params })))
-      .toBe('Ivett Ördög | Augmented Coding Patterns')
+    expect((await generateContributorMetadata({ params })).title).toBe('Ivett Ördög')
   })
 
   it('titles the contributors page', () => {
-    expect(documentTitle(contributorsMetadata)).toBe('Contributors | Augmented Coding Patterns')
+    expect(contributorsMetadata.title).toBe('Contributors')
   })
 
   it('titles the pattern catalog page', () => {
-    expect(documentTitle(patternCatalogMetadata)).toBe('Complete Catalog | Augmented Coding Patterns')
+    expect(patternCatalogMetadata.title).toBe('Complete Catalog')
   })
 
   it('titles the talk page with its default map title', () => {
-    expect(documentTitle(talkMetadata)).toBe('Patterns for Coding with AI | Augmented Coding Patterns')
+    expect(talkMetadata.title).toBe('Patterns for Coding with AI')
   })
 })
 
