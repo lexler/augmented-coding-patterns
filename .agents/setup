@@ -73,6 +73,15 @@ install_python_tools() {
   uv tool install --quiet pytest
 }
 
+turn_off_amp_commit_trailers() {
+  local settings="$HOME/.config/amp/settings.json"
+  mkdir -p -- "$(dirname -- "$settings")"
+  [[ -s $settings ]] || echo '{}' > "$settings"
+  jq '."amp.git.commit.ampThread.enabled" = false' "$settings" > "$settings.partial"
+  mv -- "$settings.partial" "$settings"
+}
+
+timed "Amp commit trailers off" turn_off_amp_commit_trailers
 timed "Node.js $node_version" install_node
 timed "Node.js on repository PATH" put_node_on_repository_path
 timed "website dependencies" install_website_dependencies
