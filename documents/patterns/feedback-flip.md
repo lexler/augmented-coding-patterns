@@ -1,5 +1,6 @@
 ---
 authors: [lada_kesseler]
+synonyms: [Adversarial Review, Evaluator-Optimizer]
 ---
 
 # Feedback Flip
