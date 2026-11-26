@@ -6,6 +6,7 @@ import { PatternContent } from "@/lib/types";
 import mapIndex from "@/public/maps/map-index.json";
 import mapIndexV2 from "@/public/maps/map-index-v2.json";
 import mapIndexV3 from "@/public/maps/map-index-v3.json";
+import mapIndexV4 from "@/public/maps/map-index-v4.json";
 
 type PatternData = PatternContent & {
   name: string;
@@ -42,6 +43,7 @@ export default function TalkPage() {
   const patternDataByNumber = buildDataByNumber(mapIndex, allPatterns);
   const patternDataByNumberV2 = buildDataByNumber(mapIndexV2, allPatterns);
   const patternDataByNumberV3 = buildDataByNumber(mapIndexV3, allPatterns);
+  const patternDataByNumberV4 = buildDataByNumber(mapIndexV4, allPatterns);
   const patternDataByLabel: Record<string, PatternContent> = {};
 
   allPatterns.forEach(pattern => {
@@ -51,7 +53,7 @@ export default function TalkPage() {
   return (
     <div>
       <MapTabs
-        defaultTabId="v3"
+        defaultTabId="v4"
         tabs={[
           {
             id: 'v1',
@@ -89,6 +91,18 @@ export default function TalkPage() {
                 patternDataByNumber={patternDataByNumberV3}
                 patternDataByLabel={patternDataByLabel}
                 mapFile="semantic_map_v3.svg"
+              />
+            ),
+          },
+          {
+            id: 'v4',
+            label: 'v4',
+            title: currentMapTitle,
+            content: (
+              <PatternMap
+                patternDataByNumber={patternDataByNumberV4}
+                patternDataByLabel={patternDataByLabel}
+                mapFile="semantic_map_v4.svg"
               />
             ),
           },
